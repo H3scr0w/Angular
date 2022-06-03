@@ -1,0 +1,4 @@
+<div *ngIf="html" class="warning" [ngClass]="{'warning-left': !right, 'warning-right': right}" [hidden]="!show">
+  <div class="warning-icon"></div>
+  <div [innerHTML]="html"></div>
+</div>

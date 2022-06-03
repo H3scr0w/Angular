@@ -1,0 +1,17 @@
+.mat-snack-bar-container {
+  &.success {
+    background: #5cb85c;
+  }
+
+  &.error {
+    background: #d9534f;
+  }
+
+  &.warning {
+    background: #e96107;
+  }
+
+  &.info {
+    background: #0a6dee;
+  }
+}

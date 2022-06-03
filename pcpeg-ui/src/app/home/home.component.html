@@ -1,0 +1,43 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <mat-card class="mat-elevation-z8 my-4 mx-4">
+        <mat-card-header>
+          <mat-card-title>
+            <h2>{{ 'Home' | translate }}</h2>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content *ngIf="!isLoading" class="p-2">
+          <div class="text-justify-center">
+            <p [innerHTML]="'Hello' | translate" class="text-center"></p>
+            <br />
+            <p [innerHTML]="'home.welcome' | translate"></p>
+            <p [innerHTML]="'home.instructions' | translate"></p>
+            <p [innerHTML]="'home.steps' | translate"></p>
+            <div class="d-inline-flex">
+              <p [innerHTML]="'home.manual' | translate" class="my-2"></p>
+              <button mat-mini-fab class="bg-info mx-2"
+                (click)="downloadManual()"><i class="fas fa-download text-white"></i></button>
+            </div>
+            <p [innerHTML]="'home.sign' | translate:{'date': date | date:'dd-MM-yyyy' }"></p>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <div class="float-left">
+                <U>{{ 'contact.name' | translate }}:</U> <span class="ml-1">Sophie PHAN</span>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="float-right">
+                <U>{{ 'contact.mail' | translate }}:</U> <span class="ml-1">Sophie.Phan@saint-gobain.com</span>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  <div *ngIf="isLoading" class="loading-shade">
+    <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+  </div>
+</div>

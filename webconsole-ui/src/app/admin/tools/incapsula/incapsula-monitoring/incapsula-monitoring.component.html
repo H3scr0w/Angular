@@ -1,0 +1,14 @@
+<table class="w-100 mb-6">
+  <mat-tab-group mat-align-tabs="center" dynamicHeight>
+    <mat-tab label="Events">
+      <ng-template matTabContent>
+        <stgo-incapsula-events [domain]="domain" [isAdmin]="isAdmin"></stgo-incapsula-events>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Incidents">
+      <ng-template matTabContent>
+        <stgo-incapsula-incidents [domain]="domain" [isAdmin]="isAdmin"></stgo-incapsula-incidents>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+</table>

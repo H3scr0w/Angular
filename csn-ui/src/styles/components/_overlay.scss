@@ -1,0 +1,79 @@
+.spinner-container .overlay {
+  display: block !important;
+}
+
+.overlay {
+	display: none;
+	&.active {
+		display: block;
+		position: fixed;
+		background-color: grey;
+		height: 100%;
+		width: 100%;
+		top: 0;
+		left: 0;
+		z-index: 101;
+
+		.popin {
+			@include radius(8px);
+			background-color: $color-lightGreen;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			padding: 30px;
+
+			p {
+				@include gilroyReg(14px);
+				color: $color-blue;
+				letter-spacing: -0.34px;
+				line-height: 20px;
+				margin-bottom: 20px;
+			}
+
+			ul {
+				padding: 0;
+				list-style: none;
+
+				li {
+					@include gilroyReg(14px);
+					color: $color-blue;
+					letter-spacing: -0.34px;
+					line-height: 20px;
+					padding-left: 30px;
+					position: relative;
+					margin-bottom: 15px;
+
+					&::before {
+						content: '';
+						position: absolute;
+						left: 0;
+						top: 50%;
+						transform: translate(100%, -50%);
+						height: 8px;
+						width: 8px;
+						background-color: $color-lightBlue;
+						border-radius: 10px;
+					}
+				}
+			}
+
+			.button-wrapper {
+				display: flex;
+				justify-content: flex-end;
+
+				.btn-agree {
+					@include gilroyBold(16px);
+					@include radius(28px);
+					background-color: $color-green;
+					padding: 15px 35px;
+					color: $color-white;
+					letter-spacing: -0.22px;
+					line-height: 20px;
+					text-align: center;
+					border: solid 2px $color-green;
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,16 @@
+<div *ngIf="dynamicControls && dynamicControls.length > 0" class="m-3">
+  <form [formGroup]="informationItemsForm">
+    <div class="m-3">
+      <mat-card>
+        <ng-container *ngFor="let control of dynamicControls; trackBy : trackByFn">
+          <div [ngSwitch]="control.controlType">
+            <mat-form-field>
+              <input *ngSwitchCase="'textbox'" matInput [formControlName]="control.key" [placeholder]="control.label"
+                [type]="control.controlType"  />
+            </mat-form-field>
+          </div>
+        </ng-container>
+      </mat-card>
+    </div>
+  </form>
+</div>

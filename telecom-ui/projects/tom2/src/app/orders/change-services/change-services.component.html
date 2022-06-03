@@ -1,0 +1,86 @@
+<div class="mat-elevation-z8 my-4 mx-4 mw-mobile">
+  <div class="bg-header p-2 d-flex">
+    <span class="fa-stack fa-lg text-primary">
+      <i class="fas fa-circle fa-stack-1x fa-lg"></i>
+      <i class="fa fa-arrows-alt fa-stack-1x fa-sm text-white"></i>
+    </span>
+    <h2 class="text-white font-weight-bold pt-1">{{'common.menu.orders.changeservices' | translate}}</h2>
+  </div>
+
+  <div class="p-4 my-4 mx-4 mw-mobile">
+    <form [formGroup]="changeServicesForm" (ngSubmit)="onSubmit()">
+
+      <ng-select [items]="orderIds | async" [typeahead]="inputOrder" placeholder="{{'order.orderid' | translate}}"
+        [searchable]="true" [dropdownPosition]="'bottom'" formControlName="orderId" appendTo="body"
+        (change)="onOrderIdSelected()">
+        <ng-template ng-label-tmp let-item=" item">
+          <span *ngIf="item"> {{item}} </span>
+        </ng-template>
+      </ng-select>
+
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>{{'order.changeservices.oldservices' | translate}} </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-form-field>
+            <input matInput formControlName="oldMainAccessCode" placeholder="{{'order.mainaccesscode' | translate}}" />
+          </mat-form-field>
+
+          <mat-form-field>
+            <input matInput formControlName="oldBackupAccessCode"
+              placeholder="{{'order.backupaccesscode' | translate}}" />
+          </mat-form-field>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="my-4">
+        <mat-card-header>
+          <mat-card-title> {{'order.changeservices.newservices' | translate}} </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-form-field>
+            <input matInput formControlName="mainAccessCode" maxlength="19" placeholder="{{'order.mainaccesscode' | translate}}"
+              required />
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput formControlName="backupAccessCode" maxlength="19" placeholder="{{'order.backupaccesscode' | translate}}" />
+          </mat-form-field>
+
+          <mat-slide-toggle (click)="toggleDisplay()" color="primary" formControlName="notify">
+            {{'common.notify' | translate}}
+          </mat-slide-toggle>
+
+          <mat-form-field *ngIf="isNotify">
+            <mat-chip-list #chipList>
+              <mat-chip color="primary" selected> sgt.operations-acceptance@saint-gobain.com </mat-chip>
+              <mat-chip *ngFor="let email of emails" [selectable]="selectable" [removable]="removable"
+                (removed)="remove(email)">
+                {{email.email}}
+                <mat-icon fontSet="fa" fontIcon="fa-times" matChipRemove *ngIf="removable"></mat-icon>
+              </mat-chip>
+              <input placeholder="Separate multiple email addresses using the comma or enter..."
+                [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)" formControlName="emails"
+                matInput />
+              <mat-error *ngIf="changeServicesForm.get('emails').invalid && (changeServicesForm .get('emails').dirty 
+                || changeServicesForm.get('emails').touched)">
+                {{'common.email.validation' | translate}}
+              </mat-error>
+            </mat-chip-list>
+          </mat-form-field>
+
+        </mat-card-content>
+
+      </mat-card>
+
+      <div mat-dialog-actions align="center">
+        <button *ngIf="isAdmin" type="submit" mat-raised-button color="primary"
+          [disabled]="changeServicesForm.invalid && !isLoading">{{'common.validate' | translate}}</button>
+      </div>
+    </form>
+    <div *ngIf="isLoading" class="loading-shade">
+      <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+    </div>
+  </div>
+</div>

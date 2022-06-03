@@ -1,0 +1,48 @@
+<div *ngIf="restit != null && (restit | json) != '{}'" class="result-content">
+  <div class="content-restit">
+    <div class="content-restit-title">
+      <span class="title-1">{{'common.restitution' | translate}}</span><br />
+    </div>
+    <div class="content-restit-data">
+      <div class="restit-value-wrapper">
+        <div class="restit-value restit-value-understep">
+          <div class="restit-value-big">
+            <div class="title">{{'rachat-rente-viagere.restitution.montant-actuel-rente' | translate}}</div>
+            <div class="blue-value">{{ restit.montant_actuel_rente | euroNumber }}</div>
+          </div>
+          <div class="restit-value-small-wrapper">
+            <div class="restit-value-small">
+              <div class="title">{{'rachat-rente-viagere.restitution.taux-rendement' | translate}}</div>
+              <div class="value">{{ restit.taux_rendement_periodique | percent:'.2' }}</div>
+            </div>
+            <div class="restit-value-small">
+              <div class="title">{{'rachat-rente-viagere.restitution.duree' | translate}}</div>
+              <div class="value">{{ restit.duree_contrat_retenue | number :'1.2-2' }} années</div>
+            </div>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div class="restit-value">
+          <div class="title">{{'rachat-rente-viagere.restitution.valeur-capital-rente' | translate}}</div>
+          <div class="blue-value">{{ restit.valeur_capital_rente | euroNumber }}</div>
+        </div>
+        <div class="divider"></div>
+        <div class="restit-value">
+          <div class="title">{{'rachat-rente-viagere.restitution.montant-rachat-rente' | translate}}</div>
+          <div [ngClass]="restit.montant_rachat_rente >= 0 ? 'usu-eco' : 'usu-eco-negative' ">
+            {{ restit.montant_rachat_rente | euroNumber }}
+          </div>
+        </div>
+        <div class="divider"></div>
+      </div>
+    </div>
+    <ngx-calculated-with [donneesReferences]="restit.donnees_references_utilisees">
+    </ngx-calculated-with>
+    <div class="btn-action btn-action-centered">
+      <button type="button" class="btn-export" (click)="export()">
+        {{'common.exporter' | translate}}
+      </button>
+    </div>
+
+  </div>
+</div>

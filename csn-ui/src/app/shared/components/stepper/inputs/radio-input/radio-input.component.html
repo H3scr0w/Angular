@@ -1,0 +1,30 @@
+<ng-template #innerTemplate>
+  <ngx-info-bulle [ngClass]="{'with-label': label?.length > 0 }"
+                  *ngIf="tooltipContent" [disabled]="!enabledStatus()"
+                  [html]="tooltipContent"></ngx-info-bulle>
+  <label *ngIf="label">{{ label }}</label>
+  <div class="btn-group" [ngClass]="{'btn-group-numbers': isNumbers, 'btn-group-dual': !isNumbers, 'with-label': label?.length > 0 }"
+       data-toggle="buttons">
+    <div class="btn-group-box" *ngFor="let inputs of chunkedModel"
+         [ngClass]="{'btn-group-box--impair': inputs.length == 1, 'btn-group-box--numbers': isNumbers}">
+      <label class="btn" *ngFor="let input of inputs">
+        <input type="radio"
+               formControlName="{{ input.labelId }}" name="{{ input.labelId }}"
+               id="{{ input.ctrlId }}" class="input-hidden" value="{{ input.ctrlValue }}">
+        <div [ngClass]="{'active': hasValue(input.ctrlValue), 'card': !isNumbers, 'card2': isNumbers}">
+          <img src="/assets/images/{{input.imageName}}_off.png" class="card-img-top img-off" alt="">
+          <img src="/assets/images/{{input.imageName}}_on.png" class="card-img-top img-on" alt="">
+          <div class="card-body" *ngIf="input.labelKey">
+            <h3 [innerHTML]="input.labelKey | translate"></h3>
+          </div>
+          <span class="badge-checked-print inside"></span>
+        </div>
+      </label>
+    </div>
+  </div>
+  <ngx-radio-button-info *ngFor="let input of model"
+                         [right]="input.warningMsgsModel && input.warningMsgsModel.msgRight && input.warningMsgsModel.valueRight"
+                         [html]="input.warningMsgsModel? input.warningMsgsModel.message : ''"
+                         [show]="input.warningMsgsModel? isValue(input.warningMsgsModel.value) : false">
+  </ngx-radio-button-info>
+</ng-template>

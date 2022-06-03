@@ -1,0 +1,303 @@
+<div class="mat-elevation-z8 my-4 mx-4 mw-mobile">
+  <div class="bg-header p-2 d-flex">
+    <span class="fa-stack fa-lg text-primary">
+      <i class="fas fa-circle fa-stack-1x fa-lg"></i>
+      <i class="fa fa-flag fa-stack-1x fa-sm text-white"></i>
+    </span>
+    <h2 class="text-white font-weight-bold pt-1">{{'common.menu.requests.followUp' | translate}}</h2>
+  </div>
+
+  <div class="d-block p-2 text-right">
+    <button class="mr-1" mat-mini-fab color="primary" matTooltip="{{'common.advanceFilter' | translate}}"
+      (click)="toggleFilterPanel()" matBadge="{{filterCount}}" matBadgePosition="after" matBadgeColor="warn"
+      [matBadgeHidden]="filterCount===0">
+      <i class="fas fa-filter"></i>
+    </button>
+  </div>
+
+  <mat-expansion-panel [expanded]="panelFilterOpenState">
+    <form [formGroup]="requestFollowUpFilterForm">
+      <div class="d-block p-2 bg-white">
+        <div class="row">
+          <div class="col-lg-3">
+            <mat-form-field>
+              <input matInput formControlName="requestId" placeholder="{{'request.requestId' | translate}}"
+                stgoNumberOnly defaultValue="" />
+            </mat-form-field>
+          </div>
+          <div class="col-lg-3">
+            <ng-select [items]="requestTypes" bindLabel="name" bindValue="id"
+              placeholder="{{'request.requestType' | translate}}" [searchable]="false" [dropdownPosition]="'bottom'"
+              formControlName="requestTypeId" appendTo="body" [selectOnTab]="true" required
+              (change)="onRequestTypeSelected($any($event))">
+              <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="item">{{item?.name}}</span>
+              </ng-template>
+            </ng-select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-3">
+            <ng-select [items]="operators" [typeahead]="inputOperator" bindLabel="name" bindValue="id"
+              placeholder="{{'contract.operator' | translate}}" [searchable]="true" [dropdownPosition]="'bottom'"
+              [openOnEnter]="false" formControlName="operatorId" appendTo="body" [selectOnTab]="true">
+              <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="item"> {{item?.name}}</span>
+              </ng-template>
+            </ng-select>
+          </div>
+          <div class="col-lg-3">
+            <ng-select [items]="statuses" bindLabel="name" bindValue="id" placeholder="{{'common.status' | translate}}"
+              [searchable]="false" [dropdownPosition]="'bottom'" formControlName="status" appendTo="body"
+              [selectOnTab]="true" required>
+              <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="item">{{item?.name}}</span>
+              </ng-template>
+            </ng-select>
+          </div>
+          <div class="col-lg-3">
+            <ng-select [items]="priorities" bindLabel="value" bindValue="key"
+              placeholder="{{'common.priority' | translate}}*" [searchable]="false" dropdownPosition="bottom"
+              [openOnEnter]="false" formControlName="priority" appendTo="body" [selectOnTab]="true" required>
+              <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="item"> {{item?.value}}</span>
+              </ng-template>
+            </ng-select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-3">
+            <mat-form-field>
+              <input matInput formControlName="sgtSiteCode" maxlength="6" placeholder="{{'request.followup.siteCode' | translate}}" />
+            </mat-form-field>
+          </div>
+          <div class="col-lg-3">
+            <ng-select [items]="rsms | async" [typeahead]="inputRsm" bindLabel="fullName" bindValue="id"
+              placeholder="{{'order.followup.rsm' | translate}}" [searchable]="true" [dropdownPosition]="'bottom'"
+              [openOnEnter]="false" formControlName="rsmId" appendTo="body" [selectOnTab]="true">
+              <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="item">{{item?.fullName}}</span>
+              </ng-template>
+            </ng-select>
+          </div>
+          <div class="col-lg-3">
+            <ng-select [items]="requesters" bindLabel="fullName" bindValue="id"
+              placeholder="{{'request.cancellation.folllowup.requester' | translate}}" [searchable]="true"
+              [dropdownPosition]="'bottom'" formControlName="requesterId" appendTo="body" [selectOnTab]="true" required>
+              <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="item">{{item?.fullName}}</span>
+              </ng-template>
+            </ng-select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-3">
+            <ng-select [items]="countries" [typeahead]="inputCountry" bindLabel="name" bindValue="name"
+              placeholder="{{'common.country' | translate}}" [searchable]="true" [dropdownPosition]="'bottom'"
+              [openOnEnter]="false" formControlName="country" appendTo="body" [selectOnTab]="true">
+              <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="item"> {{item?.name}}</span>
+              </ng-template>
+            </ng-select>
+          </div>
+          <div class="col-lg-3">
+            <ng-select [items]="sectors | async" [typeahead]="inputSector" bindLabel="name"
+              placeholder="{{'order.followup.sector' | translate}}" [searchable]="true" [dropdownPosition]="'bottom'"
+              [openOnEnter]="false" formControlName="sectorId" (change)="onSectorSelected($any($event))" appendTo="body"
+              [selectOnTab]="true">
+              <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="item"> {{item?.name}}</span>
+              </ng-template>
+            </ng-select>
+          </div>
+          <div class="col-lg-3">
+            <ng-select [items]="zones" [typeahead]="inputZone" bindLabel="name"
+              placeholder="{{'order.followup.zone' | translate}}" [searchable]="true" [dropdownPosition]="'bottom'"
+              [openOnEnter]="false" formControlName="zoneId" (change)="onZoneSelected($any($event))" appendTo="body"
+              [selectOnTab]="true">
+              <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="item"> {{item?.name}}</span>
+              </ng-template>
+            </ng-select>
+          </div>
+          <div class="col-lg-3">
+            <ng-select [items]="companies" bindLabel="companyName" bindValue="sifCode" [typeahead]="inputCompany"
+              placeholder="{{'order.followup.company' | translate}}" [searchable]="true" [dropdownPosition]="'bottom'"
+              [openOnEnter]="false" formControlName="companyId" (change)="onCompanySelected($any($event))"
+              appendTo="body" [selectOnTab]="true">
+              <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="item"> {{item?.companyName}}</span>
+              </ng-template>
+            </ng-select>
+          </div>
+        </div>
+        <br />
+      </div>
+
+      <mat-action-row>
+        <button type="button" *ngIf="selection.hasValue() && (isAdmin ||isRequesterUser || isPmUser || isOrderUser) "
+          mat-raised-button color="primary"
+          (click)="csvFileSendToOperator()">{{'order.followup.csvFileSendToOperator' | translate}}</button>
+        <button type="button" class="mr-1" mat-raised-button color="primary"
+          (click)="resetAdvanceFilter()">{{'common.reset' | translate}} </button>
+        &nbsp;
+        <button type="submit" mat-raised-button color="primary"
+          (click)="applyAdvanceFilter()">{{'common.apply' | translate}}</button>
+      </mat-action-row>
+    </form>
+  </mat-expansion-panel>
+
+  <div *ngIf="!panelFilterOpenState" class="d-block text-center bg-white">
+    <mat-form-field class="p-2">
+      <input matInput (keyup)="applyFilter($any($event).target.value)" placeholder="Filter" />
+    </mat-form-field>
+  </div>
+
+  <table class="w-100" mat-table matSort [dataSource]="requests" matSortActive="id" matSortDisableClear
+    matSortDirection="desc">
+
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef class="checkbox-col-width">
+        <mat-checkbox *ngIf="showSelectAllCheckbox" (change)="$event ? masterToggle() : null"
+          [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()"
+          [aria-label]="checkboxLabel()">
+        </mat-checkbox>
+      </th>
+      <td class="checkbox-col-width" mat-cell *matCellDef="let row">
+        <div *ngIf="!requestStatusListChecbox.includes(row.requestStatus?.id)">
+          <div *ngIf="requestTypeListForChecbox.includes(row.requestType?.id)">
+            <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+              [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+            </mat-checkbox>
+          </div>
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="requestId">
+      <th mat-header-cell *matHeaderCellDef>{{'request.requestId' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element?.id }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="requestType">
+      <th mat-header-cell *matHeaderCellDef>{{'request.requestType' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element?.requestType?.name }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef>{{'request.cancellation.folllowup.status' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">
+        <ng-container *ngIf="(element?.requestType?.name === 'Eligibility'
+        || element?.requestType?.name === 'Eligibility & Quotation')
+        && element?.requestStatus?.name === 'Ready To Order'
+        && (!element?.eligibilityResponse || element?.eligibilityResponse === '1');else second">
+          <span class="red">{{'request.followup.requestType.notEligible' | translate}}</span>
+        </ng-container>
+        <ng-template #second>
+            <ng-container *ngIf="(element?.requestType?.name === 'Eligibility'
+            || element?.requestType?.name === 'Eligibility & Quotation')
+            && element?.requestStatus?.name === 'Ready To Order'
+            && element?.eligibilityResponse === 0;else third">
+            <span class="green">{{'request.followup.requestType.eligible' | translate}}</span>
+            </ng-container>
+        </ng-template>
+        <ng-template #third>
+          {{ element?.requestStatus?.name }}
+        </ng-template>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="priority">
+      <th mat-header-cell *matHeaderCellDef>{{'request.cancellation.folllowup.priority' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element?.priority}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="operator">
+      <th mat-header-cell *matHeaderCellDef>{{'contract.operator' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element?.opertors?.name }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="requester">
+      <th mat-header-cell *matHeaderCellDef>{{'request.cancellation.folllowup.requester' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element?.ownerName }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="siteName">
+      <th mat-header-cell *matHeaderCellDef>{{'site.info.siteName' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element?.sgtSiteCode }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="serviceTitle">
+      <th mat-header-cell *matHeaderCellDef>{{'telecom.service.selector.serviceTitle' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element?.serviceTitle }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="mainServiceCode">
+      <th mat-header-cell *matHeaderCellDef>{{'telecom.service.selector.mainServiceCode' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element?.mainAccessCode }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="backupServiceCode">
+      <th mat-header-cell *matHeaderCellDef>{{'telecom.service.selector.backupServiceCode' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element?.backupAccessCode }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="options">
+      <th mat-header-cell *matHeaderCellDef>{{'common.options' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element?.optionCodes }}
+        <!-- nee dot check null -->
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="setupCost">
+      <th mat-header-cell *matHeaderCellDef>{{'telecom.service.selector.setupCost' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element?.setupTotalCost }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="monthlyCost">
+      <th mat-header-cell *matHeaderCellDef>{{'telecom.service.selector.monthlyCost' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element?.monthlyTotalCost }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="currency">
+      <th mat-header-cell *matHeaderCellDef>{{'common.currency' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element?.currency }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>{{'common.actions' | translate}}</th>
+      <td mat-cell *matCellDef="let element">
+        <ng-container *ngIf="(isAdmin || isOrderUser || isRequesterUser || isPmUser)">
+          <span (click)="editRequest(element)" matTooltip="{{'common.details' | translate}}">
+            <i class="fas fa-edit p-1"></i>
+          </span>
+
+          <a href="requests/request-follow-up/{{element?.id}}" target="_blank" rel="noopener noreferrer"
+            matTooltip="{{'request.edit.newTab.tooltip' | translate}}">
+            <i class="fa fa-share p-1"></i>
+          </a>
+
+          <ng-container *ngIf="!requestStatusListChecbox.includes(element.requestStatus?.id)">
+            <span *ngIf="requestTypeListForChecbox.includes(element.requestType.id)" (click)="emailPreview(element)"
+              matTooltip="{{'common.emailpreview' | translate}}">
+              <i class="fas fa-eye p-1"></i>
+            </span>
+
+            <span *ngIf="requestTypeListForChecbox.includes(element.requestType.id)" (click)="downloadCSV(element)"
+              matTooltip="{{'common.download.csv' | translate}}">
+              <i class="fas fa-download p-1"></i>
+            </span>
+
+          </ng-container>
+        </ng-container>
+
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns" [ngClass]="{'highlight': i === 0}"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100, 500]" [pageSize]="pageSize" [pageIndex]="pageIndex"
+    [length]="totalElements" showFirstLastButtons></mat-paginator>
+  <div *ngIf="isLoading" class="loading-shade">
+    <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+  </div>
+</div>

@@ -1,0 +1,99 @@
+<div class="calcul-form-content" #formScroll [ngClass]="postToCalcul? 'complete' : ''">
+
+  <div class="form">
+    <div class="title">
+      <h1 class="active">{{ 'usufruit.title' | translate }}</h1>
+      <a *ngIf="postToCalcul" (click)="toggleMobileForm()" [ngClass]="showMobileForm? 'up':'down'">
+        {{(showMobileForm ? 'mobile.form.hide' : 'mobile.form.show') | translate}}
+        <img src="../../../assets/images/ic_dropdown_arrow.svg" alt=""/>
+      </a>
+    </div>
+    <form novalidate [formGroup]="usufruitFormGroup" (ngSubmit)="onSubmit()"
+          [ngClass]="!showMobileForm? 'd-none d-lg-block':''">
+      <ngx-stepper moduleName="usufruit">
+        <ngx-step [tooltipContent]="this.getInfoBulle(infoBulleCodes.USUFRUIT_ETAPE_1)">
+          <ngx-date-input labelId="date_contrat" maxDate="9999-12-31"
+                          [tooltipContent]="this.getInfoBulle(infoBulleCodes.DATE_CONTRAT)"
+                          label="{{ 'usufruit.step1.date' | translate}}"
+                          [inputCtrl]="dateContrat">
+          </ngx-date-input>
+
+          <ngx-app-number-input class="wrapper-data-input" labelId="valeur_bien"
+                                [tooltipContent]="this.getInfoBulle(infoBulleCodes.VALEUR_DU_BIEN)"
+                                [numberType]="numberFieldTypes.EURO"
+                                label="{{ 'usufruit.step1.valeur-bien' | translate}}"
+                                [inputCtrl]="valeurBien">
+          </ngx-app-number-input>
+
+          <ngx-app-number-input class="wrapper-data-input" labelId="valeur_locative_mensuelle_brute"
+                                [tooltipContent]="this.getInfoBulle(infoBulleCodes.VALEUR_LOC_MENS_BRUTE)"
+                                [numberType]="numberFieldTypes.EURO"
+                                label="{{ 'usufruit.step1.valeur-locative-brute' | translate}}"
+                                [inputCtrl]="valeurLocativeBrute">
+          </ngx-app-number-input>
+
+          <ngx-app-number-input class="wrapper-data-input" labelId="charges_usufructuaires_annuelles"
+                                [numberType]="numberFieldTypes.EURO"
+                                [tooltipContent]="this.getInfoBulle(infoBulleCodes.CHARGES_ANNUELLES_BIEN)"
+                                label="{{ 'usufruit.step1.charges-anu' | translate}}"
+                                [inputCtrl]="chargesAnu">
+          </ngx-app-number-input>
+        </ngx-step>
+
+        <ngx-step [tooltipContent]="this.getInfoBulle(infoBulleCodes.USUFRUIT_ETAPE_2)">
+          <ngx-radio-input class="w-100 with-label" [model]="radioInputsModelTypeDemembrement" [inputCtrl]="typeDemembrement"
+                           [tooltipContent]="this.getInfoBulle(infoBulleCodes.TYPE_DEMEMBREMENT)"
+                           label="{{ 'usufruit.step2.type-demembrement' | translate}}">
+          </ngx-radio-input>
+
+          <ngx-app-duree-input *ngIf="typeDemembrement.value === typesDemembrement.TEMPORAIRE"
+                               class="form-group-input-dual"
+                               [tooltipContent]="this.getInfoBulle(infoBulleCodes.DUREE_DEMEMBREMENT)"
+                               [label]="'usufruit.step2.duree-demembrement'"
+                               [inputCtrlMois]="moisDureeDemembrement"
+                               [inputCtrlAnnee]="anneeDureeDemembrement"
+                               [formNameAnnee]="'mois_duree_demembrement'"
+                               [formNameMois]="'annee_duree_demembrement'">
+          </ngx-app-duree-input>
+        </ngx-step>
+
+        <ngx-step *ngIf="typeDemembrement.value === typesDemembrement.VIAGER"
+                  [tooltipContent]="this.getInfoBulle(infoBulleCodes.USUFRUIT_ETAPE_3)">
+          <ngx-persons [personFormArray]="usufruitiersFormArray" [formArrayName]="'persons'"
+                       [dataToRestore]="usufruitiersDataToRestore"
+                       [formGroup]="usufruitFormGroup"
+                       [label]="'usufruit.step3.usufruitier'"
+                       [btnAddText]="'usufruit.step3.bouton-ajouter'"
+                       [btnRemoveText]="'usufruit.step3.bouton-supprimer'"
+                       [tooltipContent]="this.getInfoBulle(infoBulleCodes.USUFRUITIERS)"
+                       [maxPersons]="2">
+          </ngx-persons>
+        </ngx-step>
+
+        <ngx-step>
+          <ngx-textarea-input labelId="cartouche"
+                              [tooltipContent]="this.getInfoBulle(infoBulleCodes.CARTOUCHE)"
+                              label="{{ 'common.cartouche.label' | translate }}"
+                              [inputCtrl]="cartouche"
+                              placeholder="{{ 'common.cartouche.placeholder' | translate }}">
+          </ngx-textarea-input>
+
+          <ngx-textarea-input labelId="texte_libre"
+                              [tooltipContent]="this.getInfoBulle(infoBulleCodes.TEXTE_LIBRE)"
+                              label="{{ 'common.texte-libre.label' | translate }}"
+                              [inputCtrl]="texteLibre"
+                              placeholder="{{ 'common.texte-libre.placeholder' | translate }}">
+          </ngx-textarea-input>
+        </ngx-step>
+      </ngx-stepper>
+      <div class="btn-action">
+          <button type="button" class="btn-reset" [hidden]="!postToCalcul && !sessionTimedOut"
+                  (click)="reset()">{{ 'common.reset' | translate}}</button>
+          <button type="submit" class="btn-calculer" (click)="scroll(formScroll)"
+                  [disabled]="usufruitFormGroup.invalid">
+            {{ (postToCalcul || sessionTimedOut ? 'common.recalculer' : 'common.calculer') | translate }}
+          </button>
+      </div>
+    </form>
+  </div>
+</div>

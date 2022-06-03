@@ -1,0 +1,20 @@
+{
+  "token": [
+    {
+      "id": 1,
+      "resourceId": "a55138ccb611429a8010a8fe7ae678c91527857364282512709a1bc474ae7baa26e477fe93f61",
+      "sgid": "T1234567",
+      "email": "test@test.com",
+      "creationDate": "2018-06-01T12:49:24.283Z",
+      "isExpired": false
+    },
+    {
+      "id": 2,
+      "resourceId": "f70ebac5e11f40dda73009072d4bdc77152785736428369c46eb43a5348b6bbf83f18d8920e59",
+      "sgid": "T1234567",
+      "email": "test@test.com",
+      "creationDate": "2018-06-01T12:49:24.283Z",
+      "isExpired": true
+    }
+  ]
+}

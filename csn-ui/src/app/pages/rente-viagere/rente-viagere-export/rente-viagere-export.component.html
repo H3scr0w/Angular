@@ -1,0 +1,132 @@
+<div *ngIf="calculModel && resultModel">
+  <ngx-header-print [headerTitle]="'rente-viagere.title'"></ngx-header-print>
+  <div class="row print-body">
+    <!-- CALCUL -->
+    <div class="col-6">
+        <form [formGroup]="renteFormGroup">
+          <div class="mb-4 step">
+            <h2> {{ 'print.calcul.title' | translate }} </h2>
+          </div>
+          <ngx-stepper moduleName="rente-viagere">
+            <ngx-step>
+              <ngx-date-input labelId="date_contrat" label="{{ 'rente-viagere.step1.date' | translate}}"
+                [inputCtrl]="dateContrat">
+              </ngx-date-input>
+
+              <ngx-radio-input [inputCtrl]="droitUsageHabitation" class="w-100" [model]="vendueRadioModel"
+                label="{{ 'rente-viagere.step1.droitUsageHabitation' | translate}}">
+              </ngx-radio-input>
+
+              <ngx-app-number-input class="wrapper-data-input" labelId="valeur_bien"
+                [numberType]="numberFieldTypes.EURO" label="{{  'rente-viagere.step1.valeurBien' | translate}}"
+                [inputCtrl]="valeurBien">
+              </ngx-app-number-input>
+
+              <ngx-app-number-input class="wrapper-data-input" labelId="bouquet_verse"
+                [numberType]="numberFieldTypes.EURO" label="{{  'rente-viagere.step1.bouquetVerse' | translate}}"
+                [inputCtrl]="bouquetVerse">
+              </ngx-app-number-input>
+
+              <ngx-app-number-input class="wrapper-data-input" labelId="valeur_locative_mensuelle_brute"
+                [numberType]="numberFieldTypes.EURO" label="{{  'rente-viagere.step1.valeurLocativeBrute'| translate}}"
+                [inputCtrl]="valeurLocativeBrute">
+              </ngx-app-number-input>
+
+              <ngx-app-number-input class="wrapper-data-input page-break" labelId="charges_usufructuaires_annuelles"
+                [numberType]="numberFieldTypes.EURO" label="{{  'rente-viagere.step1.chargesAnu' | translate}}"
+                [inputCtrl]="chargesAnu">
+              </ngx-app-number-input>
+
+            </ngx-step>
+
+            <ngx-step>
+              <ngx-persons [personFormArray]="credirentiersFormArray" [dataToRestore]="credirentiersToRestore"
+                [formGroup]="renteFormGroup" [formArrayName]="'credirentiers'"
+                [label]="'rente-viagere.step2.credirentier'" [btnAddText]="'rente-viagere.step2.bouton-ajouter'"
+                [btnRemoveText]="'rente-viagere.step2.bouton-supprimer'" [toPrint]="true">
+              </ngx-persons>
+            </ngx-step>
+
+            <ngx-step [stepCss]="'page-break'">
+              <ngx-radio-input [inputCtrl]="periodicite" class="w-100" [model]="periodiciteRadioModel"
+                label="{{ 'rente-viagere.step3.sub-title1' | translate}}">
+              </ngx-radio-input>
+
+              <ngx-radio-input [inputCtrl]="terme" class="w-100" [model]="termeRadioModel"
+                label="{{ 'rente-viagere.step3.sub-title2' | translate}}">
+              </ngx-radio-input>
+            </ngx-step>
+          </ngx-stepper>
+        </form>
+    </div>
+    <!-- RESULT -->
+    <div class="col-6 print-restit">
+      <div class="result-content">
+        <div class="content-restit">
+          <div class="content-restit-title mb-4">
+            <h2>{{ 'rente-viagere.restitution.title' | translate }}</h2>
+          </div>
+          <div class="content-restit-data">
+
+            <div class="restit-value-wrapper">
+
+              <div class="restit-value">
+                <div class="title no-wrap">
+                  {{(calculModel?.credirentiers?.length > 1 ? 'rente-viagere.restitution.esperance-des-vies' : 'rente-viagere.restitution.esperance-de-vie') | translate}}
+                  <sup class="reference-number">(1)</sup>
+                </div>
+                <div class="green-value w-50">
+                  {{ resultModel?.duree_operation | number :'1.2-2'}} {{'common.annees' | translate}}</div>
+              </div>
+
+              <div class="divider"></div>
+
+              <div class="restit-value">
+                <div class="title">{{'rente-viagere.restitution.rente' | translate}}
+                  {{ getPeriodicityIntlName(calculModel?.periodicite_versements) | translate}}
+                  <div class="caption">
+                    {{'rente-viagere.restitution.taux-indexe-sur' | translate}}
+                  </div>
+                </div>
+
+                <div class="blue-value">{{ resultModel?.versement | number :'1.2-2'}} €</div>
+              </div>
+
+              <div class="divider"></div>
+            </div>
+          </div>
+
+          <div class="content-taux">
+            <div class="taux">
+              <div class="taux-left" *ngIf="this.getInfoBulle(infoBulleCodes.TAUX_RENDEMENT_CALCULE)">
+                <div class="title">
+                  {{'rente-viagere.restitution.taux' | translate}}
+                  <sup class="reference-number">(2)</sup>
+                </div>
+                <div class="valeur" [innerHTML]="this.getInfoBulle(infoBulleCodes.TAUX_RENDEMENT_CALCULE)">
+                </div>
+              </div>
+              <div class="taux-right">
+                <div class="valeur-percent">
+                  {{ resultModel?.taux_rendement_calcule | percent:'.2' }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <ngx-calculated-with [donneesReferences]="resultModel?.donnees_references_utilisees">
+          </ngx-calculated-with>
+
+          <div *ngIf="cartouche?.value || texteLibre?.value" class="info-client">
+            <div class="info-client-title">{{'print.restit.title' | translate}}</div>
+            <ngx-textarea-print *ngIf="cartouche?.value" [content]="cartouche?.value"></ngx-textarea-print>
+            <ngx-textarea-print *ngIf="texteLibre?.value" title="{{ 'common.texte-libre.label' | translate }}"
+              [content]="texteLibre?.value"></ngx-textarea-print>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <ngx-footer-print></ngx-footer-print>
+</div>

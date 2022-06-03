@@ -1,0 +1,63 @@
+<form [formGroup]="formGroup">
+  <h3 mat-dialog-title *ngIf="data.loadBalancer">Edit LoadBalancer</h3>
+  <h3 mat-dialog-title *ngIf="!data.loadBalancer">Add LoadBalancer</h3>
+  <mat-dialog-content>
+    <span *ngIf="data.loadBalancer">LoadBalancer ID: {{ data.loadBalancer.code }}</span>
+    <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+      <input matInput placeholder="Code" name="code" formControlName="code" required [readonly]="!!data.loadBalancer" />
+    </mat-form-field>
+
+    <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+      <input matInput placeholder="Name" name="name" formControlName="name" required />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Hosting Provider" formControlName="hostingProvider" [matAutocomplete]="autoHostingProvider"
+        name="hostingProvider" required/>
+      <i matSuffix class="fas fa-search"></i>
+      <mat-autocomplete #autoHostingProvider="matAutocomplete" (optionSelected)="selectHostingProvider(true, $event?.option?.value)"
+        (opened)="selectHostingProvider(false)" [displayWith]="displayFn">
+        <mat-option *ngFor="let hostingProvider of (hostingProvider$ | async)" [value]="hostingProvider">
+          <span>{{ hostingProvider?.name }}</span>
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <div formGroupName="ipForm">
+      <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+        <input matInput placeholder="IP Address 1" name="ip" formControlName="ip" />
+        <mat-error *ngIf="ipForm.get('ip')!.dirty && ipForm.get('ip')!.hasError('pattern')">
+          Please enter a valid IP address
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+        <input matInput placeholder="IP Address 2" name="ip2" formControlName="ip2" />
+        <mat-error *ngIf="ipForm.get('ip2')!.dirty && ipForm.get('ip2')!.hasError('pattern')">
+          Please enter a valid IP address
+        </mat-error>
+        <mat-error *ngIf="ipForm.get('ip2')!.dirty && ipForm.hasError('equivalent')">
+          IP Address 1 and IP Address 2 must be different
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+      <input matInput placeholder="FQDN" name="fqdn" formControlName="fqdn" />
+    </mat-form-field>
+
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button type="button" mat-raised-button color="primary" (click)="cancel()">
+      Cancel
+    </button>
+    <button type="submit" mat-raised-button color="primary" (click)="confirm()" [disabled]="formGroup.pristine || formGroup.invalid || !hasHostingProviderSelected">
+      <span *ngIf="data.loadBalancer">Edit
+        <i *ngIf="saving" class="fas fa-circle-notch fa-spin"></i>
+      </span>
+      <span *ngIf="!data.loadBalancer">Add
+        <i *ngIf="saving" class="fas fa-circle-notch fa-spin"></i>
+      </span>
+    </button>
+  </mat-dialog-actions>
+</form>

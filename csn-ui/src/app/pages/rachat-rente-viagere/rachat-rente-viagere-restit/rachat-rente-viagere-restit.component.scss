@@ -1,0 +1,162 @@
+@import '../../../../styles/base';
+
+.content-taux {
+  margin-bottom: 50px;
+}
+
+.content-restit {
+  color: $color-blue;
+  font-size: 20px;
+
+  .content-restit-title {
+    @include gilroyBold(20px);
+    color: $color-blue;
+    letter-spacing: -0.35px;
+    line-height: 24px;
+    margin-bottom: 45px;
+  }
+
+  .content-restit-data {
+    display: flex;
+    flex-direction: column;
+
+    .restit-value.restit-value-understep {
+      flex-direction: column;
+
+
+      .restit-value-big {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin-bottom: 20px;
+        @media (max-width: 425px) {
+          display: block;
+        }
+      }
+
+      .restit-value-small-wrapper {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        padding-left: 30px;
+        @media (max-width: 425px) {
+          padding-left: 0;
+        }
+
+        .restit-value-small {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 20px;
+
+          .title {
+            @include gilroyReg(16px);
+            color: $color-grey;
+            letter-spacing: -0.28px;
+            line-height: 19px;
+            font-weight: normal;
+          }
+
+          .value {
+            @include gilroyReg(16px);
+            color: $color-blue;
+            letter-spacing: -0.28px;
+            line-height: 19px;
+          }
+        }
+      }
+    }
+
+    .divider {
+      margin-bottom: 20px;
+      height: 1px;
+      background-color: $color-lightGrey;
+    }
+
+    .restit-value {
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      @media (max-width: 425px) {
+        display: block;
+      }
+
+      .title {
+        @include gilroyBold(16px);
+        color: $color-blue;
+        letter-spacing: -0.28px;
+        line-height: 20px;
+      }
+
+      .blue-value {
+        @include gilroyReg(32px);
+        color: $color-lightBlue;
+        letter-spacing: -0.56px;
+        line-height: 38px;
+      }
+
+      .green-value {
+        @include gilroyReg(32px);
+        color: $color-lightBlue;
+        letter-spacing: -0.56px;
+        line-height: 38px;
+      }
+
+      .usu-eco-negative {
+        @include gilroyReg(32px);
+        color: $color-red;
+        letter-spacing: -0.56px;
+        line-height: 38px;
+      }
+    }
+
+    .info-notif {
+      margin-bottom: 30px;
+
+      .info-notif-content {
+        @include radius(8px);
+        display: block;
+        background-color: $color-lightGreen;
+        padding: 15px 30px 15px 60px;
+        width: 100%;
+        position: relative;
+
+        .info-notif-icon {
+          position: absolute;
+          background-image: url('../../../../assets/images/ic_info_bulle_active.svg');
+          height: 24px;
+          width: 24px;
+          top: 0;
+          left: 15px;
+          transform: translate(0, 50%);
+        }
+
+        p {
+          @include gilroyReg(14px);
+          color: $color-blue;
+          letter-spacing: -0.34px;
+          line-height: 20px;
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}
+
+.rente-tab-rows {
+  background-color: $color-white;
+  text-align: center;
+  height: 56px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .msg-rente-tab-rows {
+    @include gilroyHeav(16px);
+    color: $color-blue;
+    letter-spacing: -0.5px;
+    line-height: 20px;
+    margin-top: 10px;
+  }
+}

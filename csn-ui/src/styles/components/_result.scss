@@ -1,0 +1,182 @@
+.content-taux {
+  margin-bottom: 30px;
+
+  .taux {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.content-restit {
+  color: $color-blue;
+  font-size: 20px;
+
+  .content-restit-title {
+    @include gilroyBold(20px);
+    color: $color-blue;
+    letter-spacing: -0.35px;
+    line-height: 24px;
+    margin-bottom: 45px;
+  }
+
+  .content-restit-data {
+    display: flex;
+    @media (max-width: 425px) {
+      display: block;
+    }
+
+    .restit-value-wrapper {
+      width: 100%;
+
+      .restit-value {
+        width: 100%;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        @media (max-width: 425px) {
+          display: block;
+        }
+
+        .title {
+          width: 60%;
+          @media (max-width: 425px) {
+            width: 100%;
+          }
+          @include gilroyBold(16px);
+          color: $color-blue;
+          letter-spacing: -0.28px;
+          line-height: 20px;
+          &.no-wrap {
+            white-space: nowrap;
+          }
+        }
+
+        .blue-value {
+          text-align: right;
+          width: 40%;
+          @media (max-width: 425px) {
+            width: 100%;
+            margin-top: 10px;
+            text-align: left;
+          }
+          @include gilroyReg(32px);
+          color: $color-lightBlue;
+          letter-spacing: -0.56px;
+          line-height: 38px;
+        }
+
+        .green-value {
+          text-align: right;
+          width: 40%;
+          @media (max-width: 425px) {
+            width: 100%;
+            margin-top: 10px;
+            text-align: left;
+          }
+          @include gilroyReg(32px);
+          color: $color-green;
+          letter-spacing: -0.56px;
+          line-height: 38px;
+        }
+
+        .caption {
+          @include gilroyReg(13px);
+          color: #829db4;
+          letter-spacing: -0.41px;
+          line-height: 17px;
+        }
+      }
+
+      .restit-value-small {
+        @include gilroyBold(14px);
+        margin-bottom: 20px;
+        color: $color-blue;
+        letter-spacing: -0.44px;
+        line-height: 14px;
+
+        span {
+          font-family: Gilroy-Regular, sans-serif;
+          font-weight: 400;
+        }
+      }
+    }
+
+    .restit-value-wrapper-half {
+      width: 50%;
+      @media (max-width: 425px) {
+        width: inherit;
+      }
+
+      .restit-value {
+        margin-bottom: 30px;
+
+        .title {
+          @include gilroyBold(16px);
+          color: $color-blue;
+          letter-spacing: -0.28px;
+          line-height: 20px;
+          margin-bottom: 15px;
+        }
+
+        .blue-value {
+          @include gilroyReg(32px);
+          color: $color-lightBlue;
+          letter-spacing: -0.56px;
+          line-height: 38px;
+        }
+
+        .green-value {
+          @include gilroyReg(32px);
+          color: $color-green;
+          letter-spacing: -0.56px;
+          line-height: 38px;
+        }
+
+        .caption {
+          @include gilroyReg(13px);
+          color: #829db4;
+          letter-spacing: -0.41px;
+          line-height: 17px;
+        }
+      }
+
+      .restit-value-small {
+        @include gilroyBold(14px);
+        margin-bottom: 20px;
+        color: $color-blue;
+        letter-spacing: -0.44px;
+        line-height: 14px;
+
+        span {
+          font-family: Gilroy-Regular, sans-serif;
+          font-weight: 400;
+        }
+      }
+    }
+
+    .restit-pie-chart-wrapper {
+      max-height: 300px;
+      max-width: 300px;
+      width: 50%;
+      @media (max-width: 425px) {
+        width: inherit;
+      }
+    }
+  }
+}
+
+.reference-number {
+  @include gilroyReg(12px);
+  color: #829db4;
+  letter-spacing: -0.38px;
+  line-height: 12px;
+}
+
+.divider {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  height: 1px;
+  background-color: #e6eff6;
+}

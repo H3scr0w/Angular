@@ -1,0 +1,79 @@
+<div *ngIf="saving" class="d-flex justify-content-center align-items-center mb-2">
+  <mat-progress-bar color="primary" mode="indeterminate"> </mat-progress-bar>
+</div>
+<div [formGroup]="formGroup">
+  <mat-card class="my-2 mx-2 mat-elevation-z8">
+    <mat-card-header>
+      <mat-card-title>Content Optimization</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="container d-inline-flex flex-column">
+      <mat-checkbox color="primary" formControlName="asyncVal" (change)="onChange('asyncVal', 'async_validation')">
+        Async Validation
+      </mat-checkbox>
+
+      <mat-checkbox color="primary" formControlName="minifyJs" (change)="onChange('minifyJs', 'minify_javascript')">
+        Minify Javascript
+      </mat-checkbox>
+
+      <mat-checkbox color="primary" formControlName="minifyCss" (change)="onChange('minifyCss', 'minify_css')">
+        Minify CSS
+      </mat-checkbox>
+
+      <mat-checkbox color="primary" formControlName="minifyStaticHtml" (change)="onChange('minifyStaticHtml', 'minify_static_html')">
+        Minify static HTML
+      </mat-checkbox>
+
+      <mat-checkbox color="primary" formControlName="compressJpeg" (change)="onChange('compressJpeg', 'compress_jpeg')">
+        Compress JPEG
+      </mat-checkbox>
+
+      <mat-checkbox color="primary" formControlName="progressImgRender" (change)="onChange('progressImgRender', 'progressive_image_rendering')">
+        Progressive Image Rendering
+      </mat-checkbox>
+
+      <mat-checkbox color="primary" formControlName="agressiveCompression" (change)="onChange('agressiveCompression', 'aggressive_compression')">
+        Aggressive compression, compress images by 85% (recommended)
+      </mat-checkbox>
+
+      <mat-checkbox color="primary" formControlName="compressPng" (change)="onChange('compressPng', 'compress_png')">
+        Compress PNG
+      </mat-checkbox>
+
+      <mat-checkbox color="primary" formControlName="flyCompression" (change)="onChange('flyCompression', 'on_the_fly_compression')">
+        "On the fly" Compression
+      </mat-checkbox>
+
+      <mat-checkbox color="primary" formControlName="tcpPrePooling" (change)="onChange('tcpPrePooling', 'tcp_pre_pooling')">
+        TCP Pre-Pooling
+      </mat-checkbox>
+
+    </mat-card-content>
+  </mat-card>
+  <mat-card class="my-2 mx-2 mat-elevation-z8">
+    <mat-card-header>
+      <mat-card-title>Advanced Settings</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="container d-inline-flex flex-column">
+      <mat-checkbox color="primary" formControlName="complyNoCache" (change)="onChange('complyNoCache', 'comply_no_cache')">
+        Comply with no cache
+      </mat-checkbox>
+
+      <mat-checkbox color="primary" formControlName="complyVary" (change)="onChange('complyVary', 'comply_vary')">
+        Comply with Vary
+      </mat-checkbox>
+
+      <mat-checkbox color="primary" formControlName="userShortestCaching" (change)="onChange('userShortestCaching', 'use_shortest_caching')">
+        Use shortest caching duration
+      </mat-checkbox>
+
+      <mat-checkbox color="primary" formControlName="preferLastModified" (change)="onChange('preferLastModified', 'prefer_last_modified')">
+        Prefer 'last modified' over eTag
+      </mat-checkbox>
+
+      <mat-checkbox color="primary" formControlName="disableClienSideCaching" (change)="onChange('disableClienSideCaching', 'disable_client_side_caching')">
+        Disable client side caching
+      </mat-checkbox>
+
+    </mat-card-content>
+  </mat-card>
+</div>

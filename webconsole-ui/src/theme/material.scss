@@ -1,0 +1,58 @@
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@import '../../node_modules/@angular/material/theming';
+
+// Define a custom typography config that overrides the font-family as well as the
+// `headlines` and `body-1` levels.
+$sg-typography: mat-typography-config(
+  $font-family: $font-family-base
+);
+
+@include mat-core($sg-typography);
+// Angular Material custom theme
+$mat-stgo: (
+  50: #ffebe6,
+  100: #ffcdbf,
+  200: #ffac95,
+  300: #ff8a6b,
+  400: #ff714b,
+  500: #ff582b,
+  600: #ff5026,
+  700: #ff4720,
+  800: #ff3d1a,
+  900: #ff2d10,
+  A100: #fff,
+  A200: #fff9f8,
+  A400: #ffcbc5,
+  A700: #ffb3ac,
+  contrast: (
+    50: #000,
+    100: #000,
+    200: #000,
+    300: #000,
+    400: #000,
+    500: #fff,
+    600: #fff,
+    700: #fff,
+    800: #fff,
+    900: #fff,
+    A100: #000,
+    A200: #000,
+    A400: #000,
+    A700: #000
+  )
+);
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue.
+$stgo-primary: mat-palette($mat-stgo);
+$stgo-accent: mat-palette($mat-stgo, A200, A100, A400); /* stylelint-disable-line value-keyword-case */
+// The warn palette is optional (defaults to red).
+$stgo-warn: mat-palette($mat-red);
+// Create the theme object (a Sass map containing all of the palettes).
+$stgo-theme: mat-light-theme($stgo-primary, $stgo-accent, $stgo-warn);
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($stgo-theme);

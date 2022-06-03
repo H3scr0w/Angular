@@ -1,0 +1,15 @@
+input {
+  &[type='text'],
+  &[type='password'] {
+    height: 34px;
+    border-radius: 4px;
+  }
+
+  &:hover {
+    border: 1px solid #ff582b;
+  }
+
+  &[type='checkbox'] {
+    cursor: pointer;
+  }
+}

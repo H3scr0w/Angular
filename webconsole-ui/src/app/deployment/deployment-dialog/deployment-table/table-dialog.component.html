@@ -1,0 +1,12 @@
+<h2 mat-dialog-title>Logs</h2>
+<mat-dialog-content class="mat-typography">
+  <mat-form-field>
+    <textarea [disabled] = "true" rows="25" matInput class="textarea-height" #userinput value="{{data.logs}}"></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <div class="float-right">
+    <a mat-raised-button color="primary" class="mr-3" (click)="copyText()" [disabled]="!data.logs">COPY</a>
+    <a mat-raised-button color="accent" (click)="onNoClick()">CLOSE</a>
+  </div>
+</mat-dialog-actions>

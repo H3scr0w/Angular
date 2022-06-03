@@ -1,0 +1,14 @@
+<ng-template #innerTemplate>
+  <ngx-info-bulle *ngIf="tooltipContent" [disabled]="!enabledStatus()"
+                  [html]="tooltipContent"></ngx-info-bulle>
+  <div class="text-area-container">
+    <label for="{{ labelId }}" class="row no-gutters align-items-end">
+      <div class="col-6">{{ label }} </div>
+      <div class="col-6 caption" *ngIf="!toPrint">
+        {{ maxLength }} {{'common.text-area-max' | translate}}
+      </div>
+    </label>
+    <textarea [maxlength]="maxLength" class="form-control" id="{{ labelId }}" [ngClass]="{'invalid': isGroupInvalid}"
+              formControlName="{{ labelId }}" name="{{ labelId }}" placeholder="{{ placeholder }}"></textarea>
+  </div>
+</ng-template>

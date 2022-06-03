@@ -1,0 +1,29 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../out-tsc/spec",
+    "types": [
+      "jasmine",
+      "node"
+    ],
+    "baseUrl": "./",
+    "paths": {
+      "@core": ["src/app/core"],
+      "@shared": ["src/app/shared"],
+      "@env/*": ["src/environments/*"],
+      "lodash/*": [
+        "../../node_modules/@types/lodash-es/*"
+      ]
+    }
+  },
+  "files": [
+    "src/test.ts",
+    "src/polyfills.ts"
+  ],
+  "include": [
+    "src/**/*.spec.ts",
+    "src/**/*.d.ts",
+    "src/**/*.mock.ts",
+    "src/**/*.ts"
+  ]
+}

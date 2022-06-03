@@ -1,0 +1,48 @@
+import { MatTableDataSource } from '@angular/material/table';
+import { AccessRight } from './access-right.model';
+import { Certificate } from './certificate.model';
+import { Cms } from './cms.model';
+import { Command } from './command.model';
+import { Deployment } from './deployment.model';
+import { Docroot } from './docroot.model';
+import { DocrootCore } from './docrootcore.model';
+import { Domain } from './domain.model';
+import { Environment } from './environment.model';
+import { HostingProvider } from './hosting-provider.model';
+import { LoadBalancer } from './loadbalancer.model';
+import { Registar } from './registar.model';
+import { Server } from './server.model';
+import { IncapsulaResponse } from './tools/incapsula/incapsula-data.model';
+import { Report } from './tools/qualys/report.model';
+import { WasScan } from './tools/qualys/wasscan.model';
+import { WebApp } from './tools/qualys/webapp.model';
+import { WebAppAuthRecord } from './tools/qualys/webappauthrecord.model';
+import { User } from './user.model';
+import { Website } from './website.model';
+
+export interface DialogData {
+  logs: string;
+  deployment: Deployment;
+  editDataSource: MatTableDataSource<Command>;
+  user: User;
+  website: Website;
+  right: AccessRight;
+  cms: Cms;
+  certificate: Certificate;
+  docroot: Docroot;
+  docrootcore: DocrootCore;
+  environmentCode: string;
+  docrootCode: string;
+  environment: Environment;
+  server: Server;
+  registar: Registar;
+  domain: Domain;
+  hostingProvider: HostingProvider;
+  loadBalancer: LoadBalancer;
+  webAppAuthRecord: WebAppAuthRecord;
+  webApp: WebApp;
+  wasScan: WasScan;
+  wasReport: Report;
+  incapsulaSite: IncapsulaResponse;
+  domainCode: string;
+}

@@ -1,0 +1,7 @@
+<div class="mentions-legales-container" >
+    <div class="title">
+      <h1>{{ 'mentionsLegales.title' | translate}}</h1>
+    </div>
+  <div *ngIf="model" [innerHTML]="model.html">
+  </div>
+</div>

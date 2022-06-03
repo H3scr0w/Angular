@@ -1,0 +1,25 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<form [formGroup]="setCostUpperLimtForm" (ngSubmit)="onSubmit()">
+  <h1 mat-dialog-title>{{'common.menu.settings.costupperlimits' | translate}}</h1>
+  <mat-dialog-content>
+
+    <mat-form-field>
+      <input matInput type="text"
+             placeholder="{{'common.menu.settings.costupperlimits.label' | translate}}"
+             formControlName="label" readonly/>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput type="text"
+             placeholder="{{'common.menu.settings.costupperlimits.value' | translate}}" stgoNumberOnly
+             formControlName="value"/>
+    </mat-form-field>
+
+  </mat-dialog-content>
+
+  <div mat-dialog-actions align="center">
+    <button type="button" mat-raised-button (click)="onNoClick()">{{'common.close' | translate}}</button>
+    <button type="submit" mat-raised-button color="primary"
+            [disabled]="setCostUpperLimtForm.invalid || isLoading">{{'common.save' | translate}}</button>
+  </div>
+</form>

@@ -1,0 +1,167 @@
+<div class="mat-elevation-z8 my-4 mx-4 mw-mobile">
+  <div class="bg-info p-2 d-flex">
+    <span class="fa-stack fa-lg text-primary">
+      <i class="fas fa-circle fa-stack-1x fa-lg"></i>
+      <i class="fa fa-wrench fa-stack-1x fa-sm text-white"></i>
+    </span>
+    <h2 class="mr-auto text-white font-weight-bold pt-1">{{'company.header' | translate}}</h2>
+    <h3 class="mr-auto text-white font-weight-bold pt-1 mt-1 ">{{companyAdherentesCount}} {{'company.adherent.label' | translate}}</h3>
+    <button *ngIf="isAdmin" class="mr-1" mat-mini-fab color="primary" matTooltip="{{'company.add.tooltip' | translate}}" (click)="addRow()">
+      <i class="fas fa-plus"></i>
+    </button>
+    <button class="mr-1" mat-mini-fab color="primary" matTooltip="{{'common.export.tooltip' | translate}}" (click)="exportDetails()">
+      <i class="fas fa-file-excel"></i>
+    </button>
+  </div>
+
+  <table class="w-100" mat-table matSort [dataSource]="companies" matSortActive="societeSid" matSortDisableClear matSortDirection="asc">
+    <ng-container matColumnDef="societeSid">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="societeSid">{{'company.id' | translate}}</th>
+      <td mat-cell *matCellDef="let element; let i = index" class="text-break" [hidden]="hideFirstRow && i === 0">{{ element?.societeSid}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="societeLibelle">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="societeLibelle">{{'company.libelle' | translate}}</th>
+      <td mat-cell *matCellDef="let element; let i = index" class="text-break" matTooltip="{{element.comments}}" matTooltipPosition="right" [hidden]="hideFirstRow && i === 0">
+        <ng-container *ngIf="element?.societeSid === addCompany?.societeSid && i === 0">
+          <mat-form-field class="px-1">
+            <input matInput placeholder="{{'company.libelle' | translate}}" maxlength="100" name="addsocieteLibelle" [(ngModel)]="element.societeLibelle"
+            />
+          </mat-form-field>
+        </ng-container>
+        <ng-container *ngIf="(!editCompany?.societeSid || !element?.societeSid || element?.societeSid!== editCompany?.societeSid) && i !== 0">
+          {{ element?.societeLibelle}}</ng-container>
+        <ng-container *ngIf="editCompany?.societeSid && element?.societeSid && element?.societeSid === editCompany?.societeSid && i !== 0">
+          <mat-form-field class="px-1">
+            <input matInput placeholder="{{'company.libelle' | translate}}" maxlength="100" name="societeLibelle" [(ngModel)]="element.societeLibelle"
+            />
+          </mat-form-field>
+        </ng-container>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="codeSif">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="codeSif">{{'company.sif' | translate}}</th>
+      <td mat-cell *matCellDef="let element; let i = index" class="text-break" [hidden]="hideFirstRow && i === 0">
+        <ng-container *ngIf="element?.societeSid === addCompany?.societeSid && i === 0">
+          <mat-form-field class="px-1">
+            <input matInput placeholder="{{'company.sif' | translate}}" maxlength="5" name="addcodeSif" [(ngModel)]="element.codeSif" />
+          </mat-form-field>
+        </ng-container>
+        <ng-container *ngIf="(!editCompany?.societeSid || !element?.societeSid || element?.societeSid!== editCompany?.societeSid) && i !== 0">
+          {{ element?.codeSif}}</ng-container>
+        <ng-container *ngIf="editCompany?.societeSid && element?.societeSid && element?.societeSid === editCompany?.societeSid && i !== 0">
+          <mat-form-field class="px-1">
+            <input matInput placeholder="{{'company.sif' | translate}}" maxlength="5" name="codeSif" [(ngModel)]="element.codeSif" />
+          </mat-form-field>
+        </ng-container>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="codeAmundi">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="codeAmundi">{{'company.amundi' | translate}}</th>
+      <td mat-cell *matCellDef="let element; let i = index" class="text-break" [hidden]="hideFirstRow && i === 0">
+        <ng-container *ngIf="element?.societeSid === addCompany?.societeSid && i === 0">
+          <mat-form-field class="px-1">
+            <input matInput placeholder="{{'company.amundi' | translate}}" maxlength="6" name="addcodeAmundi" [(ngModel)]="element.codeAmundi" />
+          </mat-form-field>
+        </ng-container>
+        <ng-container *ngIf="(!editCompany?.societeSid || !element?.societeSid || element?.societeSid!== editCompany?.societeSid) && i !== 0">
+          {{ element?.codeAmundi}}</ng-container>
+        <ng-container *ngIf="editCompany?.societeSid && element?.societeSid && element?.societeSid === editCompany?.societeSid && i !== 0">
+          <mat-form-field class="px-1">
+            <input matInput placeholder="{{'company.amundi' | translate}}" maxlength="6" name="codeAmundi" [(ngModel)]="element.codeAmundi" />
+          </mat-form-field>
+        </ng-container>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="flagAdherente">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="flagAdherente">{{'company.flagAdherente' | translate}}</th>
+      <td mat-cell *matCellDef="let element; let i = index" class="text-break" [hidden]="hideFirstRow && i === 0">
+        <ng-container *ngIf="element?.societeSid === addCompany?.societeSid && i === 0">
+          <mat-form-field class="px-1">
+            <select matNativeControl placeholder="{{'company.flagAdherente' | translate}}" name="addflagAdherente" [(value)]="element.flagAdherente"
+              [(ngModel)]="element.flagAdherente">
+              <option value="true">{{'true' | translate}}</option>
+              <option value="false">{{'false' | translate}}</option>
+            </select>
+          </mat-form-field>
+        </ng-container>
+        <ng-container *ngIf="(!editCompany?.societeSid || !element?.societeSid || element?.societeSid!== editCompany?.societeSid) && i !== 0">
+          {{ element?.flagAdherente + '' | translate }}</ng-container>
+        <ng-container *ngIf="editCompany?.societeSid && element?.societeSid && element?.societeSid === editCompany?.societeSid && i !== 0">
+          <mat-form-field class="px-1">
+            <select matNativeControl placeholder="{{'company.flagAdherente' | translate}}" name="flagAdherente" [(value)]="element.flagAdherente"
+              [(ngModel)]="element.flagAdherente">
+              <option value="true">{{'true' | translate}}</option>
+              <option value="false">{{'false' | translate}}</option>
+            </select>
+          </mat-form-field>
+        </ng-container>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="cspId">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="cspId">{{'company.cspId' | translate}}</th>
+      <td mat-cell *matCellDef="let element; let i = index" class="text-break" [hidden]="hideFirstRow && i === 0">
+        <ng-container *ngIf="element?.societeSid === addCompany?.societeSid && i === 0">
+          <mat-form-field class="px-1">
+            <select matNativeControl placeholder="{{'company.cspId' | translate}}" name="addcspId" [(value)]="element.cspId"
+             [(ngModel)]="element.cspId">
+             <option *ngFor="let cspId of cspIdList" [value]="cspId">
+              {{cspId}}
+             </option>
+            </select>
+          </mat-form-field>
+        </ng-container>
+        <ng-container *ngIf="(!editCompany?.societeSid || !element?.societeSid || element?.societeSid!== editCompany?.societeSid) && i !== 0">
+          {{ element?.cspId}}</ng-container>
+        <ng-container *ngIf="editCompany?.societeSid && element?.societeSid && element?.societeSid === editCompany?.societeSid && i !== 0">
+          <mat-form-field class="px-1">
+            <select matNativeControl placeholder="{{'company.cspId' | translate}}" name="cspId" [(value)]="element.cspId"
+             [(ngModel)]="element.cspId">
+             <option *ngFor="let cspId of cspIdList" [value]="cspId">
+              {{cspId}}
+             </option>
+            </select>
+          </mat-form-field>
+        </ng-container>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>{{'company.actions' | translate}}</th>
+      <td mat-cell *matCellDef="let element;let i = index" class="text-break" [hidden]="hideFirstRow && i === 0">
+        <ng-container *ngIf="(!editCompany?.societeSid || !element?.societeSid || element?.societeSid!== editCompany?.societeSid) && i !== 0">
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+              <i class="fas fa-ellipsis-h fa-lg"></i>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="editRow(element)" [disabled]="!element?.cspId || !element?.societeLibelle || !element?.codeSif || !element?.codeAmundi">{{'common.edit' | translate }}</button>
+            <button mat-menu-item (click)="addComment(element)">{{'common.comment' | translate }}</button>
+            <button mat-menu-item *ngIf="isAdmin" (click)="deleteCompany(element)">{{'common.deactivate' | translate }}</button>
+          </mat-menu>
+        </ng-container>
+
+        <ng-container *ngIf="(editCompany?.societeSid && element?.societeSid && element?.societeSid === editCompany?.societeSid) || (i === 0 && element?.societeSid === addCompany?.societeSid)">
+          <button mat-icon-button (click)="saveCompany()" [disabled]="!element?.cspId || !element?.societeLibelle || !element?.codeSif || !element?.codeAmundi" color="primary" aria-label="Example icon-button with a menu">
+            <i class="fas fa-check p-1"></i>
+          </button>
+          <button mat-icon-button (click)="cancelEdit()" aria-label="Example icon-bu tton with a menu">
+            <i class="fas fa-times p-1"></i>
+          </button>
+        </ng-container>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns" [ngClass]="{'h-auto': i === 0 }"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="pageSize" [pageIndex]="pageIndex" [length]="totalElements"
+    showFirstLastButtons></mat-paginator>
+  <div *ngIf="isLoading || isAdherentLoading || isCspLoading" class="loading-shade">
+    <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+  </div>
+</div>

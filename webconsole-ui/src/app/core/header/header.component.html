@@ -1,0 +1,49 @@
+<header class="container-fluid bg-dark text-white">
+  <div class="row">
+    <div class="col-md text-center">
+      <div class="float-md-left">
+        <div class="d-inline">
+          <a class="navbar-brand" [routerLink]="['/']">
+            <img  width="60px" src="assets/company_logo.png" alt="Saint-Gobain" />
+          </a>
+        </div>
+
+        <div class="d-inline align-middle" *ngFor="let menu of menus">
+          <a class="border-right px-2" [routerLink]="menu.items[0].url" *ngIf="menu.label != 'Admin' || credentials?.hasAdminAccess"
+          >
+            <span class="text-white">{{menu.label}}</span>
+          </a>
+        </div>
+        <a class="px-1 ml-3"  href="{{git}}">
+          <img src="assets/gitsmall.png" alt="Git"/>
+        </a>
+        <a class="px-1"  href="{{support}}">
+          <img src="assets/support.png" alt="Support"/>
+        </a>
+      </div>
+    </div>
+    <div class="col-md text-center">
+      <div class="float-md-right d-flex justify-content-center">
+        <ul class="nav align-items-center">
+          <li class="nav-item flex-column sg-action">
+            <div class="droplist" stgoLibDroplist autoClose="outside">
+              <a class="droplist-toggle" id="droplist-info" stgoLibDroplistToggle>
+                <div>Welcome {{ firstname | titlecase }}<i class="ml-2 py-1 fas fa-angle-down fa-lg bolder"></i></div>
+              </a>
+              <div class="droplist-menu with-border droplist-right" aria-labelledby="droplist-info" stgoLibDroplistMenu>
+                <ul>
+                  <li>
+                    <a routerLink="/profile"> <i class="fas fa-user-alt"></i> Profile </a>
+                  </li>
+                  <li>
+                    <a (click)="logout()"> <i class="fas fa-sign-out-alt"></i> Logout </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</header>

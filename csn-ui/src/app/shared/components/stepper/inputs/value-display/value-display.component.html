@@ -1,0 +1,13 @@
+<ng-template #innerTemplate>
+  <ngx-info-bulle *ngIf="tooltipContent" class="read-only"
+                  [html]="tooltipContent"></ngx-info-bulle>
+  <div class="wrapper-data-input">
+    <label>{{ label | translate}}</label>
+    <span class="right wrapper-input"
+          [ngClass]="{'input-euro': numberType == numberFieldTypes.EURO,
+        'input-percent': numberType == numberFieldTypes.PERCENT,
+        'input-year': numberType == numberFieldTypes.YEAR}">
+      <div class="auto-filled">{{isANumber() ? (value | number :'1.2-2') : value}}</div>
+    </span>
+  </div>
+</ng-template>

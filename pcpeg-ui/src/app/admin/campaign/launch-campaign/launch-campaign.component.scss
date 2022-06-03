@@ -1,0 +1,23 @@
+.bg-header {
+  background-color: white;
+}
+
+.campaign-container {
+  div {
+    + {
+      div {
+        margin-left: 8px;
+      }
+    }
+
+    margin-bottom: 20px;
+
+    > * {
+      margin: 5px 0;
+    }
+  }
+}
+
+.mat-card-header {
+  color: red !important;
+}

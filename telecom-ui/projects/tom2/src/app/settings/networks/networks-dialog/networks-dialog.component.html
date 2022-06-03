@@ -1,0 +1,36 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<form [formGroup]="networksForm" (ngSubmit)="onSubmit()">
+  <h1 mat-dialog-title>{{'common.menu.settings.networks' | translate}}</h1>
+  <mat-dialog-content>
+
+    <mat-form-field>
+      <input matInput formControlName="code" placeholder="{{'network.code' | translate}}" maxlength="5"
+             [readonly]="data?.mode=='edit'" required/>
+      <mat-error align="right" *ngIf="hasError('code', 'required')">{{'common.validation.required.message' | translate}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput formControlName="name" placeholder="{{'network.name' | translate}}" required/>
+      <mat-error align="right" *ngIf="hasError('name', 'required')">{{'common.validation.required.message' | translate}}
+      </mat-error>
+    </mat-form-field>
+
+    <ng-select [items]="operators  | async" bindLabel="name" [typeahead]="inputOperators"
+               placeholder="{{'network.operator.select' | translate}}" [searchable]="true" [dropdownPosition]="'bottom'"
+               formControlName="operator" appendTo="body" required>
+      <ng-template ng-label-tmp let-item="item">
+        <span *ngIf="item"> {{item.name}}</span>
+      </ng-template>
+    </ng-select>
+    <small align="right" class="mat-error" *ngIf="hasError('operator', 'required')">
+      {{'common.validation.required.message' | translate}}</small>
+
+  </mat-dialog-content>
+
+  <div mat-dialog-actions align="center">
+    <button type="button" mat-raised-button (click)="onNoClick()">{{'common.close' | translate}}</button>
+    <button type="submit" mat-raised-button color="primary"
+            [disabled]="networksForm.invalid || isLoading">{{'common.save' | translate}}</button>
+  </div>
+</form>

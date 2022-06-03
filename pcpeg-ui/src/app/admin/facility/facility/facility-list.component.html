@@ -1,0 +1,187 @@
+<div class="mat-elevation-z8 my-4 mx-4 mw-mobile">
+  <div class="bg-info p-2 d-flex">
+    <span class="fa-stack fa-lg text-primary">
+      <i class="fas fa-circle fa-stack-1x fa-lg"></i>
+      <i class="fa fa-wrench fa-stack-1x fa-sm text-white"></i>
+    </span>
+    <h2 class="mr-auto text-white font-weight-bold pt-1">{{'facility.header' | translate}}</h2>
+    <button class="mr-1" mat-mini-fab color="primary" matTooltip="{{'common.filter' | translate}}"
+      (click)="toggleFilterPanel()" matBadge="{{filterCount}}" matBadgePosition="after" matBadgeColor="warn"
+      [matBadgeHidden]="filterCount===0"><i class="fas fa-filter"></i>
+    </button>
+    <button class="mr-1" mat-mini-fab color="primary" matTooltip="{{'facility.add.tooltip' | translate}}"
+      (click)="addRow()">
+      <i class="fas fa-plus"></i>
+    </button>
+    <button class="mr-1" mat-mini-fab color="primary" matTooltip="{{'common.export.tooltip' | translate}}"
+      (click)="exportDetails()">
+      <i class="fas fa-file-excel"></i>
+    </button>
+  </div>
+
+  <mat-expansion-panel [expanded]="panelFilterOpenState">
+    <form [formGroup]="advanceFilterForm" (ngSubmit)="applyAdvanceFilter()">
+      <div class="d-block p-2 bg-white" id="filter">
+        <ng-select [items]="companyLabels" formControlName="codeSif" [typeahead]="inputCompanyLabel"
+          bindLabel="companyLabel" bindValue="codeSif" [searchable]="true" [dropdownPosition]="'bottom'"
+          [openOnEnter]="false" placeholder="{{'company.libelle' | translate}}" appendTo="body" [selectOnTab]="true">
+          <ng-template ng-label-tmp let-item="item">
+            <span *ngIf="item"> {{item?.companyLabel}}</span>
+          </ng-template>
+        </ng-select>
+
+      </div>
+
+      <mat-action-row>
+        <button type="button" mat-raised-button color="primary"
+          (click)="resetAdvanceFilter()">{{'common.reset' | translate}} </button>
+              &nbsp;
+              <button type="submit" mat-raised-button color="primary">{{'common.search' | translate}}</button>
+              </mat-action-row>
+    </form>
+
+  </mat-expansion-panel>
+
+  <table class="w-100" mat-table matSort [dataSource]="facility" matSortActive="id.facilityId" matSortDisableClear
+    matSortDirection="asc">
+
+    <ng-container matColumnDef="codeSif">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="societe.codeSif">{{'facility.codeSif' | translate}}</th>
+      <td mat-cell *matCellDef="let element; let i = index" class="text-break" [hidden]="hideFirstRow && i === 0">
+        <ng-container *ngIf="addFacility && addFacility.facilityId && addFacility.facilityId.length >= 0 && i === 0">
+          <ng-select [items]="codeSifs" [typeahead]="inputCodeSif" bindLabel="codeSif" bindValue="codeSif"
+            [searchable]="true" [dropdownPosition]="'bottom'" [openOnEnter]="false"
+            placeholder="{{'facility.codeSif' | translate}}" appendTo="body" [selectOnTab]="true"
+            [(ngModel)]="element.codeSif">
+            <ng-template ng-label-tmp let-item="item">
+              <span *ngIf="item"> {{item?.codeSif}}</span>
+            </ng-template>
+          </ng-select>
+        </ng-container>
+        <ng-container
+          *ngIf="(!editFacility?.facilityId || !element?.facilityId || element?.facilityId!== editFacility?.facilityId) && i !== 0">
+          {{ element?.codeSif}}
+        </ng-container>
+        <ng-container
+          *ngIf="element && element.facilityId.length >= 0 && editFacility && editFacility.facilityId && editFacility.facilityId.length >= 0 && element.facilityId === editFacility.facilityId && i !== 0">
+          {{ element?.codeSif}}</ng-container>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="companyLabel">
+      <th mat-header-cell *matHeaderCellDef  mat-sort-header="societe.societeLibelle">{{'company.libelle' | translate}}</th>
+      <td mat-cell *matCellDef="let element; let i = index" class="text-break" [hidden]="hideFirstRow && i === 0">
+        <ng-container
+          *ngIf="(!editFacility?.facilityId || !element?.facilityId || element?.facilityId!== editFacility?.facilityId) && i !== 0">
+          {{ element?.companyLabel}}</ng-container>
+        <ng-container
+          *ngIf="element && element.facilityId.length >= 0 && editFacility && editFacility.facilityId && editFacility.facilityId.length >= 0 && element.facilityId === editFacility.facilityId && i !== 0">
+          {{ element?.companyLabel}}</ng-container>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="facilityId">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="id.facilityId">{{'facility.facilityId' | translate}}</th>
+      <td mat-cell *matCellDef="let element; let i = index" class="text-break" [hidden]="hideFirstRow && i === 0">
+        <ng-container *ngIf="addFacility && addFacility.facilityId && addFacility.facilityId.length >= 0 && i === 0">
+          <mat-form-field class="px-1">
+            <input matInput placeholder="{{'facility.facilityId' | translate}}" maxlength="5" name="addFacilityId"
+              [(ngModel)]="element.facilityId" />
+          </mat-form-field>
+        </ng-container>
+        <ng-container
+          *ngIf="(!editFacility?.facilityId || !element?.facilityId || element?.facilityId!== editFacility?.facilityId) && i !== 0">
+          {{ element?.facilityId}}</ng-container>
+        <ng-container
+          *ngIf="element && element.facilityId.length >= 0 && editFacility && editFacility.facilityId && editFacility.facilityId.length >= 0 && element.facilityId === editFacility.facilityId && i !== 0">
+          {{ element?.facilityId}}</ng-container>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="facilityLabel">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="facilityLabel">{{'facility.facilityLabel' | translate}}
+      </th>
+      <td mat-cell *matCellDef="let element; let i = index" class="text-break" [hidden]="hideFirstRow && i === 0">
+        <ng-container *ngIf="addFacility && addFacility.facilityId && addFacility.facilityId.length >= 0 && i === 0">
+          <mat-form-field class="px-1">
+            <input matInput placeholder="{{'facility.facilityLabel' | translate}}" name="addFacilityLabel"
+              [(ngModel)]="element.facilityLabel" />
+          </mat-form-field>
+        </ng-container>
+        <ng-container
+          *ngIf="(!editFacility?.facilityId || !element?.facilityId || (element?.facilityId !== editFacility?.facilityId || element?.codeSif !== editFacility?.codeSif)) && i !== 0">
+          {{ element?.facilityLabel}}</ng-container>
+        <ng-container
+          *ngIf="element && element.facilityId.length >= 0 && editFacility && editFacility.facilityId && editFacility.facilityId.length >= 0 && (element.codeSif === editFacility.codeSif && element.facilityId === editFacility.facilityId) && i !== 0">
+          <mat-form-field class="px-1">
+            <input matInput name="FacilityLabel" [(ngModel)]="element.facilityLabel" />
+          </mat-form-field>
+        </ng-container>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="isActive">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="isActive">{{'facility.isActive' | translate}}</th>
+      <td mat-cell *matCellDef="let element; let i = index" class="text-break" [hidden]="hideFirstRow && i === 0">
+        <ng-container *ngIf="addFacility && addFacility.facilityId && addFacility.facilityId.length >= 0 && i === 0">
+          <mat-form-field class="px-1">
+            <select matNativeControl placeholder="{{'facility.isActive' | translate}}" name="addIsActive"
+              [(value)]="element.isActive" [(ngModel)]="element.isActive">
+              <option value="O">{{'Yes' | translate}}</option>
+              <option value="N">{{'No' | translate}}</option>
+            </select>
+          </mat-form-field>
+        </ng-container>
+        <ng-container
+          *ngIf="(!editFacility?.facilityId || !element?.facilityId || (element?.facilityId !== editFacility?.facilityId || element?.codeSif !== editFacility?.codeSif)) && i !== 0">
+          {{ element?.isActive + '' | translate }}</ng-container>
+        <ng-container
+          *ngIf="element?.facilityId.length >= 0 && (editFacility && editFacility.facilityId && editFacility.facilityId.length >= 0) && (element?.codeSif === editFacility?.codeSif && element?.facilityId === editFacility?.facilityId) && i !== 0">
+          <mat-form-field class="px-1">
+            <select matNativeControl placeholder="{{'facility.isActive' | translate}}" name="editIsActive"
+              [(value)]="element.isActive" [(ngModel)]="element.isActive">
+              <option value="O">{{'Yes' | translate}}</option>
+              <option value="N">{{'No' | translate}}</option>
+            </select>
+          </mat-form-field>
+        </ng-container>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>{{'company.actions' | translate}}</th>
+      <td mat-cell *matCellDef="let element;let i = index" class="text-break" [hidden]="hideFirstRow && i === 0">
+        <ng-container
+          *ngIf="(element?.codeSif !== editFacility?.codeSif || element?.facilityId!== editFacility?.facilityId) && i !== 0">
+          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+            <i class="fas fa-ellipsis-h fa-lg"></i>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="editRow(element)"
+              [disabled]="!element?.facilityId || !element?.codeSif || !element?.facilityLabel">{{'common.edit' | translate }}</button>
+          </mat-menu>
+        </ng-container>
+
+        <ng-container
+          *ngIf="(element?.facilityId.length >= 0 && (editFacility && editFacility.facilityId && editFacility.facilityId.length >= 0) && (element?.codeSif === editFacility?.codeSif && element?.facilityId === editFacility?.facilityId)) || (i === 0 && element?.facilityId === addFacility?.facilityId)">
+          <button mat-icon-button color="primary" (click)="saveFacility()"
+            [disabled]="!element?.facilityId || !element?.facilityLabel || !element?.codeSif || !element?.isActive">
+            <i class="fas fa-check p-1"></i>
+          </button>
+          <button mat-icon-button (click)="cancelEdit()">
+            <i class="fas fa-times p-1"></i>
+          </button>
+        </ng-container>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns" [ngClass]="{'h-auto': i === 0 }"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="pageSize" [pageIndex]="pageIndex"
+    [length]="totalElements" showFirstLastButtons></mat-paginator>
+  <div *ngIf="isLoading" class="loading-shade">
+    <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+  </div>
+
+</div>

@@ -1,0 +1,29 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<form [formGroup]="delegationForm" (ngSubmit)="onSubmit()">
+  <h1 mat-dialog-title>{{'delegation.header' | translate}}</h1>
+  <mat-dialog-content>
+
+    <mat-form-field>
+      <input matInput formControlName="id" placeholder="{{'delegation.id' | translate}}" maxlength="10"
+        [readonly]="data?.mode=='edit'" required />
+      <mat-error align="right" *ngIf="hasError('id', 'required')">{{'common.validation.required.message' | translate}}
+      </mat-error>
+      <mat-error align="right" *ngIf="delegationForm.get('id').errors?.delegationIdNotTaken">
+        {{'common.validation.taken.message' | translate}}</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput formControlName="name" placeholder="{{'delegation.name' | translate}}" required />
+      <mat-error align=" right" *ngIf="hasError('name', 'required')">
+        {{'common.validation.required.message' | translate}}</mat-error>
+      <mat-error align="right" *ngIf="delegationForm.get('name').errors?.delegationNameNotTaken">
+        {{'common.validation.taken.message' | translate}}</mat-error>
+    </mat-form-field>
+
+  </mat-dialog-content>
+
+  <div mat-dialog-actions align="center">
+    <button type="button" mat-raised-button (click)="onNoClick()">{{'common.close' | translate}}</button>
+    <button type="submit" mat-raised-button color="primary"
+      [disabled]="!delegationForm.valid || isLoading">{{'common.save' | translate}}</button>
+  </div>
+</form>

@@ -1,0 +1,106 @@
+<div class="rente-form-content" #formScroll [ngClass]="postToCalcul? 'complete' : ''">
+  <div class="form">
+    <div class="title">
+      <h1 class="active">{{ 'rente-viagere.title' | translate}}</h1>
+      <a *ngIf="postToCalcul" (click)="toggleMobileForm()" [ngClass]="showMobileForm? 'up':'down'">
+        {{(showMobileForm ? 'mobile.form.hide' : 'mobile.form.show') | translate}}
+        <img src="../../../assets/images/ic_dropdown_arrow.svg" alt=""/>
+      </a>
+    </div>
+    <form novalidate [formGroup]="renteFormGroup" (ngSubmit)="onSubmit()"
+          [ngClass]="!showMobileForm? 'd-none d-lg-block':''">
+      <ngx-stepper moduleName="rente-viagere">
+        <ngx-step [tooltipContent]="this.getInfoBulle(infoBulleCodes.RENTE_VIAGERE_ETAPE_1)">
+          <ngx-date-input labelId="date_contrat"
+                          label="{{ 'rente-viagere.step1.date' | translate}}"
+                          [tooltipContent]="this.getInfoBulle(infoBulleCodes.DATE_CONTRAT)"
+                          [inputCtrl]="dateContrat">
+          </ngx-date-input>
+
+          <ngx-radio-input [inputCtrl]="droitUsageHabitation" class="w-100" [model]="vendueRadioModel"
+                           [tooltipContent]="this.getInfoBulle(infoBulleCodes.DROIT_USAGE_HABITATION)"
+                           label="{{ 'rente-viagere.step1.droitUsageHabitation' | translate}}">
+          </ngx-radio-input>
+
+          <ngx-app-number-input class="wrapper-data-input" labelId="valeur_bien"
+                                [numberType]="numberFieldTypes.EURO"
+                                [tooltipContent]="this.getInfoBulle(infoBulleCodes.VALEUR_PLEINE_PROPRIETE)"
+                                label="{{  'rente-viagere.step1.valeurBien' | translate}}"
+                                [inputCtrl]="valeurBien">
+          </ngx-app-number-input>
+
+          <ngx-app-number-input class="wrapper-data-input" labelId="bouquet_verse"
+                                [numberType]="numberFieldTypes.EURO"
+                                [tooltipContent]="this.getInfoBulle(infoBulleCodes.MONTANT_BOUQUET_VERSE)"
+                                label="{{  'rente-viagere.step1.bouquetVerse' | translate}}"
+                                [inputCtrl]="bouquetVerse">
+          </ngx-app-number-input>
+
+          <ngx-app-number-input class="wrapper-data-input" labelId="valeur_locative_mensuelle_brute"
+                                [numberType]="numberFieldTypes.EURO"
+                                [tooltipContent]="this.getInfoBulle(infoBulleCodes.VALEUR_LOC_MENS_BRUTE)"
+                                label="{{  'rente-viagere.step1.valeurLocativeBrute'| translate}}"
+                                [inputCtrl]="valeurLocativeBrute">
+          </ngx-app-number-input>
+
+          <ngx-app-number-input class="wrapper-data-input" labelId="charges_usufructuaires_annuelles"
+                                [numberType]="numberFieldTypes.EURO"
+                                [tooltipContent]="this.getInfoBulle(infoBulleCodes.CHARGES_ANNUELLES_BIEN)"
+                                label="{{  'rente-viagere.step1.chargesAnu' | translate}}"
+                                [inputCtrl]="chargesAnu">
+          </ngx-app-number-input>
+
+        </ngx-step>
+
+        <ngx-step [tooltipContent]="this.getInfoBulle(infoBulleCodes.RENTE_VIAGERE_ETAPE_2)">
+          <ngx-persons [personFormArray]="credirentiersFormArray"
+                       [dataToRestore]="credirentiersToRestore"
+                       [formGroup]="renteFormGroup"
+                       [formArrayName]="'credirentiers'"
+                       [label]="'rente-viagere.step2.credirentier'"
+                       [btnAddText]="'rente-viagere.step2.bouton-ajouter'"
+                       [btnRemoveText]="'rente-viagere.step2.bouton-supprimer'"
+                       [tooltipContent]="this.getInfoBulle(infoBulleCodes.CREDIRENTIERS)">
+          </ngx-persons>
+        </ngx-step>
+
+        <ngx-step [tooltipContent]="this.getInfoBulle(infoBulleCodes.RENTE_VIAGERE_ETAPE_3)">
+          <ngx-radio-input [inputCtrl]="periodicite" class="w-100" [model]="periodiciteRadioModel"
+                           [tooltipContent]="this.getInfoBulle(infoBulleCodes.PERIODICITE_VERSEMENTS)"
+                           label="{{ 'rente-viagere.step3.sub-title1' | translate}}">
+          </ngx-radio-input>
+
+          <ngx-radio-input [inputCtrl]="terme" class="w-100" [model]="termeRadioModel"
+                           [tooltipContent]="this.getInfoBulle(infoBulleCodes.TERMES_VERSEMENTS)"
+                           label="{{ 'rente-viagere.step3.sub-title2' | translate}}">
+          </ngx-radio-input>
+        </ngx-step>
+
+        <ngx-step>
+          <ngx-textarea-input labelId="cartouche"
+                              [tooltipContent]="this.getInfoBulle(infoBulleCodes.CARTOUCHE)"
+                              label="{{ 'common.cartouche.label' | translate }}"
+                              [inputCtrl]="cartouche"
+                              placeholder="{{ 'common.cartouche.placeholder' | translate }}">
+          </ngx-textarea-input>
+
+          <ngx-textarea-input labelId="texte_libre"
+                              [tooltipContent]="this.getInfoBulle(infoBulleCodes.TEXTE_LIBRE)"
+                              label="{{ 'common.texte-libre.label' | translate }}"
+                              [inputCtrl]="texteLibre"
+                              placeholder="{{ 'common.texte-libre.placeholder' | translate }}">
+          </ngx-textarea-input>
+        </ngx-step>
+
+      </ngx-stepper>
+      <div class="btn-action">
+        <button type="button" class="btn-reset" [hidden]="!postToCalcul && !sessionTimedOut"
+                (click)="reset()">{{ 'common.reset' | translate}}</button>
+        <button type="submit" class="btn-calculer" (click)="scroll(formScroll)"
+                [disabled]="renteFormGroup.invalid">
+          {{ (postToCalcul || sessionTimedOut ? 'common.recalculer' : 'common.calculer') | translate }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

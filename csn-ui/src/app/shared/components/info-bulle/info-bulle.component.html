@@ -1,0 +1,16 @@
+<ng-template #popContent let-popover="popover">
+  <div>
+    <div [innerHTML]="html"></div>
+    <div class="info-bulle-close" (click)="popover.hide()">
+    </div>
+  </div>
+</ng-template>
+<button *ngIf="!isMobileOrTablet && html" class="info-bulle info-bulle--group" [popover]="popContent" #pop="bs-popover"
+        [placement]="placement" [outsideClick]="true" containerClass="info-bulle-content"
+        [disabled]="disabled" [popoverContext]="{popover: pop}"
+        [ngClass]="!disabled ? 'active': 'inactive'"
+        tabindex="-1" type="button">
+</button>
+
+<button *ngIf="isMobileOrTablet && html" class="info-bulle info-bulle--group" [disabled]="disabled"
+        [ngClass]="!disabled ? 'active': 'inactive'" (click)="openModal()"></button>

@@ -1,0 +1,63 @@
+<div *ngIf="restit != null && !showMobileForm && (restit | json) != '{}'" class="result-content">
+  <div class="content-restit">
+    <div class="content-restit-title">
+      <span class="title-1">{{'rente-viagere.restitution.title' | translate}}</span><br/>
+    </div>
+    <div class="content-restit-data">
+
+      <div class="restit-value-wrapper">
+
+        <div class="restit-value">
+          <div class="title">
+            {{(calculWithRestit?.calcul?.credirentiers?.length > 1 ? 'rente-viagere.restitution.esperance-des-vies' : 'rente-viagere.restitution.esperance-de-vie') | translate}}
+            <sup class="reference-number">(1)</sup>
+          </div>
+          <div class="green-value">
+            {{ restit?.duree_operation | number :'1.2-2'}} {{'common.annees' | translate}}</div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="restit-value">
+          <div class="title">{{'rente-viagere.restitution.rente' | translate}}
+            {{ getPeriodicityIntlName(calculWithRestit?.calcul?.periodicite_versements) | translate}}
+            <div class="caption">
+              {{'rente-viagere.restitution.taux-indexe-sur' | translate}}
+            </div>
+          </div>
+
+          <div class="blue-value">{{ restit?.versement | number :'1.2-2'}} €</div>
+        </div>
+
+        <div class="divider"></div>
+      </div>
+    </div>
+
+    <div class="content-taux">
+      <div class="taux">
+        <div class="taux-left" *ngIf="this.getInfoBulle(infoBulleCodes.TAUX_RENDEMENT_CALCULE)">
+          <div class="title">
+            {{'rente-viagere.restitution.taux' | translate}}
+            <sup class="reference-number">(2)</sup>
+          </div>
+          <div class="valeur" [innerHTML]="this.getInfoBulle(infoBulleCodes.TAUX_RENDEMENT_CALCULE)">
+          </div>
+        </div>
+        <div class="taux-right">
+          <div class="valeur-percent">
+            {{ restit?.taux_rendement_calcule | percent:'.2' }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ngx-calculated-with [donneesReferences]="restit?.donnees_references_utilisees">
+    </ngx-calculated-with>
+
+    <div class="btn-action btn-action-centered">
+      <button type="button" class="btn-export" (click)="export()">
+        {{'common.exporter' | translate}}
+      </button>
+    </div>
+  </div>
+</div>

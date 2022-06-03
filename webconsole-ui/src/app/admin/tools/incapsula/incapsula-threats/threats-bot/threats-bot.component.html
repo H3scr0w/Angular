@@ -1,0 +1,20 @@
+<mat-card class="my-2 mx-2 mat-elevation-z8" [formGroup]="formGroup">
+  <mat-card-header>
+    <mat-card-title>Bot Access Control</mat-card-title>
+    <mat-card-subtitle>Allow or not bots to access your site</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content class="container d-inline-flex flex-column">
+    <mat-checkbox color="primary" formControlName="badbot">
+      Block Bad Bots (like spams or scanners)
+    </mat-checkbox>
+    <mat-checkbox color="primary" formControlName="challengebot">
+      Challenge suspected bots (CAPTCHA test)
+    </mat-checkbox>
+  </mat-card-content>
+  <mat-card-actions class="text-center">
+    <button mat-raised-button color="primary" (click)="save()" [disabled]="!isAdmin">
+      Save
+      <i *ngIf="saving" class="fas fa-circle-notch fa-spin"></i>
+    </button>
+  </mat-card-actions>
+</mat-card>

@@ -1,0 +1,25 @@
+.info {
+  border-radius: 8px;
+  background-color: $color-lightGreen;
+  padding: 16px;
+  margin-top: 20px;
+
+  color: #005b93;
+  font-family: Gilroy-Regular;
+  font-size: 14px;
+  letter-spacing: -0.34px;
+  line-height: 20px;
+  @media (max-width: 425px) {
+    margin-top: 24px;
+    margin-right: 20px;
+  }
+
+  .content {
+    padding-left: 42px;
+  }
+
+  img {
+    width: 24px;
+    height: 24px;
+  }
+}

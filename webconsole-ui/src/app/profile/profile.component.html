@@ -1,0 +1,31 @@
+<div class="fixed-top">
+  <stgo-header></stgo-header>
+  <button mat-icon-button color="primary" class="ml-4" (click)="snav.toggle()">
+    My Profile <i class="fas fa-ellipsis-v fa-lg"></i>
+  </button>
+</div>
+  <mat-sidenav-container class="mat-sidenav-container-position w-100 h-100 min-width-mobile">
+    <mat-sidenav #snav [mode]="mediaMatch ? 'over' : 'side'" opened class="matdrawer mx-4 px-4">
+      <mat-accordion>
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title class="text-gray"> Profile</mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="m-2" [ngClass]="{
+                'text-primary': sidenavElement === sidenavSelected
+              }" *ngFor="let sidenavElement of sidenavMenu">
+            <a (click)="show(sidenavElement)"> {{ sidenavElement }} </a>
+            <br />
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </mat-sidenav>
+    <mat-sidenav-content class="px-5">
+      <div class="mt-5">
+        <stgo-profile-information *ngIf="sidenavSelected === 'Informations'"></stgo-profile-information>
+        <stgo-profile-project *ngIf="sidenavSelected === 'Projects'"></stgo-profile-project>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+<stgo-footer class="fixed-bottom"></stgo-footer>

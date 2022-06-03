@@ -1,0 +1,37 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading || isRsmLoading"></mat-progress-bar>
+<form [formGroup]="bulkSiteUpdateForm" (ngSubmit)="onSubmit()">
+  <h1 mat-dialog-title>{{'bulk.site.modification.setnew' | translate}}</h1>
+  <mat-dialog-content>
+
+    <ng-select [items]="sifCodes | async" bindLabel="sifCode" [typeahead]="inputSifCode" [dropdownPosition]="'bottom'"
+      placeholder="{{'site.dialogbox.tab.description.sifCode' | translate}}" [searchable]="true" [openOnEnter]="false"
+      formControlName="sifCode" (change)="onSifSelected($any($event))" appendTo="body" [selectOnTab]="true">
+      <ng-template ng-label-tmp let-item="item">
+        <span *ngIf="item"> {{item?.sifCode}}</span>
+      </ng-template>
+    </ng-select>
+
+    <ng-select [items]="companies" bindLabel="companyName" [typeahead]="inputCompany" [dropdownPosition]="'bottom'"
+      placeholder="{{'site.datatable.column.company' | translate}}" [searchable]="true" [openOnEnter]="false"
+      formControlName="company" (change)="onCompanySelected($any($event))" appendTo="body" [selectOnTab]="true">
+      <ng-template ng-label-tmp let-item="item">
+        <span *ngIf="item"> {{item?.companyName}}</span>
+      </ng-template>
+    </ng-select>
+
+    <ng-select [items]="rsms" bindLabel="fullName" bindValue="id" (change)="checkValid()" [dropdownPosition]="'bottom'"
+      placeholder="{{'site.dialogbox.tab.description.rsm' | translate}}" [searchable]="true" [openOnEnter]="false"
+      formControlName="rsm" appendTo="body" [selectOnTab]="true">
+      <ng-template ng-label-tmp let-item="item">
+        <span *ngIf="item">{{item.fullName}}</span>
+      </ng-template>
+    </ng-select>
+
+  </mat-dialog-content>
+
+  <div mat-dialog-actions align="center">
+    <button type="button" mat-raised-button (click)="onNoClick()">{{'common.close' | translate}}</button>
+    <button type="submit" mat-raised-button color="primary"
+      [disabled]="!isEnabled || isLoading || isRsmLoading">{{'common.save' | translate}}</button>
+  </div>
+</form>

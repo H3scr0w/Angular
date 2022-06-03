@@ -1,0 +1,247 @@
+<div>
+  <mat-expansion-panel [expanded]="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Selection Criteria
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <form [formGroup]="telecomServiceSelectorForm" #telecomform (ngSubmit)="applyFilter()">
+      <mat-expansion-panel class="m-2" [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h4> {{'telecom.service.selector.countryAndOperator' | translate}}</h4>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-form-field>
+          <input [readonly]="readOnlyCountry" matInput formControlName="countryCode" maxlength="2"
+            placeholder="{{'telecom.service.selector.countryCode' | translate}}" required />
+        </mat-form-field>
+
+        <mat-slide-toggle class="mb-2" *ngIf="showDOMTOM" formControlName="isDOMTOM" color="primary">
+          {{'telecom.service.selector.domTOM' | translate}}
+        </mat-slide-toggle>
+
+        <ng-select [readonly]="readOnlyOperator" [items]="operators | async" [typeahead]="inputOperator"
+          bindLabel="name" bindValue="id" placeholder="{{'Operator' | translate}}" [searchable]="true"
+          dropdownPosition="bottom" [openOnEnter]="false" [dropdownPosition]="'bottom'" formControlName="operator"
+          appendTo="body" [selectOnTab]="true">
+          <ng-template ng-label-tmp let-item="item">
+            <span *ngIf="item"> {{item?.name}}</span>
+          </ng-template>
+        </ng-select>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel class="m-2" [expanded]="false">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h4> {{'telecom.service.selector.serviceAndNetwork' | translate}}</h4>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <ng-select [items]="serviceLevels" bindLabel="value" bindValue="key"
+          placeholder="{{'telecom.service.selector.serviceLevel' | translate}}" [searchable]="true"
+          dropdownPosition="bottom" [openOnEnter]="false" formControlName="serviceLevel" appendTo="body"
+          [selectOnTab]="true">
+          <ng-template ng-label-tmp let-item="item">
+            <span *ngIf="item"> {{item?.value}}</span>
+          </ng-template>
+        </ng-select>
+
+        <ng-select [items]="serviceTypes" bindLabel="value" bindValue="key"
+          placeholder="{{'telecom.service.selector.serviceType' | translate}}" [searchable]="true"
+          dropdownPosition="bottom" [openOnEnter]="false" formControlName="serviceType" appendTo="body"
+          [selectOnTab]="true">
+          <ng-template ng-label-tmp let-item="item">
+            <span *ngIf="item"> {{item?.value}}</span>
+          </ng-template>
+        </ng-select>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel class="m-2" [expanded]="false" *ngIf="isMainAccess">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h4> {{'telecom.service.selector.mainAccess'|translate}}</h4>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div class="row">
+          <div class="col-md-6">
+            <mat-form-field>
+              <input matInput formControlName="bandwidthMainServiceFrom"
+                placeholder="{{'telecom.service.selector.mainServiceBandwidthFrom' | translate}}" stgoNumberOnly
+                scale="2" defaultValue="" />
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field>
+              <input matInput formControlName="bandwidthMainServiceTo" placeholder="{{'common.to' | translate}}"
+                stgoNumberOnly scale="2" defaultValue="" />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <ng-select [items]="mainOrBackupServices" bindLabel="value" bindValue="key"
+          placeholder="{{'telecom.service.selector.mainService' | translate}}" [searchable]="true"
+          dropdownPosition="bottom" [openOnEnter]="false" formControlName="mainServiceCosType" appendTo="body"
+          [selectOnTab]="true">
+          <ng-template ng-label-tmp let-item="item">
+            <span *ngIf="item"> {{item?.value}}</span>
+          </ng-template>
+        </ng-select>
+
+        <mat-form-field>
+          <input matInput formControlName="mainTechno" maxlength="5"
+            placeholder="{{'telecom.service.selector.mainTechno' | translate}}" />
+        </mat-form-field>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel class="m-2" [expanded]="true" *ngIf="isBackUpAccess">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h4> {{'telecom.service.selector.backupAccess'|translate}}</h4>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <ng-select [items]="backupSpecificities" bindLabel="value" bindValue="key"
+          placeholder="{{'telecom.service.selector.backupSpecificity' | translate}}" [searchable]="true"
+          dropdownPosition="bottom" [openOnEnter]="false" formControlName="backupSpecificity" appendTo="body"
+          [selectOnTab]="true">
+          <ng-template ng-label-tmp let-item="item">
+            <span *ngIf="item"> {{item?.value}}</span>
+          </ng-template>
+        </ng-select>
+
+        <div class="row">
+          <div class="col-md-6">
+            <mat-form-field>
+              <input matInput formControlName="bandwidthBackupServiceFrom"
+                placeholder="{{'telecom.service.selector.backupServiceBandwidthFrom' | translate}}" stgoNumberOnly
+                scale="2" defaultValue="" />
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field>
+              <input matInput formControlName="bandwidthBackupServiceTo" placeholder="{{'common.to' | translate}}"
+                stgoNumberOnly scale="2" defaultValue="" />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <ng-select [items]="mainOrBackupServices" bindLabel="value" bindValue="key"
+          placeholder="{{'telecom.service.selector.backupService' | translate}}" [searchable]="true"
+          dropdownPosition="bottom" [openOnEnter]="false" formControlName="backupServiceCosType" appendTo="body"
+          [selectOnTab]="true">
+          <ng-template ng-label-tmp let-item="item">
+            <span *ngIf="item"> {{item?.value}}</span>
+          </ng-template>
+        </ng-select>
+
+        <mat-form-field>
+          <input matInput formControlName="backupTechno" maxlength="5"
+            placeholder="{{'telecom.service.selector.backupTechno' | translate}}" />
+        </mat-form-field>
+
+      </mat-expansion-panel>
+
+      <mat-expansion-panel class="m-2" [expanded]="false">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h4> {{'telecom.service.selector.monthlyCostLowerThan'|translate}}</h4>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-form-field>
+          <input matInput formControlName="monthlyCostLte"
+            placeholder="{{'telecom.service.selector.monthlyCostLowerThan' | translate}}" stgoNumberOnly scale="2"
+            defaultValue="" />
+        </mat-form-field>
+      </mat-expansion-panel>
+
+      <mat-action-row>
+        <button type="button" mat-raised-button color="primary" (click)="resetFilter()">{{'common.reset' | translate}}
+        </button>
+        &nbsp;
+        <button type="submit" [disabled]="telecomServiceSelectorForm.invalid || isLoading" mat-raised-button
+          color="primary">{{'common.apply' | translate}}</button>
+      </mat-action-row>
+
+    </form>
+  </mat-expansion-panel>
+
+  <table class="w-100" mat-table matSort [dataSource]="telecomServices" matSortActive="id" matSortDisableClear
+    matSortDirection="asc">
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="id">{{'common.id' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element?.id }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="operator">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="catalogVersion.catalog.contract.operator">
+        {{'Operator' | translate}} </th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element?.operator?.name }}</td>
+    </ng-container>
+    <ng-container matColumnDef="serviceCatalog">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="catalogVersion.catalog.name">
+        {{'telecom.service.selector.serviceCatalog' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element?.catalogVersion?.catalog?.name }}</td>
+    </ng-container>
+    <ng-container matColumnDef="countryCode">
+      <th mat-header-cell *matHeaderCellDef>{{'telecom.service.selector.countryCode' | translate}} </th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element?.countryCode }}</td>
+    </ng-container>
+    <ng-container matColumnDef="serviceTitle">
+      <th mat-header-cell *matHeaderCellDef>
+        {{'telecom.service.selector.serviceTitle' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element?.serviceTitle }}</td>
+    </ng-container>
+    <ng-container matColumnDef="mainServiceCode">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="mainServiceCode">
+        {{'telecom.service.selector.mainServiceCode' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element?.mainServiceCode }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="backupServiceCode">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="backupServiceCode">
+        {{'telecom.service.selector.backupServiceCode' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element?.backupServiceCode }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="optionsAvailables">
+      <th mat-header-cell *matHeaderCellDef>{{'common.options' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element?.optionsAvailables }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="setupCost">
+      <th mat-header-cell *matHeaderCellDef>
+        {{'telecom.service.selector.setupCost' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ getSetupCost(element) }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="monthlyCost">
+      <th mat-header-cell *matHeaderCellDef>
+        {{'telecom.service.selector.monthlyCost' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ getMonthlyCost(element) }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="currency">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="currency">{{'common.currency' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element?.currency }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>{{'common.actions' | translate}}</th>
+      <td mat-cell *matCellDef="let element">
+        <button type="button" mat-icon-button color="primary" (click)="onServiceSelected(element)"
+          matTooltip="{{'telecom.service.selector.selectService' | translate}}">
+          <i class="fa fa-check-square p-1"></i>
+        </button>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns" [class.restricted-view-row]="row?.restrictedView==='1'">
+    </tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="pageSize" [pageIndex]="pageIndex"
+    [length]="totalElements" showFirstLastButtons></mat-paginator>
+  <div *ngIf="isLoading" class="loading-shade">
+    <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+  </div>
+</div>

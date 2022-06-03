@@ -1,0 +1,59 @@
+<div>
+  <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+  <form [formGroup]="siteInfoForm">
+
+    <div class="row">
+      <div class="col-8">
+        <ng-select [items]="sites | async" [typeahead]="inputSiteCode" bindLabel="siteCode"
+          placeholder="{{'site.info.siteCode' | translate}}*" [searchable]="true" dropdownPosition="bottom"
+          [openOnEnter]="false" formControlName="siteCode" (change)="onSiteSelected($any($event))" appendTo="body"
+          [selectOnTab]="true" [dropdownPosition]="'bottom'" [readonly]="isReadOnly" required>
+          <ng-template ng-label-tmp let-item="item">
+            <span *ngIf="item"> {{item?.siteCode}}</span>
+          </ng-template>
+        </ng-select>
+        <small align="right" class="mat-error" *ngIf="hasError('siteCode', 'required')">
+          {{'common.validation.required.message' | translate}}
+        </small>
+      </div>
+
+      <div class="col-2">
+        <button type="button" class="mr-1" mat-mini-fab color="primary" [disabled]="!siteCurrent?.siteCode"
+          matTooltip="{{'common.site.relaod' | translate}}" (click)="reloadSiteAddress()">
+          <i class="fa fa-arrow-down"></i>
+        </button>
+      </div>
+    </div>
+
+    <mat-form-field>
+      <input matInput formControlName="siteName" placeholder="{{'site.info.siteName' | translate}}" [readonly]="true" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput formControlName="sitePhone" placeholder="{{'site.info.sitePhone' | translate}}"
+        [readonly]="true" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput formControlName="siteAddress" placeholder="{{'common.address' | translate}}" [readonly]="true" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput formControlName="siteZipCode" placeholder="{{'common.zipCode' | translate}}" [readonly]="true" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput formControlName="siteCity" placeholder="{{'common.city' | translate}}" [readonly]="true" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput formControlName="siteCountry" placeholder="{{'common.country' | translate}}" [readonly]="true" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput formControlName="sitePSTN" placeholder="{{'site.info.sitePSTN' | translate}}" />
+    </mat-form-field>
+
+
+  </form>
+</div>

@@ -1,0 +1,18 @@
+.btn-agree {
+  @include gilroyBold(16px);
+  @include radius(28px);
+  background-color: $color-green;
+  padding: 15px 35px;
+  color: $color-white;
+  letter-spacing: -0.22px;
+  line-height: 20px;
+  text-align: center;
+  margin-top: 15px;
+  border: solid 2px $color-green;
+  text-transform: uppercase;
+
+  &:hover {
+    background-color: $color-btnHover;
+    border-color: $color-btnHover;
+  }
+}

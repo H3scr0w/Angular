@@ -1,0 +1,93 @@
+<div *ngIf="restit != null && !showMobileForm && (restit | json) != '{}'" class="result-content">
+  <div class="content-restit">
+    <div class="content-restit-title">
+      <span class="title-1">{{ 'usufruit.restitution.title' | translate }}</span><br/>
+    </div>
+    <div class="content-restit-data">
+
+      <div class="restit-value-wrapper-half">
+        <div class="restit-value">
+          <div class="title">{{ 'usufruit.restitution.usufruit-economique' | translate }}</div>
+          <div class="green-value">{{ restit?.usufruit_economique | euroNumber }}  </div>
+        </div>
+
+        <div class="restit-value">
+          <div class="title">{{ 'usufruit.restitution.usufruit-fiscal' | translate }}
+            <sup class="reference-number">(1)</sup>
+          </div>
+          <span class="blue-value">{{ restit?.usufruit_fiscal | euroNumber }} </span>
+        </div>
+
+        <div class="restit-value">
+          <div class="title no-wrap" *ngIf="calculWithRestit?.calcul?.type_demembrement === typesDemembrement.VIAGER">
+            {{ (calculWithRestit?.calcul?.usufruitiers?.length === 1 ?
+              'usufruit.restitution.esperance-vie' : 'usufruit.restitution.esperance-des-vies')| translate }}
+            <sup class="reference-number">(2)</sup>
+          </div>
+
+          <div class="title" *ngIf="calculWithRestit?.calcul?.type_demembrement === typesDemembrement.TEMPORAIRE">
+            {{ 'usufruit.restitution.duree-demembrement'| translate }}
+          </div>
+
+          <span class="blue-value">
+            {{ restit?.duree_demembrement | number :'1.2-2':'fr-fr' }} {{ 'common.annees' | translate}}
+          </span>
+        </div>
+      </div>
+
+      <div class="restit-pie-chart-wrapper">
+        <canvas baseChart height="100%" width="100%" [data]="single" [labels]="labels" [chartType]="chartType"
+                [colors]="colorScheme" [options]="options">
+        </canvas>
+      </div>
+    </div>
+
+    <div class="donut-canvas-sizer">
+      <canvas id="donut-canvas" class="" baseChart height="100%" width="100%" [data]="single" [labels]="labels"
+              [chartType]="chartType"
+              [colors]="colorScheme" [options]="options">
+      </canvas>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content-restit-data">
+      <div class="restit-value-wrapper w-100">
+        <div class="restit-value-small">
+          {{ 'usufruit.restitution.nue-propriete-economique' | translate }}
+          <span class="val-nue-fisc">{{ restit?.nue_propriete_economique | euroNumber }}</span>
+        </div>
+        <div class="restit-value-small">
+          {{ 'usufruit.restitution.nue-propriete-fiscale' | translate }}
+          <sup class="reference-number">(1)</sup> :
+          <span class="val-nue-fisc">{{ restit?.nue_propriete_fiscale | euroNumber }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-taux">
+      <div class="taux">
+        <div class="taux-left" *ngIf="this.getInfoBulle(infoBulleCodes.TAUX_RENDEMENT)">
+          <div class="title">
+            {{ 'usufruit.restitution.taux' | translate }}
+            <sup class="reference-number">({{ calculWithRestit?.calcul?.type_demembrement === typesDemembrement.VIAGER ? 3 : 2 }})</sup>
+          </div>
+          <div class="valeur" [innerHTML]="this.getInfoBulle(infoBulleCodes.TAUX_RENDEMENT)">
+          </div>
+        </div>
+        <div class="taux-right">
+          <div class="valeur-percent">
+            {{ restit?.taux_rendement_annuel | percent:'.2' }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <ngx-calculated-with [donneesReferences]="restit?.donnees_references_utilisees">
+    </ngx-calculated-with>
+    <div class="btn-action btn-action-centered">
+      <button type="button" class="btn-export" (click)="export()">
+        {{'common.exporter' | translate}}
+      </button>
+    </div>
+  </div>
+</div>

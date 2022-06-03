@@ -1,0 +1,117 @@
+.step {
+	padding-left: 80px;
+
+  &.step-out {
+    padding-left: 0;
+  }
+
+  .form-control:disabled {
+    background-color: unset;
+  }
+
+  .form-group-person-content {
+    .form-control:disabled {
+      background-color: #ffffff;
+    }
+    margin-bottom: 5px;
+  }
+
+	@media(max-width: 425px) {
+		padding-left: 40px;
+	}
+
+	&-title {
+		position: relative;
+		p {
+			@include gilroyBold(20px);
+			color: $color-blue;
+			letter-spacing: -0.35px;
+			line-height: 24px;
+			margin-bottom: 0;
+			opacity: 0.3;
+		}
+		&-spacer {
+			margin-top: 13px !important;
+			padding-top: 17px;
+
+			@media(max-width: 425px) {
+				margin-top: 4px !important;
+				padding-top: 16px;
+			}
+			&.active {
+				margin-top: 13px !important;
+				padding-top: 17px;
+
+				@media(max-width: 425px) {
+					margin-top: 4px !important;
+					padding-top: 16px;
+				}
+			}
+		}
+		&.active {
+			position: relative;
+			p {
+				opacity: 1;
+			}
+		}
+	}
+	&-subtitle {
+		@include gilroyBold(16px);
+		color: $color-blue;
+		letter-spacing: -0.28px;
+		line-height: 20px;
+
+		@media(max-width: 425px) {
+			margin-bottom: 15px;
+		}
+
+		p {
+			margin-bottom: 0;
+		}
+	}
+	.profil {
+    position: relative;
+
+		.form-group {
+			&:last-child {
+				padding-bottom: 0;
+			}
+		}
+	}
+	.form-group {
+		padding-bottom: 40px;
+		margin: 0;
+		position: relative;
+		opacity: 0.3;
+
+		@media(max-width: 425px) {
+			padding-bottom: 30px;
+		}
+
+		&-with-subtitle {
+			flex-wrap: wrap;
+		}
+		&.active {
+			padding-bottom: 40px;
+			margin: 0;
+			position: relative;
+			opacity: 1;
+
+			@media(max-width: 425px) {
+				padding-bottom: 30px;
+			}
+		}
+		&:last-child {
+			padding-bottom: 77px;
+			@media(max-width: 425px) {
+				padding-bottom: 50px;
+			}
+		}
+	}
+
+  .form-group.form-group-person {
+    &:last-child {
+      padding-bottom: 0;
+    }
+  }
+}

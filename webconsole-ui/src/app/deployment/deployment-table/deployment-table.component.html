@@ -1,0 +1,80 @@
+<div class="mat-elevation-z8">
+  <div class="mx-2 d-block text-center">
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Filter" />
+    </mat-form-field>
+  </div>
+  <table class="w-100" mat-table matSort [dataSource]="deployments" matSortActive="deploymentId" matSortDisableClear matSortDirection="desc">
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="deploymentId">Id</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.deploymentId }}</td>
+    </ng-container>
+    <ng-container matColumnDef="site">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="deliverableCode">Site</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.deliverableCode }}</td>
+    </ng-container>
+    <ng-container matColumnDef="docroot">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="docrootCode">DocRoot</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.docrootCode }}</td>
+    </ng-container>
+    <ng-container matColumnDef="environment">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="environmentCode">Environment</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.environmentCode }}</td>
+    </ng-container>
+    <ng-container matColumnDef="version">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="deliverableVersion">Version</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.deliverableVersion }}</td>
+    </ng-container>
+    <ng-container matColumnDef="requester">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="requester">Requester</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.requester }}</td>
+    </ng-container>
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="deploymentTypeId">Type</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.deploymentType.label }}</td>
+    </ng-container>
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="deploymentStatusId">Status</th>
+      <td mat-cell *matCellDef="let element" class="text-break" [ngClass]="element.deploymentStatus.label">{{ element.deploymentStatus.label }}</td>
+    </ng-container>
+    <ng-container matColumnDef="creationDate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="created">Date</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.creationDate | date:'dd/MM/yyyy' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions" *ngIf="type === 'pending'">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let element">
+        <span (click)="deploy(element)" matTooltip="validate deployment">
+          <i class="fas fa-paper-plane p-1"></i>
+        </span>
+        <span (click)="editItem(element)" matTooltip="update request">
+          <i class="fas fa-edit p-1"></i>
+        </span>
+        <span (click)="deleteItem(element)" matTooltip="delete request">
+          <i class="fas fa-trash-alt p-1"></i>
+        </span>
+        <span *ngIf="deploying && element.deploymentId === deployId">
+          <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="actions" *ngIf="type === 'all'">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let element">
+        <span (click)="downloadLog(element)" matTooltip="see logs" *ngIf="element.deploymentStatus.label === 'IN_PROGRESS' || element.deploymentStatus.label === 'SUCCEEDED' || element.deploymentStatus.label === 'FAILED'">
+          <i class="fas fa-download"></i>
+        </span>
+        <span *ngIf="loadingLogs && element.deploymentId === deployId">
+          <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [length]="totalElements" showFirstLastButtons></mat-paginator>
+  <div *ngIf="isLoading" class="loading-shade">
+    <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+  </div>
+</div>

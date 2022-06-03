@@ -1,0 +1,63 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()" autocomplete="off">
+  <h1 mat-dialog-title *ngIf="data.mode === campaignMode">
+    {{'user.replace' | translate}}
+  </h1>
+  <h1 mat-dialog-title *ngIf="data.mode === authorityMode">
+    {{'user.add' | translate}}
+  </h1>
+  <mat-dialog-content>
+    <mat-form-field>
+      <input matInput type="text" formControlName="lastName" placeholder="{{'user.name' | translate}}" required />
+      <button mat-button *ngIf="userForm.get('lastName')!.value" matSuffix mat-icon-button (click)="userForm.get('lastName')!.setValue('')">
+        <mat-icon>x</mat-icon>
+      </button>
+      <mat-hint class="w-100" *ngIf="userForm.controls['lastName'].hasError('required')">
+        <span align="right" class="mat-error">
+          {{'common.validation.required.message' | translate}}
+        </span>
+      </mat-hint>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="text" formControlName="firstName" placeholder="{{'user.firstName' | translate}}" required />
+      <button mat-button *ngIf="userForm.get('firstName')!.value" matSuffix mat-icon-button (click)="userForm.get('firstName')!.setValue('')">
+        <mat-icon>x</mat-icon>
+      </button>
+      <mat-hint class="w-100" *ngIf="userForm.controls['firstName'].hasError('required')">
+        <span align="right" class="mat-error">
+          {{'common.validation.required.message' | translate}}
+        </span>
+      </mat-hint>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="text" formControlName="sgid" placeholder="{{'user.sgid' | translate}}" />
+      <button mat-button *ngIf="userForm.get('sgid')!.value" matSuffix mat-icon-button (click)="userForm.get('sgid')!.setValue('')">
+        <mat-icon>x</mat-icon>
+      </button>
+    </mat-form-field>
+    <ng-select [items]="users" bindLabel="cn" placeholder="Correspondant" [searchable]="true" [dropdownPosition]="'bottom'" formControlName="user"
+      [selectOnTab]="true" notFoundText="" typeToSearchText="{{'user.search.required' | translate}}" (change)="onUserSelected($any($event))">
+      <ng-template ng-label-tmp let-item="item">
+        <span *ngIf="item"> {{item?.stGoSGI}} - {{item?.cn}}
+        </span>
+      </ng-template>
+    </ng-select>
+    <mat-hint class="w-100" *ngIf="userForm.controls['user'].hasError('required')">
+      <span align="right" class="mat-error">
+        {{'common.validation.required.message' | translate}}
+      </span>
+    </mat-hint>
+    <div *ngIf="data.mode === campaignMode">
+      <mat-checkbox color="primary" formControlName="isNotified">{{'user.invitation' | translate}}</mat-checkbox>
+      <div class="m-2">
+        <i>
+          {{'user.invitation.message' | translate}}
+        </i>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <div mat-dialog-actions align="center">
+    <button type="button" mat-raised-button (click)="onNoClick()">{{'common.close' | translate}}</button>
+    <button type="submit" [disabled]="userForm.invalid || isLoading" mat-raised-button color="primary" class="mr-3">{{'common.save' | translate}}</button>
+  </div>
+</form>

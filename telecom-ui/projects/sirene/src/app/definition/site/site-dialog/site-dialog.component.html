@@ -1,0 +1,423 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading || isLoadingSite"></mat-progress-bar>
+<form [formGroup]="siteForm" (ngSubmit)="onSubmit()" autocomplete="off">
+  <h1 mat-dialog-title cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+    {{'site.dialogbox.name' | translate}} {{ siteForm.get('siteCode').value }}</h1>
+  <mat-dialog-content>
+    <mat-accordion [multi]="true">
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <span class="font-weight-bold">{{'site.dialogbox.tab.description' | translate}}</span>
+        </mat-expansion-panel-header>
+        <ng-template matExpansionPanelContent>
+
+          <mat-form-field *ngIf="data?.mode=='edit'">
+            <input [readonly]="true" formControlName="siteCode" matInput placeholder="{{'site.dialogbox.tab.description.siteCode' | translate}}"
+            />
+          </mat-form-field>
+
+          <mat-form-field *ngIf="data?.mode=='edit'">
+            <input [readonly]="true" formControlName="siteName" matInput placeholder="{{'site.dialogbox.tab.description.siteName' | translate}}"
+            />
+          </mat-form-field>
+
+          <mat-progress-bar mode="indeterminate" *ngIf="isLoadingOldSite"></mat-progress-bar>
+          <ng-select [items]="oldSites | async" [typeahead]="inputOldSite" bindLabel="siteCode" placeholder="{{'site.dialogbox.tab.description.oldSiteCode' | translate}}"
+            [searchable]="true" [dropdownPosition]="'bottom'" formControlName="oldSiteObj" appendTo="body" [selectOnTab]="true">
+            <ng-template ng-label-tmp let-item="item">
+              <span *ngIf="item"> {{item?.siteCode}} - {{item?.city?.name}} - {{item?.city?.country?.name}} - {{item?.usualName}}
+              </span>
+            </ng-template>
+          </ng-select>
+
+          <mat-form-field *ngIf="data?.mode=='edit'">
+            <input [readonly]="true" formControlName="statusSite" matInput placeholder="{{'site.dialogbox.tab.description.siteStatus' | translate}}"
+            />
+          </mat-form-field>
+
+          <mat-form-field *ngIf="data?.mode=='edit'">
+            <input [readonly]="true" formControlName="updateStatusDate" matInput placeholder="{{'site.dialogbox.tab.description.updateStatusDate' | translate}}"
+            />
+          </mat-form-field>
+
+          <mat-form-field *ngIf="data?.mode=='edit'">
+            <input [readonly]="true" formControlName="siteOperatorOnSite" matInput placeholder="{{'site.dialogbox.tab.description.siteOperatorOnSite' | translate}}"
+            />
+          </mat-form-field>
+
+          <ng-select [items]="siteTypes | async" [typeahead]="inputSiteType" bindLabel="name" placeholder="{{'site.dialogbox.tab.description.siteType' | translate}}"
+            [searchable]="true" [dropdownPosition]="'bottom'" formControlName="siteType" appendTo="body" [selectOnTab]="true">
+            <ng-template ng-label-tmp let-item="item">
+              <span *ngIf="item"> {{item?.name}}</span>
+            </ng-template>
+          </ng-select>
+
+          <mat-form-field>
+            <input formControlName="siteFixePhone" matInput pattern="(^\+?\(?(\+? ?[0-9]{1,4})\)?([0-9\- ])+)" placeholder="{{'site.dialogbox.tab.description.siteFixPhone' | translate}}"
+            />
+            <mat-hint class="w-100" *ngIf="hasError('siteFixePhone', 'pattern')">
+              <span align="right" class="mat-error">
+                {{'common.validation.pattern.message' | translate}}
+              </span>
+            </mat-hint>
+          </mat-form-field>
+
+          <mat-form-field>
+            <input formControlName="usualName" matInput placeholder="{{'site.dialogbox.tab.description.usualName' | translate}}" />
+          </mat-form-field>
+
+          <ng-select [items]="sifCodes | async" [typeahead]="inputSifCode" bindLabel="sifCode" placeholder="{{'site.dialogbox.tab.description.sifCode' | translate}}"
+            [searchable]="true" [dropdownPosition]="'bottom'" formControlName="sifCode" (change)="onSifSelected($any($event))"
+            appendTo="body" [selectOnTab]="true">
+            <ng-template ng-label-tmp let-item="item">
+              <span *ngIf="item"> {{item?.sifCode}}</span>
+            </ng-template>
+          </ng-select>
+
+          <ng-select [items]="sectors | async" [typeahead]="inputSector" bindLabel="name" placeholder="{{'site.dialogbox.tab.description.sector' | translate}}"
+            [searchable]="true" [dropdownPosition]="'bottom'" formControlName="sector" (change)="onSectorSelected($any($event))"
+            appendTo="body" [selectOnTab]="true">
+            <ng-template ng-label-tmp let-item="item">
+              <span *ngIf="item"> {{item?.name}}</span>
+            </ng-template>
+          </ng-select>
+
+          <ng-select [items]="zones" [typeahead]="inputZone" bindLabel="name" placeholder="{{'zone.title' | translate}}" [searchable]="true"
+            [dropdownPosition]="'bottom'" formControlName="zone" (change)="onZoneSelected($any($event))" appendTo="body" [selectOnTab]="true">
+            <ng-template ng-label-tmp let-item="item">
+              <span *ngIf="item"> {{item?.name}}</span>
+            </ng-template>
+          </ng-select>
+
+          <ng-select [items]="companies" [typeahead]="inputCompany" bindLabel="companyName" placeholder="{{'site.dialogbox.tab.description.company' | translate}} *"
+            [searchable]="true" [dropdownPosition]="'bottom'" formControlName="company" (change)="onCompanySelected($any($event))"
+            appendTo="body" [selectOnTab]="true">
+            <ng-template ng-label-tmp let-item="item">
+              <span *ngIf="item"> {{item?.companyName}}</span>
+            </ng-template>
+          </ng-select>
+          <small align="right" class="mat-error" *ngIf="hasError('company', 'required')">
+            {{'common.validation.required.message' | translate}}</small>
+
+          <ng-select [items]="segmentations" [typeahead]="inputSegmentation" bindLabel="name" placeholder="{{'site.dialogbox.tab.description.segmentation' | translate}} *"
+            [searchable]="true" [dropdownPosition]="'bottom'" formControlName="segmentations" appendTo="body" [selectOnTab]="true"
+            [multiple]="true" [hideSelected]="true">
+            <ng-template ng-label-tmp let-item="item" let-clear="clear">
+              <span class="ng-value-icon" (click)="clear(item)" aria-hidden="true">×</span>
+              <span *ngIf="item">{{item?.name}}</span>
+            </ng-template>
+          </ng-select>
+          <small align="right" class="mat-error" *ngIf="hasError('segmentations', 'required')">
+            {{'common.validation.required.message' | translate}}</small>
+
+          <mat-slide-toggle formControlName="backbone" color="primary">
+            {{'site.dialogbox.tab.description.backBoneSite' | translate}}
+          </mat-slide-toggle>
+        </ng-template>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <span class="font-weight-bold">{{'site.dialogbox.tab.address' | translate}}</span>
+        </mat-expansion-panel-header>
+        <ng-template matExpansionPanelContent>
+          <mat-form-field>
+            <input formControlName="address1" matInput [required]="!isTemporaryUnknownAddress" placeholder="{{'site.dialogbox.tab.description.address1' | translate}}"
+            />
+            <mat-error align=" right" *ngIf="hasError('address1', 'required')">
+              {{'common.validation.required.message' | translate}}</mat-error>
+          </mat-form-field>
+
+          <mat-slide-toggle formControlName="tempUnknownAddress" color="primary" (change)="toggleTempUnknownAddress($event)">
+            {{'site.dialogbox.tab.description.tempUnknownAddress' | translate}}
+          </mat-slide-toggle>
+
+          <mat-form-field>
+            <input formControlName="address2" matInput placeholder="{{'site.dialogbox.tab.description.address2' | translate}}" />
+          </mat-form-field>
+
+          <mat-form-field>
+            <input formControlName="address3" matInput placeholder="{{'site.dialogbox.tab.description.address3' | translate}}" />
+          </mat-form-field>
+
+          <mat-form-field>
+            <input formControlName="longitude" matInput required type="number" pattern="^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,8})?))$"
+              placeholder="{{'site.dialogbox.tab.description.longitude' | translate}}" />
+            <mat-error align=" right" *ngIf="hasError('longitude', 'required')">
+              {{ 'common.validation.pattern.message' | translate}}
+            </mat-error>
+            <mat-hint class="w-100" *ngIf="hasError('longitude', 'pattern')">
+              <span align="right" class="mat-error">
+                {{'common.validation.pattern.message' | translate}}
+              </span>
+            </mat-hint>
+          </mat-form-field>
+
+          <mat-form-field>
+            <input formControlName="latitude" matInput required type="number" pattern="^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,8})?))$"
+              placeholder="{{'site.dialogbox.tab.description.latitude' | translate}}" />
+            <mat-hint class="w-100" *ngIf="hasError('latitude', 'pattern')">
+              <span align="right" class="mat-error">
+                {{'common.validation.pattern.message' | translate}}
+              </span>
+            </mat-hint>
+            <mat-error align=" right" *ngIf="hasError('latitude', 'required')">
+              {{'common.validation.required.message' | translate}}
+            </mat-error>
+          </mat-form-field>
+
+          <ng-select [items]="countries | async" [typeahead]="inputCountry" bindLabel="name" placeholder="{{'site.dialogbox.tab.description.country' | translate}} *"
+            [searchable]="true" [dropdownPosition]="'bottom'" formControlName="country" (change)="onCountrySelected($any($event))"
+            appendTo="body" [selectOnTab]="true">
+            <ng-template ng-label-tmp let-item="item">
+              <span *ngIf="item"> {{item?.name}}</span>
+            </ng-template>
+          </ng-select>
+          <small align="right" class="mat-error" *ngIf="hasError('country', 'required')">{{'common.validation.required.message' | translate}}</small>
+
+          <mat-form-field>
+            <input formControlName="postCode" matInput required placeholder="{{'site.dialogbox.tab.description.postCode' | translate}}"
+            />
+            <mat-error align=" right" *ngIf="hasError('postCode', 'required')">
+              {{'common.validation.required.message' | translate}}</mat-error>
+          </mat-form-field>
+
+          <ng-select [items]="cities" [typeahead]="inputCity" bindLabel="name" placeholder="{{'site.dialogbox.tab.description.city' | translate}} *"
+            [searchable]="true" [dropdownPosition]="'bottom'" formControlName="city" (change)="onCitySelected($any($event))"
+            appendTo="body" [selectOnTab]="true">
+            <ng-template ng-label-tmp let-item="item">
+              <span *ngIf="item"> {{item?.name}}</span>
+            </ng-template>
+          </ng-select>
+          <small align="right" class="mat-error" *ngIf="hasError('city', 'required')">{{'common.validation.required.message' | translate}}</small>
+
+          <div class="text-right">
+            <button *ngIf="!isViewOnly && (isAdmin || isRsm)" class="mr-1" type="button" (click)="openCityDialog();" mat-mini-fab color="primary"
+              matTooltip="{{'site.city.add.tooltip' | translate}}">
+              <i class="fas fa-plus "></i>
+            </button>
+            <button type="button" *ngIf="(isAdmin || isRsm) && selectedCity" (click)="searchSiteByCity();" mat-mini-fab color="primary"
+              [hidden]="disableSiteSearch" matTooltip="{{'site.search.by.city.tooltip' | translate}}">
+              <i class="fas fa-eye "></i>
+            </button>
+            <button type="button" *ngIf="(isAdmin || isRsm) && selectedCity" (click)="resetSites();" mat-mini-fab color="primary" [hidden]="!disableSiteSearch"
+              matTooltip="{{'site.search.by.city.reset.tooltip' | translate}}">
+              <i class="fas fa-eye-slash"></i>
+            </button>
+          </div>
+          <mat-expansion-panel [expanded]="panelFilterSite">
+            <table mat-table matSort [dataSource]="sites" matSortActive="usualName" matSortDisableClear matSortDirection="asc" class="w-100">
+              <ng-container matColumnDef="siteName">
+                <th *matHeaderCellDef mat-header-cell mat-sort-header="usualName">
+                  {{'site.datatable.column.siteName' | translate}}
+                </th>
+                <td mat-cell *matCellDef="let element" class="text-break">
+                  <mat-chip *ngIf="element.siteCode === siteForm.get('siteCode').value" color="primary" selected>
+                    {{ element.siteCode}} - {{ element.city.name}} - {{ element.company?.companyName}} - {{element.usualName }}
+                  </mat-chip>
+                  <a *ngIf="element.siteCode !== siteForm.get('siteCode').value && (isAdmin || isRsm)" (click)="openSite(element);">
+                    {{ element.siteCode}} - {{ element.city.name}} - {{ element.company?.companyName}} - {{element.usualName }}
+                  </a>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedSiteColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedSiteColumns"></tr>
+            </table>
+
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="pageSize" [pageIndex]="pageIndex" [length]="totalElements"
+              showFirstLastButtons></mat-paginator>
+          </mat-expansion-panel>
+          <ng-select [items]="timezones" [typeahead]="inputTimeZone" bindLabel="timeZone" bindValue="id" placeholder="{{'site.dialogbox.tab.description.timezone' | translate}} *"
+            [searchable]="false" [dropdownPosition]="'bottom'" formControlName="timeZoneId" required appendTo="body" [selectOnTab]="true">
+            <ng-template ng-label-tmp let-item="item">
+              <span *ngIf="item"> {{item?.timeZone}}</span>
+            </ng-template>
+          </ng-select>
+          <small align="right" class="mat-error" *ngIf="hasError('timeZoneId', 'required')">
+            {{'common.validation.required.message' | translate}}
+          </small>
+          <small align="right" class="mat-error" *ngIf="this.siteForm.controls['timeZoneId'].hasError('match')">
+            {{'common.validation.required.message' | translate}}
+          </small>
+        </ng-template>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <span class="font-weight-bold">{{'site.dialogbox.tab.contact' | translate}}</span>
+
+        </mat-expansion-panel-header>
+        <ng-template matExpansionPanelContent>
+          <div class="row no-gutters">
+            <div class="col-sm-9 col-md-8 col-lg-11">
+              <ng-select [items]="itManagers | async" [typeahead]="inputITManager" bindLabel="fullName" placeholder="{{'site.dialogbox.tab.description.itManager' | translate}} *"
+                [searchable]="true" [virtualScroll]="true" formControlName="itManager" appendTo="body" [selectOnTab]="true"
+                required>
+                <ng-template ng-label-tmp let-item="item">
+                  <span *ngIf="item">{{item.fullName}}</span>
+                </ng-template>
+              </ng-select>
+              <small align="right" class="mat-error" *ngIf="hasError('itManager', 'required')">
+                {{'common.validation.required.message' | translate}}
+              </small>
+              <stgo-contact-display [selectedContact]="siteForm.get('itManager').value"></stgo-contact-display>
+            </div>
+            <div class="col-sm-3 col-md-4 col-lg-1">
+              <button *ngIf="!isViewOnly  && (isAdmin || isRsm)" type="button" mat-mini-fab color="primary" matTooltip="{{'contact.add.tooltip' | translate}}"
+                (click)="addContact('itManager')">
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="row no-gutters">
+            <div class="col-sm-9 col-md-8 col-lg-11">
+              <ng-select [items]="rsms | async" [typeahead]="inputRsm" bindLabel="fullName" placeholder="{{'site.dialogbox.tab.description.rsm' | translate}} *"
+                [searchable]="true" [dropdownPosition]="'bottom'" formControlName="rsm" appendTo="body" [selectOnTab]="true"
+                required>
+                <ng-template ng-label-tmp let-item="item">
+                  <span *ngIf="item">{{item.fullName}}</span>
+                </ng-template>
+              </ng-select>
+              <small align="right" class="mat-error" *ngIf="hasError('rsm', 'required')">
+                {{'common.validation.required.message' | translate}}
+              </small>
+              <stgo-contact-display [selectedContact]="siteForm.get('rsm').value"></stgo-contact-display>
+            </div>
+            <div class="col-sm-3 col-md-4 col-lg-1">
+              <button *ngIf="!isViewOnly  && (isAdmin || isRsm)" type="button" mat-mini-fab color="primary" matTooltip="{{'contact.add.tooltip' | translate}}"
+                (click)="addContact('rsm')">
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="row no-gutters">
+            <div class="col-sm-9 col-md-8 col-lg-11">
+              <ng-select [items]="securityContacts | async" [typeahead]="inputSecurityContact" bindLabel="fullName" placeholder="{{'site.dialogbox.tab.description.securityContact' | translate}}"
+                [searchable]="true" [virtualScroll]="true" formControlName="securityContact" appendTo="body" [selectOnTab]="true">
+                <ng-template ng-label-tmp let-item="item">
+                  <span *ngIf="item">{{item.fullName}}</span>
+                </ng-template>
+              </ng-select>
+              <stgo-contact-display [selectedContact]="siteForm.get('securityContact').value">
+              </stgo-contact-display>
+            </div>
+            <div class="col-sm-3 col-md-4 col-lg-1">
+              <button *ngIf="!isViewOnly  && (isAdmin || isRsm)" type="button" mat-mini-fab color="primary" matTooltip="{{'contact.add.tooltip' | translate}}"
+                (click)="addContact('securityContact')">
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="row no-gutters">
+            <div class="col-sm-9 col-md-8 col-lg-11">
+              <ng-select [items]="telephonyContacts | async" [typeahead]="inputTelephonyContact" bindLabel="fullName" placeholder="{{'site.dialogbox.tab.description.telephonyContact' | translate}}"
+                [searchable]="true" [dropdownPosition]="'bottom'" formControlName="telephonyContact" appendTo="body" [selectOnTab]="true">
+                <ng-template ng-label-tmp let-item="item">
+                  <span *ngIf="item">{{item.fullName}}</span>
+                </ng-template>
+              </ng-select>
+              <stgo-contact-display [selectedContact]="siteForm.get('telephonyContact').value">
+              </stgo-contact-display>
+            </div>
+            <div class="col-sm-3 col-md-4 col-lg-1">
+              <button *ngIf="!isViewOnly  && (isAdmin || isRsm)" type="button" mat-mini-fab color="primary" matTooltip="{{'contact.add.tooltip' | translate}}"
+                (click)="addContact('telephonyContact')">
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+          </div>
+
+        </ng-template>
+      </mat-expansion-panel>
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <span class="font-weight-bold">{{'site.dialogbox.tab.additionalInformation' | translate}}</span>
+        </mat-expansion-panel-header>
+        <ng-template matExpansionPanelContent>
+          <mat-slide-toggle formControlName="doNotArchiveSite" color="primary" (change)="toggleAutomaticArchived($event)">
+            <span class="bold">{{'site.dialogbox.tab.description.automaticallyArchivedSite' | translate}}</span>
+          </mat-slide-toggle>
+          <mat-form-field>
+            <textarea matInput formControlName="comments" cdkTextareaAutosize cdkAutosizeMinRows="5" placeholder="{{'site.dialogbox.tab.description.comments' | translate}}"></textarea>
+          </mat-form-field>
+          <mat-form-field>
+            <input type="number" formControlName="numberUsers" matInput required placeholder="{{'site.dialogbox.tab.description.noOfUsers' | translate}}"
+            />
+            <mat-error align=" right" *ngIf="hasError('numberUsers', 'required')">
+              {{'common.validation.required.message' | translate}}</mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input formControlName="pstnNumber" matInput placeholder="{{'site.dialogbox.tab.description.pstnForDSL' | translate}}" />
+          </mat-form-field>
+          <mat-form-field>
+            <input formControlName="secondPhoneNo" matInput placeholder="{{'site.dialogbox.tab.description.secondEligibility' | translate}}"
+            />
+          </mat-form-field>
+
+          <ng-select [items]="videos" bindLabel="video" placeholder="{{'site.dialogbox.tab.description.video' | translate}} *" [searchable]="false"
+            [dropdownPosition]="'bottom'" formControlName="isVideo" appendTo="body" [selectOnTab]="true">
+            <ng-template ng-label-tmp let-item="item">
+              <span *ngIf="item">{{item}}</span>
+            </ng-template>
+          </ng-select>
+          <small align="right" class="mat-error" *ngIf="hasError('city', 'required')">
+            {{'common.validation.required.message' | translate}
+          </small>
+
+          <mat-label for="file" class="mr-2">
+            <span translate>site.dialogbox.tab.description.attached</span>
+          </mat-label>
+          <br />
+          <ng-container *ngIf="attachedFiles.length > 0">
+            <table mat-table [dataSource]="attachedFiles" class="w-100">
+              <ng-container matColumnDef="fileName">
+                <th *matHeaderCellDef mat-header-cell [style.width.%]="70">{{'attached.files.datatable.column.fileName' | translate}}
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  <a *ngIf="!isViewOnly  && (isAdmin || isRsm)" (click)="downloadFile(element)" matTooltip="{{element.filename}}" class="text-ellipsis">{{element.filename}}</a>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="application">
+                <th *matHeaderCellDef mat-header-cell [style.width.%]="20">
+                  {{'attached.files.datatable.column.application' | translate}}</th>
+                <td mat-cell *matCellDef="let element">{{element.application}}</td>
+              </ng-container>
+              <ng-container matColumnDef="actions">
+                <th *matHeaderCellDef mat-header-cell [style.width.%]="10">{{'common.actions' | translate}}</th>
+                <td mat-cell *matCellDef="let element">
+                  <button *ngIf="!isViewOnly  && (isAdmin || isRsm)" type="button" mat-icon-button color="primary" matTooltip="{{'common.removeFile' | translate}}"
+                    (click)="deleteFile(element);">
+                    <i class="fas fa-trash p-1"></i>
+                  </button>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+          </ng-container>
+          <br />
+          <stgo-file-upload *ngIf="!isViewOnly  && (isAdmin || isRsm)" [multiple]="true" (fileSelected)="handleFileInput($event)">
+          </stgo-file-upload>
+          <button *ngIf="!isViewOnly  && (isAdmin || isRsm)" type="button" mat-raised-button color="primary" matTooltip="{{'common.uploadFile' | translate}}"
+            (click)="addFile();" [disabled]="!showFileUploadButton">
+            {{'common.uploadFile' | translate}}
+          </button>
+          <ng-select [items]="applications" bindLabel="name" placeholder="{{'site.dialogbox.tab.description.application' | translate}}"
+            [searchable]="false" [dropdownPosition]="'bottom'" formControlName="application" appendTo="body" [selectOnTab]="true">
+            <ng-template ng-label-tmp let-item="item">
+              <span *ngIf="item">{{item.name}}</span>
+            </ng-template>
+          </ng-select>
+
+        </ng-template>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </mat-dialog-content>
+  <mat-dialog-actions class="d-block p-10 text-center mb-2 mt-4">
+    <button type="button" mat-raised-button (click)="onNoClick()">{{'common.close' | translate}}</button>
+    <button *ngIf="!isViewOnly  && (isAdmin || isRsm)" type=" submit" [disabled]="siteForm.pristine || siteForm.invalid || isLoading || isLoadingSite || isLoadingOldSite"
+      mat-raised-button color="primary" class="mr-3">{{'common.save' | translate}}</button>
+  </mat-dialog-actions>
+</form>

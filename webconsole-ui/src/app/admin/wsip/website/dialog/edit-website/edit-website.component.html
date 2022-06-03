@@ -1,0 +1,58 @@
+<form [formGroup]="websiteForm">
+  <h3 mat-dialog-title>Edit Website</h3>
+  <mat-dialog-content>
+    <mat-form-field>
+      <input matInput placeholder="Website Code" formControlName="code" readonly />
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Website Name" formControlName="name" cdkFocusInitial />
+      <mat-error *ngIf="websiteForm.get('name')!.dirty && websiteForm.get('name')!.hasError('required')">
+        Website is
+        <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Code Repository URL" formControlName="codeRepositoryUrl" />
+      <mat-error *ngIf="websiteForm.get('codeRepositoryUrl')!.dirty && websiteForm.get('codeRepositoryUrl')!.hasError('required')">
+        Code repository URL is
+        <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Binary Repository URL" formControlName="binaryRepositoryUrl" />
+      <mat-error *ngIf="websiteForm.get('binaryRepositoryUrl')!.dirty && websiteForm.get('binaryRepositoryUrl')!.hasError('required')">
+        Binary repository URL is
+        <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Home Directory" formControlName="homeDirectory" />
+      <mat-error *ngIf="websiteForm.get('homeDirectory')!.dirty && websiteForm.get('homeDirectory')!.hasError('required')">
+        Home directory is
+        <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+    <div class="d-inline-flex w-100">
+      <mat-checkbox class="float-left w-100" color="primary" labelPosition="before" formControlName="enable">
+        Enable
+      </mat-checkbox>
+      <mat-checkbox class="justify-content-center w-100" color="primary" labelPosition="before" formControlName="isLive">
+        Is Live
+      </mat-checkbox>
+      <mat-checkbox class="float-right" color="primary" labelPosition="before" formControlName="isQualysEnable">
+        Qualys enable
+      </mat-checkbox>
+    </div>
+    <mat-form-field>
+      <input matInput type="number" placeholder="Qualys WebApp Id" formControlName="qualysWebAppId" />
+    </mat-form-field>  
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button type="button" mat-raised-button color="primary" (click)="cancel()">
+      Cancel
+    </button>
+    <button type="submit" mat-raised-button color="primary" (click)="save()" [disabled]="websiteForm.pristine || websiteForm.invalid">
+      Save <i *ngIf="saving" class="fas fa-circle-notch fa-spin"></i>
+    </button>
+  </mat-dialog-actions>
+</form>

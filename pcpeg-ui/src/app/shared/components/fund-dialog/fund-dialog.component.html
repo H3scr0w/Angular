@@ -1,0 +1,89 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<form [formGroup]="fundForm" (ngSubmit)="onSubmit()" autocomplete="off">
+  <h1 mat-dialog-title>
+    {{'fund.add' | translate}}
+  </h1>
+  <mat-dialog-content>
+    <div class="row">
+      <div class="col">
+        <mat-form-field>
+          <input matInput type="text" formControlName="fundLabel" placeholder="{{'fund.label' | translate}}" required />
+          <button mat-button *ngIf="fundForm.get('fundLabel')!.value" matSuffix mat-icon-button (click)="fundForm.get('fundLabel')!.setValue(null)">
+            <mat-icon>x</mat-icon>
+          </button>
+          <mat-hint class="w-100" *ngIf="fundForm.controls['fundLabel'].hasError('required')">
+            <span align="right" class="mat-error">
+              {{'common.validation.required.message' | translate}}
+            </span>
+          </mat-hint>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+        <div class="col">
+          <mat-form-field>
+            <input matInput type="text" formControlName="amundiCode" placeholder="{{'fund.amundi-code' | translate}}" required />
+            <button mat-button *ngIf="fundForm.get('amundiCode')!.value" matSuffix mat-icon-button (click)="fundForm.get('amundiCode')!.setValue(null)">
+              <mat-icon>x</mat-icon>
+            </button>
+            <mat-hint class="w-100" *ngIf="fundForm.controls['amundiCode'].hasError('required')">
+              <span align="right" class="mat-error">
+                {{'common.validation.required.message' | translate}}
+              </span>
+            </mat-hint>
+          </mat-form-field>
+        </div>
+      </div>
+    <div class="row">
+      <div class="col">
+        <mat-form-field>
+          <input matInput type="text" formControlName="contactName" placeholder="{{'contact.name' | translate}}" />
+          <button mat-button *ngIf="fundForm.get('contactName')!.value" matSuffix mat-icon-button (click)="fundForm.get('contactName')!.setValue(null)">
+            <mat-icon>x</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <mat-form-field>
+          <input matInput type="text" formControlName="contactTel" placeholder="{{'contact.tel' | translate}}" />
+          <button mat-button *ngIf="fundForm.get('contactTel')!.value" matSuffix mat-icon-button (click)="fundForm.get('contactTel')!.setValue(null)">
+            <mat-icon>x</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <mat-form-field>
+          <input matInput formControlName="contactMail" placeholder="{{'contact.mail' | translate}}" />
+          <button mat-button *ngIf="fundForm.get('contactMail')!.value" matSuffix mat-icon-button (click)="fundForm.get('contactMail')!.setValue(null)">
+            <mat-icon>x</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <ng-select formControlName="tenantAccount" [typeahead]="inputTenantAccount" [items]="tenantAccounts" bindLabel="teneurCompteLibelle"
+          placeholder="{{ 'tenant-account' | translate }}" [searchable]="true" [dropdownPosition]="'bottom'" appendTo="body"
+          [selectOnTab]="true" notFoundText="" typeToSearchText="">
+          <ng-template ng-label-tmp let-item="item">
+            <span *ngIf="item"> {{item?.teneurCompteLibelle}}
+            </span>
+          </ng-template>
+        </ng-select>
+        <mat-hint class="w-100" *ngIf="fundForm.controls['tenantAccount'].hasError('required')">
+          <span align="right" class="mat-error">
+            {{'common.validation.required.message' | translate}}
+          </span>
+        </mat-hint>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <div mat-dialog-actions align="center">
+    <button type="button" mat-raised-button (click)="onNoClick()">{{'common.close' | translate}}</button>
+    <button type="submit" [disabled]="fundForm.invalid || isLoading" mat-raised-button color="primary" class="mr-3">{{'common.save' | translate}}</button>
+  </div>
+</form>

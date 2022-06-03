@@ -1,0 +1,77 @@
+<header>
+  <div class="container-fluid">
+    <div class="header__user"
+         [ngClass]="statusUser ? 'active' : 'inactive'">
+      <div role="tooltip" class="my-account popover in popover-bottom bs-popover-bottom bottom show">
+        <div class="popover-arrow arrow"></div>
+        <div class="popover-content popover-body">
+          <div class="popover-list my-account-btn">
+            <a href="{{ monCompteUrl }}" target="_blank" title="{{ 'header.moncompteidnot' | translate }}">
+              {{ 'header.moncompteidnot' | translate }}
+            </a>
+          </div>
+          <div class="popover-list sign-out" (click)="logOut()">
+            {{ 'header.sedeconnecter' | translate }}
+            <img alt="logout" src="../../../assets/images/ic_logout.svg" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-wrapper">
+      <div class="row align-items-center">
+        <div class="header-content__left col-6 col-sm-3 col-md-3 col-lg-5">
+          <div>
+            <a [routerLink]="['/']"><img  src="../../../assets/images/logo_hectaur.svg" alt="" class="img-fluid logo"></a>
+          </div>
+        </div>
+        <div class="d-none d-sm-block col-sm-5 col-md-5 col-lg-3">
+          <app-ng7-bootstrap-breadcrumb></app-ng7-bootstrap-breadcrumb>
+        </div>
+        <div class="col-6 col-sm-4 col-md-4">
+          <div class="header-content__right">
+            <div class="header__user"
+                (click)="toggleStatusUser($event)"
+                [ngClass]="statusUser ? 'active' : 'inactive'">
+              <span>
+                <div class="header__user-picture">
+                  <img *ngIf="user?.picture" [src]="user?.picture | safeHtml" width="32px" height="32px" alt="Photo de profil">
+                </div>
+                <div class="header__user-name">
+                  <p class="firstname">{{ user?.firstName }}</p>
+                  <p class="lastname">{{ user?.lastName }}</p>
+                </div>
+                <div class="header__user-menu">
+                  <img src="../../../assets/images/ic_dropdown_arrow.svg" alt="" />
+                </div>
+              </span>
+            </div>
+            <div class="header__action"
+                (click)="toggleStatusAction($event)"
+                [ngClass]="statusAction ? 'active' : 'inactive'">
+              <div class="header__action-btn header__action-btn--setting" *ngIf="user?.isAdmin">
+                <a href="{{ adminUrl }}" target="_blank" title="administration">
+                  <img src="../../../assets/images/ic_settings.svg" alt="" />
+                </a>
+              </div>
+              <div class="header__action-btn header__action-btn--app">
+                <a >
+                  <img id="portal" src="../../../assets/images/ic_system_portal.svg" alt="" />
+                </a>
+                <div class="notaccess popover in popover-bottom bs-popover-bottom bottom show">
+                  <div class="popover-arrow arrow"></div>
+                  <div class="popover-content popover-body">
+                    <a href="{{ notAccessUrl }}" target="_blank">
+                      <img src="../../../assets/images/ic_system_notaccess.svg" alt="" />
+                      <span style="margin-left: 22px;">{{ 'header.portailNotaccess' | translate }}</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

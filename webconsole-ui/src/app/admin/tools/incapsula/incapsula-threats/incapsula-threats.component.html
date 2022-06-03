@@ -1,0 +1,24 @@
+<table class="w-100 mb-6">
+  <mat-tab-group mat-align-tabs="center" dynamicHeight>
+    <mat-tab label="Backdoor Protect">
+      <ng-template matTabContent>
+        <stgo-threats-backdoor [domain]="domain" [wafConf]="wafConf" [isAdmin]="isAdmin"></stgo-threats-backdoor>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Block Threats">
+      <ng-template matTabContent>
+        <stgo-threats-block [domain]="domain" [wafConf]="wafConf" [isAdmin]="isAdmin"></stgo-threats-block>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Bot Access Control">
+      <ng-template matTabContent>
+        <stgo-threats-bot [domain]="domain" [wafConf]="wafConf" [isAdmin]="isAdmin"></stgo-threats-bot>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="DDoS">
+      <ng-template matTabContent>
+        <stgo-threats-ddos [domain]="domain" [wafConf]="wafConf" [isAdmin]="isAdmin"></stgo-threats-ddos>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+</table>

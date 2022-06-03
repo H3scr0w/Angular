@@ -1,0 +1,11 @@
+@import '../../../../styles/variable';
+@import '../../../../styles/mixin';
+
+.info-calcul {
+  @include gilroyReg(13px);
+  color: $color-grey;
+  letter-spacing: -0.41px;
+  line-height: 17px;
+  list-style-type: none;
+  padding: 0;
+}

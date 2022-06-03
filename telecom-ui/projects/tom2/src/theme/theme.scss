@@ -1,0 +1,58 @@
+/*
+ * Global application theme.
+ * Framework overrides and customization goes here.
+ */
+@import '~@delivery/eworkplace/docs/_sass/styles';
+@import 'core';
+@import 'components';
+
+.ng-select.ng-select-focused .ng-select-container:after {
+  border-color: #ff582b;
+  border-width: 2px;
+}
+
+.ng-select-container .ng-value-container .ng-placeholder {
+  border-color: #ff582b;
+  border-width: 2px;
+  color: #ff582b;
+}
+
+.ng-select.ng-select-focused .ng-select-container .ng-value-container .ng-placeholder {
+  color: #ff582b;
+}
+
+.ng-select.ng-select-focused .ng-select-container .ng-arrow-wrapper .ng-arrow {
+  color: #ff582b;
+}
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
+  background-color: #ff582b;
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-optgroup.ng-option-selected {
+  color: #ff582b;
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected {
+  color: #ff582b;
+}
+
+.ng-select .ng-invalid .ng-touched {
+  border-color: #ff582b;
+  border-width: 2px;
+  color: #ff582b;
+}
+
+.mat-input-element:read-only {
+  color: #ff582b87;
+}
+
+small {
+  font-size: 75%;
+}
+
+.cdk-global-scrollblock {
+  position: static !important;
+  width: initial !important;
+  overflow-y: inherit !important;
+}

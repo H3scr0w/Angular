@@ -1,0 +1,41 @@
+<form [formGroup]="rightForm">
+  <h3 mat-dialog-title>New Right</h3>
+  <mat-dialog-content>
+    <mat-form-field>
+      <mat-select placeholder="Role" formControlName="roleLabel">
+        <mat-option>--</mat-option>
+        <mat-option *ngFor="let role of roleLabels" [value]="role">
+          {{role}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="rightForm.get('roleLabel')!.hasError('required')">Please choose a role</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Project Type" formControlName="projectType" (selectionChange)="onProjectTypeSelected($any($event))">
+        <mat-option *ngFor="let project of projectTypes" [value]="project.type">
+          {{project.name}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="rightForm.get('projectType')!.hasError('required')">Please choose a project type</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Type a project name" formControlName="project" [matAutocomplete]="auto" name="project" />
+      <i matSuffix class="fas fa-search"></i>
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectProject(true, $event.option.value)" (opened)="selectProject(false)" [displayWith]="displayFn">
+        <mat-option  *ngFor="let proj of (projects$ | async)" [value]="proj">
+          <span>{{ proj?.name}}</span>
+        </mat-option>
+      </mat-autocomplete>
+      <mat-error *ngIf="rightForm.get('project')!.hasError('required')">Please choose a project code</mat-error>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button type="button" mat-raised-button color="primary" (click)="cancel()">
+      Cancel
+    </button>
+    <button type="submit" mat-raised-button color="primary" (click)="save()" [disabled]="rightForm.invalid || !hasProjectSelected">
+      Save
+      <i *ngIf="saving" class="fas fa-circle-notch fa-spin"></i>
+    </button>
+  </mat-dialog-actions>
+</form>

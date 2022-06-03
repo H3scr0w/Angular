@@ -1,0 +1,18 @@
+.mat-draw-container-position {
+  top: 15px;
+  bottom: 0;
+}
+.matdrawer {
+  width: 240px;
+  color: white;
+  font-weight: bold;
+}
+.text-gray {
+  color: gray;
+}
+
+.welcome {
+  left: 20%;
+  right: 20%;
+  top: 40%;
+}

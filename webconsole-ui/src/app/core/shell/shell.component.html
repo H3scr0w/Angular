@@ -1,0 +1,9 @@
+<div class="fixed-top z-2">
+  <stgo-header></stgo-header>
+  <stgo-header-menu [menu]="menu"></stgo-header-menu>
+</div>
+<div class="content pt-2 mt-3 mb-3" [@routerTransition]="
+        o.isActivated && (o.activatedRoute.routeConfig!.path || o.activatedRoute.parent!.routeConfig!.path)
+        ">
+  <router-outlet #o="outlet"></router-outlet>
+</div>

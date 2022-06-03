@@ -1,0 +1,177 @@
+stages:
+- prepare
+- verify
+- build
+- deploy
+
+variables:
+  MAVEN_DOCKER_IMAGE: "registry.sedona.fr/images/maven:latest-gitlab-ci"
+  MAVEN_OPTS: "-Xmx1024m -XX:MaxPermSize=256m -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
+  # If needed, add '-X -e' to the CLI options for debug output
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
+
+# Cache per branch
+#cache:
+#  key: "$CI_BUILD_ID-$CI_COMMIT_REF_NAME"
+#  untracked: true
+#  paths:
+#  - dist/
+#  - node_modules/
+
+# Before any phase,
+# - check the git configuration
+# - retrieve the GAV information from the package.json
+# - ensure the GAV information are correct in sonar-project.properties
+before_script:
+- 'docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $REGISTRY_DOCKER'
+- 'git config --global user.email "$GIT_EMAIL"'
+- 'git config --global user.name "$GIT_NAME"'
+- 'git config --global http.sslVerify false'
+- "ARTIFACT_GROUP=$(cat package.json | jq -r '.groupId'); export ARTIFACT_GROUP"
+- "ARTIFACT_ID=$(cat package.json | jq -r '.name'); export ARTIFACT_ID"
+- "ARTIFACT_VERSION=$(cat package.json | jq -r '.version'); export ARTIFACT_VERSION"
+- "ARTIFACT_NAME=$(cat package.json | jq -r '.description'); export ARTIFACT_NAME"
+- "DOCKER_IMAGE_NAME=$(cat package.json | jq -r '.dockerImage'); export DOCKER_IMAGE_NAME"
+
+
+prepare:
+  stage: prepare
+  image: $MAVEN_DOCKER_IMAGE
+  script:
+  - 'npm cache verify'
+  - 'npm ci'
+  except:
+  - master
+  - tags
+  artifacts:
+    paths:
+    - node_modules/
+    expire_in: 1 week
+
+# Prepare a release build
+# - remove the SNAPSHOT extension from the version
+# - make a commit
+# - tag the commit
+# - push the commit
+prepare-release:
+  stage: prepare
+  image: $MAVEN_DOCKER_IMAGE
+  script:
+  - 'npm cache verify'
+  - 'npm ci'
+  - 'git checkout -f master'
+  - 'git pull'
+  - 'ARTIFACT_VERSION=${ARTIFACT_VERSION%-SNAPSHOT}; export ARTIFACT_VERSION'
+  - sed -i -E 's#"version"[^)]+#"version"\:\ "'$ARTIFACT_VERSION'",#g' package.json
+  - sed -i -E "s/sonar.projectVersion=[^)]+/sonar.projectVersion=$ARTIFACT_VERSION/g" sonar-project.properties
+  - 'git add .'
+  - 'git commit -m "[ci skip] prepare release $ARTIFACT_VERSION"'
+  - 'git tag $ARTIFACT_VERSION'
+  - 'git push git@git.sedona.fr:${CI_PROJECT_PATH}.git master'
+  - 'git push git@git.sedona.fr:${CI_PROJECT_PATH}.git $ARTIFACT_VERSION'
+  only:
+  - master
+  except:
+  - tags
+  artifacts:
+    paths:
+    - node_modules/
+    expire_in: 1 week
+
+# Verify the build
+# Ensure the sonar-project.properties
+# is correct according to the package.json.
+verify:
+  stage: verify
+  image: $MAVEN_DOCKER_IMAGE
+  script:
+  - 'npm run coverage'
+  - 'npm run lint:ci'
+  except:
+    - master
+# remove those comments to reenable sonar
+#  - sed -i -E "s/sonar.projectKey=[^)]+/sonar.projectKey=$ARTIFACT_GROUP:$ARTIFACT_ID/g" sonar-project.properties
+#  - sed -i -E "s/sonar.projectName=[^)]+/sonar.projectName=$ARTIFACT_NAME/g" sonar-project.properties
+#  - sed -i -E "s/sonar.projectVersion=[^)]+/sonar.projectVersion=$ARTIFACT_VERSION/g" sonar-project.properties
+#  - 'sonar-scanner'
+
+build:
+  stage: build
+  image: $MAVEN_DOCKER_IMAGE
+  script:
+  - 'npm run build:prod'
+  except:
+  - master
+  - tags
+  artifacts:
+    paths:
+    - dist/
+    expire_in: 1 week
+
+# Build a release
+# Pull the changes made in the prepare
+# stage and build the project
+build-release:
+  stage: build
+  image: $MAVEN_DOCKER_IMAGE
+  script:
+  - 'git checkout -f master'
+  - 'git pull'
+  - 'npm run build:prod'
+  only:
+  - master
+  except:
+  - tags
+  artifacts:
+    paths:
+    - dist/
+    expire_in: 1 week
+
+deploy:
+  stage: deploy
+  image: $MAVEN_DOCKER_IMAGE
+  script:
+  - 'tar -czvf $ARTIFACT_ID-$ARTIFACT_VERSION.tgz dist/$ARTIFACT_ID/'
+  - 'mvn $MAVEN_CLI_OPTS deploy:deploy-file -DgroupId=$ARTIFACT_GROUP -DartifactId=$ARTIFACT_ID -Dversion=$ARTIFACT_VERSION -Dpackaging=tgz -Dfile=$ARTIFACT_ID-$ARTIFACT_VERSION.tgz -DrepositoryId=sedona-java-snapshot -Durl=https://repo.cicd.sedona.fr/artifactory/java-snapshot'
+  - 'rm $ARTIFACT_ID-$ARTIFACT_VERSION.tgz'
+  - 'docker build -t $DOCKER_IMAGE_NAME .'
+  - 'docker tag $DOCKER_IMAGE_NAME $DOCKER_IMAGE_NAME:$ARTIFACT_VERSION'
+  - 'docker push $DOCKER_IMAGE_NAME:$ARTIFACT_VERSION'
+  only:
+    - develop
+    - /^release-.*$/
+
+# Deploy a release build
+# - pull the changes made in 'prepare-release' stage
+# - tarball the content of 'dist' folder
+# - upload the tarball to Nexus releases repository
+# - create, tag and push the associated Docker image
+# - bump the version of the next SNAPSHOT
+# - merge back to 'develop' branch
+deploy-release:
+  stage: deploy
+  image: $MAVEN_DOCKER_IMAGE
+  script:
+  - 'git checkout -f master'
+  - 'git pull'
+  - ARTIFACT_VERSION=$(jq -r '.version' package.json); export ARTIFACT_VERSION
+  - 'tar -czvf $ARTIFACT_ID-$ARTIFACT_VERSION.tgz dist/$ARTIFACT_ID/'
+  - 'echo $ARTIFACT_VERSION'
+  - 'mvn $MAVEN_CLI_OPTS deploy:deploy-file -DgroupId=$ARTIFACT_GROUP -DartifactId=$ARTIFACT_ID -Dversion=$ARTIFACT_VERSION -Dpackaging=tgz -Dfile=$ARTIFACT_ID-$ARTIFACT_VERSION.tgz -DrepositoryId=sedona-java-release -Durl=https://repo.cicd.sedona.fr/artifactory/java-release'
+  - 'rm $ARTIFACT_ID-$ARTIFACT_VERSION.tgz'
+  - 'docker build -t $DOCKER_IMAGE_NAME .'
+  - 'docker tag $DOCKER_IMAGE_NAME $DOCKER_IMAGE_NAME:$ARTIFACT_VERSION'
+  - 'docker push $DOCKER_IMAGE_NAME:$ARTIFACT_VERSION'
+  - IFS='.' read -a VERSION_NUMBERS <<< "$ARTIFACT_VERSION"; let NEW_VERSION=${VERSION_NUMBERS[2]}+1; ARTIFACT_VERSION="${VERSION_NUMBERS[0]}.${VERSION_NUMBERS[1]}.${NEW_VERSION}-SNAPSHOT"; export ARTIFACT_VERSION
+  - sed -i -E 's#"version"[^)]+#"version"\:\ "'$ARTIFACT_VERSION'",#g' package.json
+  - sed -i -E "s/sonar.projectVersion=[^)]+/sonar.projectVersion=$ARTIFACT_VERSION/g" sonar-project.properties
+  - 'git add .'
+  - 'git commit -m "[ci skip] prepare for next development iteration"'
+  - 'git push git@git.sedona.fr:${CI_PROJECT_PATH}.git master'
+  - 'git checkout -f develop'
+  - 'git merge master'
+  - 'git push -u git@git.sedona.fr:${CI_PROJECT_PATH}.git develop'
+  only:
+  - master
+  except:
+  - tags

@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.app.json",
+  "compilerOptions": {
+    "target": "es5",
+    "baseUrl": "./",
+    "paths": {
+      "@core": ["src/app/core"],
+      "@shared": ["src/app/shared"],
+      "@env/*": ["src/environments/*"],
+      "lodash/*": [
+        "../../node_modules/@types/lodash-es/*"
+      ]
+    }
+  }
+,
+  "include": [
+    "projects/tom2/src/**/*.d.ts"
+  ]
+}

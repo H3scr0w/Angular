@@ -1,0 +1,105 @@
+<div [formGroup]="formGroup">
+  <mat-card class="my-2 mx-2 mat-elevation-z8">
+    <mat-card-header>
+      <mat-card-title>Threats Shield</mat-card-title>
+      <mat-card-subtitle>Detect attemtps to manipulate your website</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content class="container">
+      <div class="row">
+        <div class="col-md">
+          <h2>
+            Remote File Inclusion
+          </h2>
+          <p>
+            Detect attempts to manipulate the application into downloading and sometimes also executing a file from a remote location.
+          </p>
+        </div>
+        <div class="col-md">
+          <mat-form-field class="mt-2">
+            <mat-select placeholder="Select a action" class="w-25 p-1" formControlName="actionRemote" required>
+              <mat-option *ngFor="let action of actions" [value]="action">
+                {{action.tag}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="formGroup.get('actionRemote')!.hasError('required')">
+              Please select one action
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md">
+          <h2>
+            SQL Injection
+          </h2>
+          <p>
+            Detect attempts to manipulate the logic of SQL statements executed by the web application against the database.
+          </p>
+        </div>
+        <div class="col-md">
+          <mat-form-field class="mt-2">
+            <mat-select placeholder="Select a action" class="w-25 p-1" formControlName="actionSql" required>
+              <mat-option *ngFor="let action of actions" [value]="action">
+                {{action.tag}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="formGroup.get('actionSql')!.hasError('required')">
+              Please select one action
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md">
+          <h2>
+            Cross Site Scripting
+          </h2>
+          <p>
+            Detect attempts to run malicious code on your website visitor's browsers.
+          </p>
+        </div>
+        <div class="col-md">
+          <mat-form-field class="mt-2">
+            <mat-select placeholder="Select a action" class="w-25 p-1" formControlName="actionXss" required>
+              <mat-option *ngFor="let action of actions" [value]="action">
+                {{action.tag}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="formGroup.get('actionXss')!.hasError('required')">
+              Please select one action
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md">
+          <h2>
+            Illegal Resource Access
+          </h2>
+          <p>
+            Detect attempts to access Vulnerable or Administrative pages, or view or execute System Files. This is commonly done using
+            URL guessing, Directory Traversal, or Command Injection techniques.
+          </p>
+        </div>
+        <div class="col-md">
+          <mat-form-field class="mt-2">
+            <mat-select placeholder="Select a action" class="w-25 p-1" formControlName="actionResource" required>
+              <mat-option *ngFor="let action of actions" [value]="action">
+                {{action.tag}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="formGroup.get('actionResource')!.hasError('required')">
+              Please select one action
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions class="text-center">
+      <button mat-raised-button color="primary" (click)="save()" [disabled]="formGroup.pristine || formGroup.invalid || !isAdmin">
+        Save
+        <i *ngIf="saving" class="fas fa-circle-notch fa-spin"></i>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

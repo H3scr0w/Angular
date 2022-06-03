@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="50px" height="50px" viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.2 (78181) - https://sketchapp.com -->
+    <title>Icon/Progress Bar /Check</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icon/Progress-Bar-/Check" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="ic_progress_check">
+            <circle id="Oval" fill="#39E5B1" cx="25" cy="25" r="25"></circle>
+            <path d="M21.030578,18.7725348 C20.6001105,18.0506447 19.6176758,17.7878124 18.8362487,18.1854825 C18.0548216,18.5831526 17.7703125,19.4907355 18.2007799,20.2126257 L24.3890575,30.5903131 C25.5251834,32.4955863 27.9752749,32.4604302 29.0597554,30.5402125 L31.8170458,25.6580609 C32.2297242,24.9273587 31.9230615,24.0259544 31.1320955,23.644718 C30.3411295,23.2634817 29.365383,23.5467798 28.9527046,24.277482 L26.6959656,28.2733404 L21.030578,18.7725348 Z" id="Path-794" fill="#FFFFFF" fill-rule="nonzero" transform="translate(25.000293, 25.000000) scale(-1, 1) translate(-25.000293, -25.000000) "></path>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,27 @@
+.mat-card {
+  margin-top: 0.5rem;
+  padding: 0 0 0 1.5rem;
+  background-color: #17a2b8;
+}
+
+.mat-card-header {
+  background-color: white;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+mat-card-header {
+  .mat-card-title {
+    margin-bottom: 0;
+    padding: 0.7rem;
+    font-size: 1rem;
+  }
+}
+
+::ng-deep .mat-card-header-text {
+  width: 100% !important;
+}
+
+.company-name {
+  padding-left: 1rem;
+}

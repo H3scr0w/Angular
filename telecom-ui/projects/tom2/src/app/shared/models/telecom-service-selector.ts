@@ -1,0 +1,77 @@
+import { CatalogVersion } from './catalog-version';
+import { Operator } from './operators';
+
+export class TelecomService {
+  constructor(
+    public id: number = null,
+    public endOfValidityDate: Date = null,
+    public countryCode: string = '',
+    public serviceTitle: string = '',
+    public mainServiceCode: string = '',
+    public mainBandwidthInMax: number = null,
+    public mainBandwidthInCommitted: number = null,
+    public mainRealBandwidthIn: number = null,
+    public mainBandwidthOutMax: number = null,
+    public mainBandwidthOutCommitted: number = null,
+    public mainRealBandwidthOut: number = null,
+    public backupServiceCode: string = '',
+    public backupBandwidthInMax: number = null,
+    public backupBandwidthInCommitted: number = null,
+    public backupRealBandwidthIn: number = null,
+    public backupBandwidthOutMax: number = null,
+    public backupBandwidthOutCommitted: number = null,
+    public backupRealBandwidthOut: number = null,
+    public gtrCommitment: number = null,
+    public dispoCommitment: number = null,
+    public ltcCommitment: number = null,
+    public currency: string = '',
+    public setupCostsLl1: number = 0,
+    public setupCostsIpPort1: number = 0,
+    public setupCostsCpe1: number = 0,
+    public setupCostsLl2: number = 0,
+    public setupCostsIpPort2: number = 0,
+    public setupCostsCpe2: number = 0,
+    public monthlyCostsLl1: number = 0,
+    public monthlyCostsIpPort1: number = 0,
+    public monthlyCostsCpe1: number = 0,
+    public monthlyCostsLl2: number = 0,
+    public monthlyCostsIpPort2: number = 0,
+    public monthlyCostsCpe2: number = 0,
+    public optionsAvailables: string = '',
+    public defaultOptions: string = '',
+    public catalogVersionStatus: string = '',
+    public catalogVersion: CatalogVersion = null,
+    public operator: Operator = null,
+    public lastUpdate: Date = null,
+    public monthlyOtherDiscount: number = 0,
+    public setupOtherDiscount: number = 0,
+    public routerCode1: string = '',
+    public routerCode2: string = '',
+    public backupLinkBillingRef: string = '',
+    public backupRouteurBillingRef: string = '',
+    public nominalLinkBillingRef: string = '',
+    public nominalRouteurBillingRef: string = '',
+    public restrictedView: string = ''
+  ) {}
+}
+
+export class TelecomServiceFilter {
+  constructor(
+    public countryCode: string = '',
+    public isDOMTOM: boolean = false,
+    public operator: string = '',
+    public serviceLevel: string = '',
+    public serviceType: string = '',
+    public bandwidthMainServiceFrom: number = null,
+    public bandwidthMainServiceTo: number = null,
+    public mainServiceCosType: string = '',
+    public mainTechno: string = '',
+    public backupSpecificity: string = '',
+    public bandwidthBackupServiceFrom: number = null,
+    public bandwidthBackupServiceTo: number = null,
+    public backupServiceCosType: string = '',
+    public backupTechno: string = '',
+    public monthlyCostLte: number = null,
+    public requestType: string = ''
+  ) {}
+}

@@ -1,0 +1,59 @@
+<div class="w-100">
+  <h3 mat-dialog-title>Edit Commands</h3>
+  <div mat-dialog-content>
+    Deployment ID: {{ data.deployment.deploymentId }}
+    <table mat-table [dataSource]="data.editDataSource" class="mat-elevation-z8 w-100">
+      <ng-container matColumnDef="command">
+        <th mat-header-cell *matHeaderCellDef>Command</th>
+        <td mat-cell *matCellDef="let element">{{ element.command }}</td>
+      </ng-container>
+      <ng-container matColumnDef="param">
+        <th mat-header-cell *matHeaderCellDef>Param</th>
+        <td mat-cell *matCellDef="let element">{{ element.param }}</td>
+      </ng-container>
+      <ng-container matColumnDef="order">
+        <th mat-header-cell *matHeaderCellDef>Order</th>
+        <td mat-cell *matCellDef="let element">{{ element.order }}</td>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let element">
+          <span (click)="moveUp(element)"><i class="fas fa-arrow-up  p-1"></i></span>
+          <span (click)="moveDown(element)"><i class="fas fa-arrow-down  p-1"></i></span>
+          <span (click)="deleteCmd(element)"><i class="fas fa-trash p-1"></i></span>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+      <input matInput placeholder="Drush" name="cmdParam" [formControl]="cmdParam" />
+      <button mat-raised-button color="primary" class="float-right" (click)="addCmd()">
+        <i class="fas fa-plus"></i>
+      </button>
+    </mat-form-field>
+    {{ data.editDataSource.data.length + 1 }}
+  </div>
+
+  <div class="text-center">
+    <button
+      type="submit"
+      mat-raised-button
+      color="primary"
+      class="col-md-4 col-md-offset-4 btn btn-lg align-center"
+      (click)="confirmEdit()"
+    >
+      Edit
+      <i *ngIf="saving" class="fas fa-circle-notch fa-spin"></i>
+    </button>
+    <button
+      type="submit"
+      mat-raised-button
+      class="col-md-4 col-md-offset-4 btn btn-lg align-center"
+      (click)="onNoClick()"
+    >
+      Cancel
+    </button>
+  </div>
+</div>

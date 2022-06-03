@@ -1,0 +1,33 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<form [formGroup]="fundForm" (ngSubmit)="onSubmit()" autocomplete="off">
+  <h1 mat-dialog-title>
+    {{'fund.spec.add' | translate}}
+  </h1>
+  <mat-dialog-content>
+    <div class="row">
+      <div class="col">
+        <ng-select formControlName="fund" [typeahead]="inputFund" [items]="funds" bindLabel="fundLabel" placeholder="{{ 'fund.label' | translate }}"
+          [searchable]="true" [dropdownPosition]="'bottom'" [selectOnTab]="true" notFoundText="" typeToSearchText="">
+          <ng-template ng-label-tmp let-item="item">
+            <span *ngIf="item"> {{item?.amundiCode}} - {{item?.fundLabel}} - {{item?.tenantAccount?.teneurCompteLibelle}}
+            </span>
+          </ng-template>
+        </ng-select>
+        <mat-hint class="w-100" *ngIf="fundForm.controls['fund'].hasError('required')">
+          <span align="right" class="mat-error">
+            {{'common.validation.required.message' | translate}}
+          </span>
+        </mat-hint>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <p [innerHTML]="'fund.spec.info' | translate"></p>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <div mat-dialog-actions align="center">
+    <button type="button" mat-raised-button (click)="onNoClick()">{{'common.close' | translate}}</button>
+    <button type="submit" [disabled]="fundForm.invalid || isLoading" mat-raised-button color="primary" class="mr-3">{{'common.save' | translate}}</button>
+  </div>
+</form>

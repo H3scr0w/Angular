@@ -1,0 +1,107 @@
+<div *ngIf="restit != null && !showMobileForm && (restit | json) != '{}'" class="result-content">
+  <div class="content-taux">
+  </div>
+  <div class="content-restit">
+    <div class="content-restit-title">
+      <span class="title-1">{{ 'common.restitution' | translate }}</span>
+    </div>
+    <div class="content-restit-data">
+      <div class="restit-value-wrapper">
+        <div class="restit-value">
+          <div class="title">{{ 'pret.restitution.montant-pret' | translate }}</div>
+          <div class="blue-value">{{ restit.montant_pret | euroNumber}}</div>
+        </div>
+        <div class="divider"></div>
+        <div class="restit-value">
+          <div class="title">{{ 'pret.restitution.duree-pret' | translate }}</div>
+          <div class="blue-value">{{ restit.duree_pret  | duree: restit.duree_type }}</div>
+        </div>
+        <div class="divider"></div>
+        <div class="restit-value">
+          <div class="title">{{ 'pret.restitution.taux-debiteur-nominal' | translate }}</div>
+          <div class="blue-value">{{ restit.taux_debiteur_nominal | percent:'.2'}}</div>
+        </div>
+        <div class="divider"></div>
+        <div class="restit-value">
+          <div class="title">{{ 'pret.restitution.montant-periode' | translate }}</div>
+          <div class="blue-value">{{ restit.montant_periode | euroNumber}}</div>
+        </div>
+        <div class="divider"></div>
+        <div class="restit-value">
+          <div class="title">{{ 'pret.restitution.montant-total-du' | translate }}</div>
+          <div class="blue-value">{{ restit.montant_total | euroNumber}}</div>
+        </div>
+        <div class="divider"></div>
+        <div class="restit-value restit-value-understep">
+          <div class="restit-value-big">
+            <div class="title">{{ 'pret.restitution.cout-total' | translate }}</div>
+            <div class="blue-value">{{ restit.cout_total | euroNumber}}</div>
+          </div>
+          <div class="restit-value-small-wrapper">
+            <div class="restit-value-small">
+              <div class="title">{{ 'pret.restitution.dont-interets' | translate }}</div>
+              <div class="value">{{ restit.interets | euroNumber}}</div>
+            </div>
+            <div class="restit-value-small">
+              <div class="title">{{ 'pret.restitution.dont-assurance' | translate }}</div>
+              <div class="value">{{ restit.assurance | euroNumber}}</div>
+            </div>
+            <div class="restit-value-small">
+              <div class="title">{{ 'pret.restitution.dont-frais' | translate }}</div>
+              <div class="value">{{ restit.frais | euroNumber}}</div>
+            </div>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div class="restit-value">
+          <div class="title">{{ 'pret.restitution.taeg-teg' | translate }}</div>
+          <div class="blue-value">{{ restit.taeg_teg | percent:'.2'}}</div>
+        </div>
+        <div class="divider"></div>
+        <div class="restit-value">
+          <div class="title">{{ 'pret.restitution.taux-usure' | translate }}
+            <ngx-info-bulle class="info-bulle-restit" *ngIf="this.getInfoBulle(infoBulleCodes.TAUX_USURE_REFERENCE)"
+                            placement="auto" [html]="this.getInfoBulle(infoBulleCodes.TAUX_USURE_REFERENCE)"></ngx-info-bulle>
+          </div>
+          <div class="blue-value">{{ restit.taux_usure | percent:'.2'}}</div>
+        </div>
+        <div class="divider"></div>
+      </div>
+      <div class="restit-pie-chart-wrapper">
+        <ngx-tableau-amortissement [columns]="columns" [echeancier]="echeancier" [title]="'pret.restitution.tableau-amortissement'"
+        (clickRowEmitter)="openSwitchModal(switchModalTemplate, $event)" [clickableRow]="true">
+        </ngx-tableau-amortissement>
+      </div>
+    </div>
+    <div class="info">
+      <img class="float-left" src="../../../../assets/images/ic_info_bulle_active.svg" alt="info">
+      <div class="content">
+        {{ 'pret.restitution.switch-info' | translate }}
+      </div>
+    </div>
+    <ngx-calculated-with [donneesReferences]="restit.donnees_references_utilisees">
+    </ngx-calculated-with>
+    <div class=" btn-action-centered">
+      <button type="button" class="btn-export" (click)="export()">
+        {{'common.exporter' | translate}}
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<ng-template #switchModalTemplate>
+    <div class="switch-modal-body">
+      <div class="title pull-left">{{ 'pret.switch-modal.title' | translate}}</div>
+      <p>{{ 'pret.switch-modal.info-1' | translate}}</p>
+      <p>{{ 'pret.switch-modal.info-2' | translate}}</p>
+      <p class="font-weight-bold">{{ 'pret.switch-modal.confirm-question' | translate}}</p>
+
+      <div class="btn-group float-right">
+        <button type="submit" class="btn-cancel text-uppercase"
+                (click)="switchToRefinancementModal.hide()">{{ 'pret.switch-modal.cancel' | translate }}</button>
+        <button type="submit" class="btn-agree"
+                (click)="redirectToRefinancement()">{{ 'pret.switch-modal.confirm' | translate }}</button>
+      </div>
+    </div>
+</ng-template>

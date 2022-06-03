@@ -1,0 +1,11 @@
+<div class="p-2 mr-3">
+  <h1 mat-dialog-title>{{'common.confirmation' | translate}}</h1>
+  <div mat-dialog-content>
+    {{message}}
+  </div>
+  <div mat-dialog-actions align="center">
+    <button mat-raised-button (click)="onNoClick()"> {{'common.no' | translate}}</button>
+    <button mat-raised-button (click)="onYesClick()" color="primary"
+      cdkFocusInitial>{{'common.yes' | translate}}</button>
+  </div>
+</div>

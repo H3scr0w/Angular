@@ -1,0 +1,159 @@
+<div class="text-center">
+  <p>
+    {{'company.setting.authority.header.message' | translate}}
+  </p>
+</div>
+<div class="mat-elevation-z8 my-4 mx-4">
+  <div class="bg-info p-2 d-flex">
+    <span class="fa-stack fa-lg text-primary">
+      <i class="fas fa-circle fa-stack-1x fa-lg"></i>
+      <i class="fa fa-wrench fa-stack-1x fa-sm text-white"></i>
+    </span>
+    <h2 class="mr-auto text-white font-weight-bold pt-1">{{'company.setting.authority' | translate}}</h2>
+    <button class="mr-1" mat-mini-fab color="primary"
+      matTooltip="{{'company.setting.authority.add.tooltip' | translate}}" (click)="addRow()" [disabled]="readOnly">
+      <i class="fas fa-plus"></i>
+    </button>
+  </div>
+
+  <table class="w-100" mat-table matSort [dataSource]="authorities" matSortActive="habilitationsSid" matSortDisableClear
+    matSortDirection="desc">
+    <ng-container matColumnDef="sgid">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="sgid">SGID</th>
+      <td mat-cell *matCellDef="let element; let i = index" class="text-break" [hidden]="hideFirstRow && i === 0" 
+      >
+        <ng-container *ngIf="element?.id === addAuthority?.id && i === 0">
+          <mat-form-field>
+            <input (click)="addUser(element)" matInput placeholder="SGID" maxlength="8" name="addsgid" [(ngModel)]="element.sgid" />
+          </mat-form-field>
+        </ng-container>
+        <ng-container *ngIf="(!editAuthority?.id || !element?.id || element?.id !== editAuthority?.id) && i !== 0">
+          {{ element?.sgid}}</ng-container>
+        <ng-container *ngIf="editAuthority?.id && element?.id && element?.id === editAuthority?.id && i !== 0">
+          <mat-form-field>
+            <input (click)="addUser(element)" matInput placeholder="SGID" maxlength="8" name="sgid" [(ngModel)]="element.sgid" />
+          </mat-form-field>
+        </ng-container>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="nom">{{'user.name' | translate}}</th>
+      <td mat-cell *matCellDef="let element; let i = index" class="text-break" matTooltipPosition="right"
+        [hidden]="hideFirstRow && i == 0">
+        {{ element?.name}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="firstname">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="prenom">{{'user.firstName' | translate}}</th>
+      <td mat-cell *matCellDef="let element; let i = index" class="text-break" [hidden]="hideFirstRow && i === 0">
+        {{element?.firstname}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="email">{{'user.email' | translate}}</th>
+      <td mat-cell *matCellDef="let element; let i = index" class="text-break" [hidden]="hideFirstRow && i === 0">
+        {{element?.email}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="telephone">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="telephone">{{'user.phone' | translate}}</th>
+      <td mat-cell *matCellDef="let element; let i = index" class="text-break" [hidden]="hideFirstRow && i === 0">
+        {{element?.telephone}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="perimeter">
+      <th mat-header-cell *matHeaderCellDef [style.width.%]="20">{{'authority.perimeter' | translate}}</th>
+      <td mat-cell *matCellDef="let element; let i = index" class="text-break text-primary"
+        [hidden]="hideFirstRow && i === 0"
+        [ngClass]="{ 'text-muted' : element?.id !== editAuthority?.id && element?.id !== addAuthority?.id }">
+        <a color="primary" (click)="selectPerimeter(element)">
+          <span *ngIf="element.facility"> {{'authority.perimeter.facility' | translate}}
+            {{element?.facility?.facilityLabel}}
+          </span>
+          <span *ngIf="!element.facility">{{'authority.perimeter.company' | translate}} </span>
+        </a>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="category">
+      <th mat-header-cell *matHeaderCellDef>{{'authority.category' | translate}}</th>
+      <td mat-cell *matCellDef="let element; let i = index" class="text-break" [hidden]="hideFirstRow && i === 0">
+        <ng-container *ngIf="element?.id === addAuthority?.id && i === 0">
+          <mat-form-field>
+            <select matNativeControl placeholder="{{'authority.category' | translate}}" name="addcategory"
+              [(value)]="element.category" [(ngModel)]="element.category">
+              <option *ngFor="let category of categories" [value]="category">
+                {{category}}
+              </option>
+            </select>
+          </mat-form-field>
+        </ng-container>
+        <ng-container *ngIf="(!editAuthority?.id || !element?.id || element?.id!== editAuthority?.id) && i !== 0">
+          {{ element?.category}}</ng-container>
+        <ng-container *ngIf="editAuthority?.id && element?.id && element?.id === editAuthority?.id && i !== 0">
+          <mat-form-field>
+            <select matNativeControl placeholder="{{'authority.category' | translate}}" name="category"
+              [(value)]="element.category" [(ngModel)]="element.category">
+              <option *ngFor="let category of categories" [value]="category">
+                {{category}}
+              </option>
+            </select>
+          </mat-form-field>
+        </ng-container>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>{{'common.actions' | translate}}</th>
+      <td mat-cell *matCellDef="let element;let i = index" class="text-break" [hidden]="hideFirstRow && i === 0">
+        <ng-container *ngIf="(!editAuthority?.id || !element?.id || element?.id !== editAuthority?.id) && i !== 0">
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+            <i class="fas fa-ellipsis-h fa-lg"></i>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="editRow(element)"
+              [disabled]="readOnly">{{'common.edit' | translate }}</button>
+            <button mat-menu-item (click)="deleteAuthority(element)"
+              [disabled]="readOnly">{{'common.delete' | translate }}</button>
+          </mat-menu>
+        </ng-container>
+
+        <ng-container
+          *ngIf="(editAuthority?.id && element?.id && element?.id === editAuthority?.id) || (i === 0 && element?.id === addAuthority?.id)">
+          <button mat-icon-button (click)="saveAuthority()" color="primary"
+            [disabled]="!element.sgid || !element.category || readOnly">
+            <i class="fas fa-check p-1"></i>
+          </button>
+          <button mat-icon-button (click)="cancelEdit()" [disabled]="readOnly">
+            <i class="fas fa-times p-1"></i>
+          </button>
+        </ng-container>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns" [ngClass]="{'hide-row': i == 0 }"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="pageSize" [pageIndex]="pageIndex"
+    [length]="totalElements" showFirstLastButtons></mat-paginator>
+  <div class="float-right d-flex w-25 ">
+    <button (click)="back()" mat-raised-button class="mx-2 w-50 bg-info text-white">
+      <i class="fas fa-chevron-left mb-1 mr-1 "></i>
+      {{'common.back' | translate}}
+    </button>
+    <button (click)="validate()" [disabled]="readOnly" mat-raised-button
+      class="mx-2 w-50 bg-success text-white">      
+      {{'common.validate' | translate}}
+      <i class="fas fa-check mb-1 ml-1"></i>
+    </button>
+  </div>
+  <div *ngIf="isLoading" class="loading-shade">
+    <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+  </div>
+</div>

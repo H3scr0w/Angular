@@ -1,0 +1,16 @@
+//
+// COMPONENTS
+// Import all files in /components
+// NB : The 'component' term here is in a css sense (like bootstrap cards), not angular's
+//
+@import 'components/table';
+@import 'components/type';
+@import 'components/droplist';
+@import 'components/forms';
+@import 'components/images';
+@import 'components/nav';
+@import 'components/snackbar';
+@import 'components/footer';
+@import 'components/drawer';
+@import 'components/gridlist';
+@import 'components/tree';

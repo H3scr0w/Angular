@@ -1,0 +1,30 @@
+<form [formGroup]="catalogOptionsAddForm" (ngSubmit)="addCatalogOptions()">
+  <h1 mat-dialog-title>
+    {{'catalog.option.add.title' | translate}}</h1>
+
+  <mat-dialog-content>
+    <mat-form-field>
+      <input matInput formControlName="optionName" placeholder="{{'catalog.option.name' | translate}}" required />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput formControlName="optionCode" placeholder="{{'catalog.option.code' | translate}}" required />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput stgoNumberOnly scale="2" formControlName="setupCost"
+        placeholder="{{'catalog.option.setupCost' | translate}}" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput stgoNumberOnly scale="2" formControlName="monthlyCost"
+        placeholder="{{'catalog.option.monthlyCost' | translate}}" />
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <div mat-dialog-actions align="center">
+    <button type="submit" mat-raised-button color="primary"
+      [disabled]="catalogOptionsAddForm.invalid">{{'common.save' | translate}}</button>
+    <button type="button" mat-raised-button (click)="onNoClick()">{{'common.close' | translate}}</button>
+  </div>
+</form>

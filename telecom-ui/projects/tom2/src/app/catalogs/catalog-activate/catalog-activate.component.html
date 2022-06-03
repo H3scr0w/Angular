@@ -1,0 +1,97 @@
+<div class="mat-elevation-z8 my-4 mx-4 mw-mobile">
+  <div class="bg-header p-2 d-flex">
+    <span class="fa-stack fa-lg text-primary">
+      <i class="fas fa-circle fa-stack-1x fa-lg"></i>
+      <i class="fa fa-book fa-stack-1x fa-sm text-white"></i>
+    </span>
+    <h2 class="text-white font-weight-bold pt-1">{{'catalog.activate.header' | translate}}</h2>
+  </div>
+
+  <div class="d-block p-2 text-right">
+    <button class="mr-1" mat-mini-fab color="primary" matTooltip="{{'common.advanceFilter' | translate}}"
+      (click)="toggleFilterPanel()" matBadge="{{filterCount}}" matBadgePosition="after" matBadgeColor="warn"
+      [matBadgeHidden]="filterCount===0"><i class="fas fa-filter"></i>
+    </button>
+  </div>
+
+  <mat-expansion-panel [expanded]="panelFilterOpenState">
+    <form [formGroup]="activateCatalogAdvanceFilterForm" (ngSubmit)="applyAdvanceFilter()">
+      <div class="d-block p-2 bg-white">
+        <ng-select [items]="operators | async" [typeahead]="inputOperator" bindLabel="name"
+          placeholder="{{'catalog.activate.operator' | translate}}" [searchable]="true" [dropdownPosition]="'bottom'"
+          [openOnEnter]="false" formControlName="operator" appendTo="body" [selectOnTab]="true">
+          <ng-template ng-label-tmp let-item="item">
+            <span *ngIf="item"> {{item?.name}}</span>
+          </ng-template>
+        </ng-select>
+
+        <ng-select [items]="catalogsStatus" bindLabel="name" bindValue="value"
+          placeholder="{{'catalog.activate.status' | translate}}" [searchable]="false" [dropdownPosition]="'bottom'"
+          formControlName="status" appendTo="body" [selectOnTab]="true">
+          <ng-template ng-label-tmp let-item="item">
+            <span *ngIf="item">{{item.name}}</span>
+          </ng-template>
+        </ng-select>
+
+        <ng-select [items]="catalogs | async" [typeahead]="inputCatalog" bindLabel="name"
+          placeholder="{{'catalog.activate.catalogName' | translate}}" [searchable]="true" [dropdownPosition]="'bottom'"
+          [openOnEnter]="false" formControlName="catalog" appendTo="body" [selectOnTab]="true">
+          <ng-template ng-label-tmp let-item="item">
+            <span *ngIf="item"> {{item?.name}}</span>
+          </ng-template>
+        </ng-select>
+      </div>
+
+      <mat-action-row>
+        <button type="button" class="mr-1" mat-raised-button color="primary"
+          (click)="resetAdvanceFilter()">{{'common.reset' | translate}} </button>
+        <button type="submit" mat-raised-button color="primary">{{'common.apply' | translate}}</button>
+      </mat-action-row>
+    </form>
+  </mat-expansion-panel>
+
+  <div *ngIf="!panelFilterOpenState" class="d-block text-center bg-white">
+    <mat-form-field class="p-2">
+      <input matInput (keyup)="applyFilter($any($event).target.value)" placeholder="Filter" />
+    </mat-form-field>
+  </div>
+  <table class="w-100" mat-table matSort [dataSource]="catalogVersions" matSortActive="catalog.name" matSortDisableClear
+    matSortDirection="asc">
+    <ng-container matColumnDef="operator">
+      <th mat-header-cell *matHeaderCellDef>
+        {{'catalog.activate.operator' | translate}}
+      </th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element?.catalog?.contract?.operator?.name }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="catalog.name">
+        {{'catalog.activate.catalogName' | translate}}
+      </th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element?.catalog?.name }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="catalogVersion">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="catalogVersion">
+        {{'catalog.activate.catalogVersion' | translate}}
+      </th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.catalogVersion }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>{{'common.actions' | translate}}</th>
+      <td mat-cell *matCellDef="let element">
+        <mat-slide-toggle *ngIf="isAdmin || isPmUser" [disabled]="element?.status" color="primary"
+          [checked]="element?.status" (change)="toggleCatalogStatus(element?.id)">
+        </mat-slide-toggle>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="pageSize" [pageIndex]="pageIndex"
+    [length]="totalElements" showFirstLastButtons></mat-paginator>
+  <div *ngIf="isLoading" class="loading-shade">
+    <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+  </div>
+</div>

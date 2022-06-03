@@ -1,0 +1,18 @@
+<ng-template #innerTemplate>
+  <ngx-info-bulle *ngIf="tooltipContent" [disabled]="!enabledStatus()"
+                  [html]="tooltipContent"></ngx-info-bulle>
+    <div class="wrapper-data-input">
+      <label>{{ label | translate}}</label>
+      <div class="input-dual-wrapper w-70">
+        <div>
+          <input type="text" mask="09" suffix=" an(s)" [dropSpecialCharacters]="true"
+                 placeholder="an(s)" id="{{formNameMois}}" formControlName="{{formNameMois}}" autocomplete="off">
+          <p>{{'common.et' | translate}}</p>
+          <input type="text"  mask="09" suffix=" mois" [dropSpecialCharacters]="true"
+                 placeholder="mois" id="{{formNameAnnee}}" formControlName="{{formNameAnnee}}" autocomplete="off">
+        </div>
+        <ngx-form-error-display [controls]="[inputCtrlMois, inputCtrlAnnee]"
+                                [intlPath]="'duree'"></ngx-form-error-display>
+      </div>
+    </div>
+</ng-template>

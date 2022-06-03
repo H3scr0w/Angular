@@ -1,0 +1,88 @@
+{
+  "companies": {
+    "content": [{
+        "sifCode": "ADP01",
+        "companyName": "ADP Asia",
+        "sector": {
+          "id": "FG",
+          "name": "Flat Glass"
+        },
+        "zone": {
+          "id": "CPBM_NA",
+          "name": "CP Build Mat & Insulation NA"
+        },
+        "businessUnit": {
+          "id": 1,
+          "name": "Ceramics"
+        },
+        "consolidationLevelID": "ADP02",
+        "crmID": 1,
+        "magnitudeCode": "125",
+        "sitesCount": "12",
+        "usersCount": "555",
+        "comment": "My Comments My Comments My Comments My Comments My Comments My Comments My Comments My Comments My Comments My Comments My Comments My Comments My Comments My Comments ",
+        "lastSiteDate": "",
+        "lastUser": "S9022405",
+        "creationDate": "",
+        "lastUpdate": "",
+        "archiveDate": "",
+        "canEdit": true,
+        "canDelete": true
+      },
+      {
+        "sifCode": "ADP02",
+        "companyName": "ADP Brasil LTDA",
+        "sector": {
+          "id": "BD",
+          "name": "Building Distribution"
+        },
+        "zone": {
+          "id": "BD_BARAZU",
+          "name": "BD Barugel Azulay"
+        },
+        "businessUnit": {
+          "id": 1,
+          "name": "Sekurit"
+        },
+        "consolidationLevelID": "ADP02",
+        "crmID": 2,
+        "magnitudeCode": "126",
+        "sitesCount": 14,
+        "usersCount": 5552,
+        "comment": "My Commebts",
+        "lastSiteDate": "",
+        "lastUser": "S9022405",
+        "creationDate": "",
+        "lastUpdate": "",
+        "archiveDate": "",
+        "canEdit": false,
+        "canDelete": true
+      }
+    ],
+    "pageable": {
+      "sort": {
+        "unsorted": false,
+        "sorted": true,
+        "empty": false
+      },
+      "offset": 0,
+      "pageSize": 100,
+      "pageNumber": 0,
+      "unpaged": false,
+      "paged": true
+    },
+    "totalPages": 10,
+    "last": false,
+    "totalElements": 947,
+    "number": 0,
+    "sort": {
+      "unsorted": false,
+      "sorted": true,
+      "empty": false
+    },
+    "size": 100,
+    "first": true,
+    "numberOfElements": 100,
+    "empty": false
+  }
+}

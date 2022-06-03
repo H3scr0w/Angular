@@ -1,0 +1,31 @@
+<div class="w-100 h-100" [formGroup]="formGroup">
+  <h3 mat-dialog-title>Add Site</h3>
+  <div mat-dialog-content>
+    <div class="form-group">
+      <mat-form-field>
+        <input matInput placeholder="Sites*" formControlName="site" [matAutocomplete]="auto" name="docroot" />
+        <i matSuffix class="fas fa-search"></i>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="siteSelected = true;" [displayWith]="displayFn" (opened)="siteSelected = false">
+          <mat-option *ngFor="let site of (sites$ | async)" [value]="site">
+            <span>{{ site.name }}</span>
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+        <input matInput placeholder="Site version" name="siteVersion" formControlName="siteVersion" required />
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="float-right mt-3">
+    <button type="button" mat-raised-button color="primary" (click)="cancel()" class="mr-1">
+      Cancel
+    </button>
+    <button type="submit" mat-raised-button color="primary" (click)="confirm()" [disabled]="formGroup.pristine || formGroup.invalid || !siteSelected">
+      <span>Add
+        <i *ngIf="saving" class="fas fa-circle-notch fa-spin"></i>
+      </span>
+    </button>
+  </div>
+</div>

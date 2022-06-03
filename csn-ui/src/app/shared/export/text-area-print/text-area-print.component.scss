@@ -1,0 +1,33 @@
+.text-area-print-container {
+
+  margin-bottom: 5px;
+
+  .text-area-title {
+    position: relative;
+    top: 12px;
+    background: white;
+    left: 12px;
+    padding: 2px 5px;
+    color: #005b93;
+    font-family: Gilroy-Bold;
+    font-size: 14px;
+    letter-spacing: -0.44px;
+    line-height: 14px;
+  }
+
+  .text-area-print {
+    word-break: break-all;
+    padding: 16px;
+    box-sizing: border-box;
+    border: 1px solid #aac0d4;
+    border-radius: 8px;
+    background-color: #ffffff;
+    font-family: Gilroy-Regular;
+    font-size: 16px;
+    letter-spacing: -0.28px;
+    line-height: 22px;
+    text-align: left;
+    color: #005b93;
+    min-height: 80px;
+  }
+}

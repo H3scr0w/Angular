@@ -1,0 +1,100 @@
+{
+  "zones": {
+    "content": [{
+      "id": "CP_BNL",
+      "sector": {
+        "id": "CP",
+        "name": "Construction Products",
+        "creationDate": "2005-04-26",
+        "lastUpdate": "2005-04-26",
+        "lastUser": "Rayan SAMET"
+      },
+      "name": "CP Benelux",
+      "creationDate": "2008-01-07",
+      "lastUpdate": "2008-01-07",
+      "lastUser": "Rayan SAMET"
+    },
+    {
+      "id": "CPBM_NA",
+      "sector": {
+        "id": "CP",
+        "name": "Construction Products",
+        "creationDate": "2005-04-26",
+        "lastUpdate": "2005-04-26",
+        "lastUser": "Rayan SAMET"
+      },
+      "name": "CP Build Mat & Insulation NA",
+      "creationDate": "2008-01-07",
+      "lastUpdate": "2008-01-07",
+      "lastUser": "Rayan SAMET"
+    },
+    {
+      "id": "BD_BARAZU",
+      "sector": {
+        "id": "BD",
+        "name": "Building Distribution",
+        "creationDate": "2005-04-26",
+        "lastUpdate": "2005-04-26",
+        "lastUser": "Rayan SAMET"
+      },
+      "name": "BD Barugel Azulay",
+      "creationDate": "2008-01-07",
+      "lastUpdate": "2008-01-07",
+      "lastUser": "Rayan SAMET"
+    },
+    {
+      "id": "BD_DAHL_DK",
+      "sector": {
+        "id": "BD",
+        "name": "Building Distribution",
+        "creationDate": "2005-04-26",
+        "lastUpdate": "2005-04-26",
+        "lastUser": "Rayan SAMET"
+      },
+      "name": "BD Dahl Denmark",
+      "creationDate": "2008-01-07",
+      "lastUpdate": "2008-01-07",
+      "lastUser": "Rayan SAMET"
+    },
+    {
+      "id": "FG_AUTVRNO",
+      "sector": {
+        "id": "FG",
+        "name": "Flat Glass",
+        "creationDate": "2005-04-26",
+        "lastUpdate": "2005-04-26",
+        "lastUser": "Rayan SAMET"
+      },
+      "name": "FG Autover Norway",
+      "creationDate": "2008-01-07",
+      "lastUpdate": "2008-01-07",
+      "lastUser": "Rayan SAMET"
+    }
+  ],
+    "pageable": {
+      "sort": {
+        "sorted": false,
+        "unsorted": true,
+        "empty": true
+      },
+      "offset": 0,
+      "pageSize": 10,
+      "pageNumber": 0,
+      "unpaged": false,
+      "paged": true
+    },
+    "totalElements": 1,
+    "last": true,
+    "totalPages": 1,
+    "number": 0,
+    "size": 10,
+    "sort": {
+      "sorted": false,
+      "unsorted": true,
+      "empty": true
+    },
+    "first": true,
+    "numberOfElements": 1,
+    "empty": false
+  }
+}

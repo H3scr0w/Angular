@@ -1,0 +1,38 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<form [formGroup]="zoneForm" (ngSubmit)="onSubmit()">
+  <h1 mat-dialog-title>{{'zone.title' | translate}}</h1>
+  <mat-dialog-content>
+    <mat-form-field>
+      <input matInput formControlName="initials" placeholder="{{'country.initials' | translate}}" required
+             [readonly]="data?.mode=='edit'"/>
+      <mat-error align=" right" *ngIf="hasError('initials', 'required')">
+        {{'common.validation.required.message' | translate}}</mat-error>
+      <mat-error align=" right" *ngIf="zoneForm.get('initials').errors?.zoneIdNotTaken">
+        {{'common.validation.taken.message' | translate}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput formControlName="name" placeholder="{{'zone.name' | translate}}" required/>
+      <mat-error align=" right" *ngIf="hasError('name', 'required')">
+        {{'common.validation.required.message' | translate}}</mat-error>
+      <mat-error align=" right" *ngIf="zoneForm.get('name').errors?.zoneNameNotTaken">
+        {{'common.validation.taken.message' | translate}}</mat-error>
+    </mat-form-field>
+
+    <ng-select [items]="sectors | async" [typeahead]="inputSector" bindLabel="name"
+               placeholder="{{'site.dialogbox.tab.description.selectSector' | translate}} *" [searchable]="true"
+               [dropdownPosition]="'bottom'" formControlName="sector" appendTo="body" required>
+      <ng-template ng-label-tmp let-item="item">
+        <span *ngIf="item"> {{item?.name}}</span>
+      </ng-template>
+    </ng-select>
+    <small align="right" class="mat-error" *ngIf="hasError('sector', 'required')">
+      {{'common.validation.required.message' | translate}}</small>
+  </mat-dialog-content>
+
+  <div mat-dialog-actions align="center">
+    <button type="button" mat-raised-button (click)="onNoClick()">{{'common.close' | translate}}</button>
+    <button type="submit" mat-raised-button color="primary"
+            [disabled]="!zoneForm.valid || isLoading">{{'common.save' | translate}}</button>
+  </div>
+</form>

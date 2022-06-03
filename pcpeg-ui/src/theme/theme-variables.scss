@@ -1,0 +1,14 @@
+/*
+ * Application global variables.
+ */
+@import '~@delivery/eworkplace/docs/_sass/variables';
+
+// Set SG fonts path
+$sg-font-path: '../../dist/fonts';
+// Set Font Awesome font path
+$fa-font-path: '../../fonts';
+// SG CSS Fonts
+@import '../../node_modules/@delivery/eworkplace/docs/_sass/fonts';
+
+$sg-background-color: $white;
+$green: #17bb41;

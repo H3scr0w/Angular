@@ -1,0 +1,174 @@
+<div *ngIf="restit != null && (restit | json) != '{}'" class="result-content">
+  <div class="content-taux">
+  </div>
+  <div class="content-restit">
+    <div class="info mb-5" *ngIf="restitFromSwitch">
+      <img class="float-left" src="../../../../assets/images/ic_info_bulle_active.svg" alt="info">
+      <div class="content" [innerHTML]="this.getInfoBulle(infoBulleCodes.DONNEES_IMPORTEES)">
+      </div>
+    </div>
+    <div class="content-restit-title">
+      <span class="title-1">{{ 'refinancement-pret.restitution.title-1' | translate }}</span>
+      <span class="title-2">{{ 'refinancement-pret.restitution.title-2' | translate }}</span>
+    </div>
+    <div class="content-restit-data">
+      <div class="restit-value-wrapper">
+        <div class="restit-value restit-value-understep">
+          <div class="restit-value-big">
+            <div class="title">{{ 'refinancement-pret.restitution.pret-initial' | translate }}</div>
+            <div class="blue-value"></div>
+          </div>
+          <div class="restit-value-small-wrapper">
+            <div class="restit-value-small">
+              <div class="title">{{ 'refinancement-pret.restitution.taux-interets' | translate }}</div>
+              <div class="value">{{ restit.conditionsPretInitial.taux_debiteur_nominal | percent:'.2'}}</div>
+            </div>
+            <div class="restit-value-small">
+              <div class="title">{{ 'refinancement-pret.restitution.taux-assurance' | translate }}</div>
+              <div class="value">{{ restit.conditionsPretInitial.taux_assurance | percent:'.2'}}</div>
+            </div>
+            <div class="restit-value-small">
+              <div class="title">{{ 'refinancement-pret.restitution.duree-restante' | translate }}</div>
+              <div class="value">{{ restit.conditionsPretInitial.duree | duree: dureeTypes.ANNEE : true }}</div>
+            </div>
+            <div class="restit-value-small">
+              <div class="title">{{ restit.conditionsPretInitial.nombre_echeances | annuite }}</div>
+              <div class="value">{{ restit.conditionsPretInitial.mensualite | euroNumber}}</div>
+            </div>
+            <div class="restit-value-small">
+              <div class="title">{{ 'refinancement-pret.restitution.taux-effectif-global' | translate }}</div>
+              <div class="value">{{ restit.conditionsPretInitial.taeg_teg | percent:'.2'}}</div>
+            </div>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div class="restit-value">
+          <div class="title">{{ 'refinancement-pret.restitution.reste-a-payer' | translate }}</div>
+          <div class="blue-value">{{ restit.conditionsPretInitial.payer_terme | euroNumber}}</div>
+        </div>
+        <div class="divider"></div>
+        <div class="info mb-5 calcule" *ngIf="this.getInfoBulle(infoBulleCodes.REFINANCEMENT_CALCULE) && restit.conditionsNouveauPret">
+          <img class="float-left" src="../../../../assets/images/ic_info_bulle_active.svg" alt="info">
+          <div class="content" [innerHTML]="this.getInfoBulle(infoBulleCodes.REFINANCEMENT_CALCULE)">
+          </div>
+        </div>
+
+        <ng-container *ngIf="restit.conditionsNouveauPret">
+          <div class="content-restit-title">
+            <span class="title-1">{{ 'refinancement-pret.restitution.nouveau.title' | translate }}</span>
+          </div>
+          <div class="restit-value">
+            <div
+              class="title">{{ 'refinancement-pret.restitution.nouveau.indemnites-remboursement-anticipe' | translate }}</div>
+            <div class="blue-value">{{ restit.indemnites_remboursement_anticipe | euroNumber}}</div>
+          </div>
+          <div class="divider"></div>
+          <div class="restit-value restit-value-understep">
+            <div class="restit-value-big">
+              <div class="title">{{ 'refinancement-pret.restitution.nouveau.title' | translate }}</div>
+              <div class="blue-value"></div>
+            </div>
+            <div class="restit-value-small-wrapper">
+              <div class="restit-value-small">
+                <div class="title">{{ 'refinancement-pret.restitution.nouveau.taux-interets' | translate }}</div>
+                <div
+                  class="value">{{ restit.conditionsNouveauPret.taux_debiteur_nominal | percent:'.2'}}</div>
+              </div>
+              <div class="restit-value-small">
+                <div class="title">{{ 'refinancement-pret.restitution.nouveau.taux-assurance' | translate }}</div>
+                <div class="value">{{ restit.conditionsNouveauPret.taux_assurance | percent:'.2'}}</div>
+              </div>
+              <div class="restit-value-small">
+                <div class="title">{{ 'refinancement-pret.restitution.nouveau.duree-souhaitee' | translate }}</div>
+                <div class="value">{{ restit.conditionsNouveauPret.duree  | duree: restit.duree_type : true }}</div>
+              </div>
+              <div class="restit-value-small">
+                <div class="title">{{ restit.conditionsNouveauPret.nombre_echeances | annuite }}</div>
+                <div class="value">{{ restit.conditionsNouveauPret.mensualite | euroNumber}}</div>
+              </div>
+              <div class="restit-value-small">
+                <div class="title">{{ 'refinancement-pret.restitution.nouveau.taux-effectif-global' | translate }}
+                  <ngx-info-bulle class="info-bulle-restit" *ngIf="this.getInfoBulle(infoBulleCodes.TAEG)" placement="auto"
+                                  [html]="this.getInfoBulle(infoBulleCodes.TAEG)"></ngx-info-bulle>
+                </div>
+                <div class="value">{{ restit.conditionsNouveauPret.taeg_teg | percent:'.2'}}</div>
+              </div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="restit-value">
+            <div class="title">{{ 'refinancement-pret.restitution.nouveau.total-payer-terme' | translate }}</div>
+            <div class="blue-value">{{ restit.conditionsNouveauPret.montant_total | euroNumber}}</div>
+          </div>
+        </ng-container>
+      </div>
+      <ng-container *ngIf="restit.conditionsNouveauPret">
+        <div class="divider"></div>
+        <div class="info mb-5 rentabilite row" *ngIf="restit.montant_rachat">
+          <div class="title col-sm-6 col-12">
+            {{ (restit.montant_rachat > 0 ? 'refinancement-pret.restitution.resultat-rentable' : 'refinancement-pret.restitution.resultat-non-rentable') | translate }}
+          </div>
+          <div class="blue-value col-sm-6 col-12 mt-2 mt-sm-0 rentable text-sm-right text-center" [ngClass]="{'rentable': restit.montant_rachat > 0, 'non-rentable': restit.montant_rachat < 0}" >
+            {{ restit.montant_rachat | euroNumber}}
+          </div>
+        </div>
+        <div class="restit-pie-chart-wrapper">
+          <table class="compare">
+            <thead>
+              <tr>
+                <th colspan='3' scope='colgroup' class='head-table'>
+                  <span class="head-table-title">{{ 'refinancement-pret.restitution.comparaison.title' | translate }}</span>
+                </th>
+              </tr>
+              <tr class='subhead-table'>
+                <th scope="col" class='subhead-column'></th>
+                <th scope="col"
+                    class='subhead-column'>{{ 'refinancement-pret.restitution.comparaison.initial-renegocier' | translate }}</th>
+                <th scope="col"
+                    class='subhead-column'>{{ 'refinancement-pret.restitution.comparaison.nouveau-credit' | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ 'refinancement-pret.restitution.comparaison.duree-restante' | translate }}</td>
+                <td>{{ restit.conditionsPretInitial.duree | number :'1.2-2' }}</td>
+                <td>{{ restit.conditionsNouveauPret.duree | number :'1.2-2' }}</td>
+              </tr>
+              <tr>
+                <td>{{ 'refinancement-pret.restitution.comparaison.versement-periodique' | translate }}</td>
+                <td>{{ restit.conditionsPretInitial.mensualite | euroNumber}}</td>
+                <td>{{ restit.conditionsNouveauPret.mensualite | euroNumber}}</td>
+              </tr>
+              <tr>
+                <td>{{ 'refinancement-pret.restitution.comparaison.taeg-teg' | translate }}</td>
+                <td>{{ restit.conditionsPretInitial.taeg_teg | percent:'.2'}}</td>
+                <td>{{ restit.conditionsNouveauPret.taeg_teg | percent:'.2'}}</td>
+              </tr>
+              <tr>
+                <td>{{ 'refinancement-pret.restitution.comparaison.total-credit-restant' | translate }}</td>
+                <td>{{ restit.conditionsPretInitial.cout_credit | euroNumber}}</td>
+                <td>{{ restit.conditionsNouveauPret.cout_credit | euroNumber}}</td>
+              </tr>
+              <tr>
+                <td>{{ 'refinancement-pret.restitution.comparaison.total-payer-terme' | translate }}</td>
+                <td>{{ restit.conditionsPretInitial.payer_terme | euroNumber}}</td>
+                <td>{{ restit.conditionsNouveauPret.payer_terme | euroNumber}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <ngx-tableau-amortissement [columns]="columns" [echeancier]="echeancier" [title]="'refinancement-pret.restitution.tableau-amortissement'">
+          </ngx-tableau-amortissement>
+        </div>
+      </ng-container>
+    </div>
+    <ng-container *ngIf="restit.conditionsNouveauPret">
+      <ngx-calculated-with [donneesReferences]="restit.donnees_references_utilisees">
+      </ngx-calculated-with>
+      <div class="btn-action btn-action-centered">
+        <button type="button" class="btn-export" (click)="export()">
+          {{'common.exporter' | translate}}
+        </button>
+      </div>
+    </ng-container>
+  </div>
+</div>

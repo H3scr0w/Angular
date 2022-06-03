@@ -1,0 +1,112 @@
+<div class="mat-elevation-z8 my-4 mx-4 mw-mobile">
+  <div class="bg-header p-2 d-flex">
+    <span class="fa-stack fa-lg text-primary">
+      <i class="fas fa-circle fa-stack-1x fa-lg"></i>
+      <i class="fas fa-store-alt fa-stack-1x fa-sm text-white"></i>
+    </span>
+    <h2 class="text-white font-weight-bold pt-1">{{'common.menu.makeRequest' | translate}}</h2>
+  </div>
+
+  <div class="p-4 my-4 mx-4 mw-mobile">
+    <form [formGroup]="requestSelectorForm" (ngSubmit)="request()">
+      <mat-form-field>
+        <mat-select placeholder="{{'request.type' | translate}}" matNativeControl formControlName="type" required>
+          <mat-option [value]="type.id" *ngFor="let type of types">{{type?.value}}</mat-option>
+        </mat-select>
+        <mat-error align=" right" *ngIf="hasError('type', 'required')">
+          {{'common.validation.required.message' | translate}}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-select placeholder="{{'request.action' | translate}}" matNativeControl formControlName="action" required>
+          <mat-option [value]="action.id" *ngFor="let action of actions">{{action?.value}}</mat-option>
+        </mat-select>
+        <mat-error align=" right" *ngIf="hasError('action', 'required')">
+          {{'common.validation.required.message' | translate}}</mat-error>
+      </mat-form-field>
+
+      <div *ngIf="showSifCode">
+        <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+        <ng-select [items]="sifCodes | async" [typeahead]="autoSifCodes" bindValue="sifCode" bindLabel="sifCode" formControlName="sifCode"
+                   placeholder="{{'common.sifCode' | translate}}" [searchable]="true"
+                   [virtualScroll]="true" (change)="onSifSelected($any($event))" appendTo="body">
+          <ng-template ng-label-tmp let-item="item">
+            <span *ngIf="item"> {{item?.sifCode}}</span>
+          </ng-template>
+        </ng-select>
+        <small align="right" class="mat-error" *ngIf="hasError('sifCode', 'required')">
+          {{'common.validation.required.message' | translate}}
+        </small>
+        <small *ngIf="company">
+          Company: {{company.companyName}} <br/>
+          Zone: {{company.zone.name}}
+        </small>
+      </div>
+
+      <div *ngIf="showSifCodeDelete">
+        <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+        <ng-select [items]="sifCodesDelete | async" [typeahead]="autoSifCodesDelete" bindValue="sifCode" bindLabel="sifCode" formControlName="sifCode"
+                   placeholder="{{'common.sifCode' | translate}} {{'request.sifCode.delete' | translate}}" [searchable]="true"
+                   [virtualScroll]="true" (change)="onSifSelected($any($event))" appendTo="body">
+          <ng-template ng-label-tmp let-item="item">
+            <span *ngIf="item"> {{item?.sifCode}}</span>
+          </ng-template>
+        </ng-select>
+        <small align="right" class="mat-error" *ngIf="hasError('sifCode', 'required')">
+          {{'common.validation.required.message' | translate}}
+        </small>
+        <small *ngIf="company">
+          Company: {{company.companyName}} <br/>
+          Zone: {{company.zone.name}}
+        </small>
+      </div>
+
+      <div *ngIf="showSiteCode">
+        <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+        <ng-select [items]="siteCodes | async" [typeahead]="autoSiteCodes" bindValue="siteCode" bindLabel="siteCode" formControlName="siteCode"
+                   placeholder="{{'request.sitecode' | translate}} {{'request.sitecode.delete' | translate}}" [searchable]="true"
+                   [virtualScroll]="true" (change)="onsiteCodesSelected($any($event))" appendTo="body">
+          <ng-template ng-label-tmp let-item="item">
+            <span *ngIf="item"> {{item?.siteCode}}</span>
+          </ng-template>
+        </ng-select>
+        <small align="right" class="mat-error" *ngIf="hasError('siteCode', 'required')">
+          {{'common.validation.required.message' | translate}}
+        </small>
+        <small *ngIf="site">
+            SGT Site Name: {{site.siteCode}} - {{site.city?.name}} - {{site.company?.companyName}} - {{site.usualName}} <br/>
+            Country: {{site.city?.country?.name}} <br/>
+            City: {{site.city?.name}} <br/>
+            Address: {{site.address1}} <br/>
+            Post Code: {{site.postCode}}
+          </small>
+      </div>
+
+      <div *ngIf="showSiteCodeDelete">
+        <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+        <ng-select [items]="siteCodesDelete | async" [typeahead]="autoSiteCodesDelete" bindValue="siteCode" bindLabel="siteCode" formControlName="siteCode"
+                   placeholder="{{'request.sitecode' | translate}} {{'request.sitecode.delete' | translate}}"
+                   [searchable]="true" [virtualScroll]="true" (change)="onsiteCodesSelected($any($event))" appendTo="body">
+          <ng-template ng-label-tmp let-item="item">
+            <span *ngIf="item"> {{item?.siteCode}}</span>
+          </ng-template>
+        </ng-select>
+        <small align="right" class="mat-error" *ngIf="hasError('siteCode', 'required')">
+          {{'common.validation.required.message' | translate}}
+        </small>
+        <small *ngIf="site">
+          SGT Site Name: {{site.siteCode}} - {{site.city?.name}} - {{site.company?.companyName}} - {{site.usualName}} <br/>
+          Country: {{site.city?.country?.name}} <br/>
+          City: {{site.city?.name}} <br/>
+          Address: {{site.address1}} <br/>
+          Post Code: {{site.postCode}}
+        </small>
+      </div>
+
+      <div mat-dialog-actions align="center">
+        <button type="submit" mat-raised-button color="primary"
+          [disabled]="requestSelectorForm.invalid">{{'common.create' | translate}}</button>
+      </div>
+    </form>
+  </div>
+</div>

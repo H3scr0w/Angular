@@ -1,0 +1,36 @@
+<div class="m-2" *ngIf="isSireneUser">
+  <div class="bg-header p-2 d-flex">
+    <span class="fa-stack fa-lg text-primary">
+      <i class="fas fa-circle fa-stack-1x fa-lg"></i>
+      <i class="fas fa-home fa-stack-1x fa-sm text-white"></i>
+    </span>
+    <h2 class="text-white font-weight-bold pt-1">{{ 'Home' | translate }}</h2>
+  </div>
+  <mat-tab-group dynamicHeight animationDuration="0ms" mat-align-tabs="center">
+    <mat-tab label="{{'home.tab.country.name' | translate}}">
+      <div class="mat-elevation-z4">
+        <stgo-country-home [siteCount]="siteCount"></stgo-country-home>
+      </div>
+    </mat-tab>
+    <mat-tab label="{{'home.tab.sector.name' | translate}}">
+      <div class="mat-elevation-z4">
+        <stgo-sector-home [siteCount]="siteCount"></stgo-sector-home>
+      </div>
+    </mat-tab>
+    <mat-tab label="{{'home.tab.zone.name' | translate}}">
+      <div class="mat-elevation-z4">
+        <stgo-zone-home [siteCount]="siteCount"></stgo-zone-home>
+      </div>
+    </mat-tab>
+    <mat-tab label="{{'home.tab.company.name' | translate}}">
+      <div class="mat-elevation-z4">
+        <stgo-company-home [siteCount]="siteCount"></stgo-company-home>
+      </div>
+    </mat-tab>
+    <mat-tab label="{{'home.tab.delegation.name' | translate}}">
+      <div class="mat-elevation-z4">
+        <stgo-delegation-home [siteCount]="siteCount"></stgo-delegation-home>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

@@ -1,0 +1,14 @@
+<ng-template #innerTemplate>
+  <ngx-info-bulle *ngIf="tooltipContent" [disabled]="!enabledStatus()"
+                  [html]="tooltipContent"></ngx-info-bulle>
+  <div class="wrapper-data-input">
+    <label for="{{ labelId }}">{{ label}}</label>
+    <div class="wrapper-input">
+      <input type="text" mask="00/00/0000" [dropSpecialCharacters]="false" placeholder="JJ/MM/AAAA"
+             id="{{ labelId }}" class="form-control"
+             formControlName="{{ labelId }}" max="{{ maxDate }}" autocomplete="off">
+      <ngx-form-error-display [controls]="inputCtrl" [intlPath]="'date'"></ngx-form-error-display>
+      <div class="label-optional" *ngIf="!isRequired">{{ 'common.facultatif' | translate}}</div>
+    </div>
+  </div>
+</ng-template>

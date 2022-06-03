@@ -1,0 +1,41 @@
+<div *ngIf="websiteSelected; else empty">
+  <mat-sidenav-container class="mat-sidenav-container-position position-absolute h-85 mt-4 min-width-mobile">
+    <mat-sidenav #snav [mode]="mediaMatch ? 'over' : 'side'" opened class="font-bold font-white mx-4 mt-3 pt-5">
+      <mat-accordion>
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title class="text-gray">Technical Informations</mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="m-2" [ngClass]="{
+            'text-primary': sidenavElement === sidenavSelected
+          }" *ngFor="let sidenavElement of sidenavMenu">
+            <a (click)="show(sidenavElement)"> {{ sidenavElement }} </a>
+            <br />
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </mat-sidenav>
+    <mat-sidenav-content class="px-5 pt-4">
+      <div (click)="snav.toggle()" class="sidebar-button">
+        <button mat-icon-button color="primary" class="text-info">
+          <i *ngIf="!snav.opened" class="fas fa-angle-double-right fa-2x"></i>
+          <i *ngIf="snav.opened" class="fas fa-angle-double-left fa-2x"></i>
+        </button>
+      </div>  
+      <div class="p-1 ml-2">
+        <div *ngIf="sidenavSelected === 'Source code'">
+          <stgo-wsip-technical></stgo-wsip-technical>
+        </div>
+        <div *ngIf="sidenavSelected === 'Project Team'">
+          <stgo-wsip-project></stgo-wsip-project>
+        </div>
+        <div *ngIf="sidenavSelected === 'Hosting'">
+          <stgo-website-environment [website]="website" [isAdmin]="false"></stgo-website-environment>
+        </div>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
+<ng-template #empty>
+  <h1 class="text-center text-info welcome position-absolute">Greetings {{ firstname | titlecase }}, Welcome To Website4SG Console !</h1>
+</ng-template>

@@ -1,0 +1,53 @@
+<div class="mat-elevation-z8 my-5 mx-5">
+  <div class="mx-2 d-block text-center">
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Filter" />
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="add()">
+      <i class="fas fa-plus p-1"></i>Add ServerRecord</button>
+  </div>
+  <table class="w-100" mat-table matSort [dataSource]="dataSource">
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>type</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.type }}</td>
+    </ng-container>
+    <ng-container matColumnDef="domain">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Domain</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.domain }}</td>
+    </ng-container>
+    <ng-container matColumnDef="username">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Username</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.username }}</td>
+    </ng-container>
+    <ng-container matColumnDef="password">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Password</th>
+      <td mat-cell *matCellDef="let element" class="text-break">
+        <div *ngIf="element.password">
+          <input matInput [type]="hide ? 'password' : 'text'" [value]="element.password" readonly />
+          <button mat-icon-button matSuffix color="primary" (click)="hide = !hide">
+            <i *ngIf="hide" class="fas fa-eye-slash"></i>
+            <i *ngIf="!hide" class="fas fa-eye"></i>
+          </button>
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let element">
+        <span (click)="delete(element)">
+          <i class="fas fa-trash p-1"></i>
+        </span>
+        <span *ngIf="deleting && element.domain === serverRecordDomain">
+          <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" [length]="dataSource.data.length" showFirstLastButtons></mat-paginator>
+  <div *ngIf="isLoading" class="loading-shade">
+    <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+  </div>
+</div>

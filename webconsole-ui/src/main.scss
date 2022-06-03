@@ -1,0 +1,31 @@
+/*
+ * Entry point of global application style.
+ * Component-specific style should not go here and be included directly as part of the components.
+ */
+
+// Theme variables, must be included before the libraries to allow overriding defaults
+@import 'theme/theme-variables';
+
+// 3rd party libraries
+@import '../node_modules/@delivery/eworkplace/docs/_sass/bootstrap/mixins';
+@import '../node_modules/@delivery/eworkplace/docs/_sass/bootstrap/functions';
+@import '../node_modules/@delivery/eworkplace/docs/_sass/bootstrap/variables';
+@import '../node_modules/@delivery/eworkplace/docs/_sass/bootstrap/bootstrap-reboot';
+@import '../node_modules/@delivery/eworkplace/docs/_sass/bootstrap/bootstrap-grid';
+@import '../node_modules/@delivery/eworkplace/docs/_sass/bootstrap/utilities';
+@import '../node_modules/@delivery/eworkplace/docs/_sass/bootstrap/nav';
+@import '../node_modules/@delivery/eworkplace/docs/_sass/bootstrap/navbar';
+@import '../node_modules/@delivery/eworkplace/docs/_sass/bootstrap/transitions';
+@import '../node_modules/@delivery/eworkplace/docs/_sass/fontawesome/fontawesome';
+@import '../node_modules/@delivery/eworkplace/docs/_sass/fontawesome/fa-solid';
+@import '../node_modules/@delivery/eworkplace/docs/_sass/fontawesome/fa-regular';
+@import '../node_modules/@delivery/eworkplace/docs/_sass/fontawesome/fa-brands';
+
+// Reset
+@import 'theme/theme-reset';
+
+// Material Design
+@import 'theme/material';
+
+// Theme customization
+@import 'theme/theme';

@@ -1,0 +1,61 @@
+.form {
+	.title {
+		padding-bottom: 80px;
+		h1 {
+			@include gilroyHeav(32px);
+			color: $color-blue;
+			line-height: 41px;
+      opacity: 0.3;
+      &.active {
+        opacity: 1;
+      }
+		}
+    @media screen {
+      @media (max-width: 800px) {
+        padding-bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        a {
+          @include gilroyHeav(16px);
+
+          &.up {
+            img {
+              transform: rotate(180deg);
+            }
+          }
+
+          img {
+            margin-left: 16px;
+          }
+        }
+      }
+    }
+    @media (max-width: 425px) {
+      @include gilroyHeav(28px);
+      padding-bottom: 0;
+      letter-spacing: -0.5px;
+      line-height: 36px;
+      text-align: center;
+      display: block;
+    }
+    @media (min-width: 1024px) {
+      a {
+        display: none;
+      }
+    }
+    @media print {
+      a {
+        display: none;
+      }
+    }
+  }
+  form {
+    @media (max-width: 800px) {
+      padding-top: 40px;
+    }
+    @media (max-width: 425px) {
+      padding-top: 25px;
+    }
+  }
+}

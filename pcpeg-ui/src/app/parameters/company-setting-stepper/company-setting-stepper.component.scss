@@ -1,0 +1,7 @@
+@import '~@delivery/eworkplace/docs/_sass/variables';
+
+.mat-step-icon {
+  &.mat-step-icon-state-done {
+    background-color: $green;
+  }
+}

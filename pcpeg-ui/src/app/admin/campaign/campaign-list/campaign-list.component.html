@@ -1,0 +1,194 @@
+<mat-card class="mat-elevation-z8 my-4 mx-4 mw-mobile">
+  <div class="row">
+    <div class="col-3 text-center">
+      <button *ngIf="isBackButton" class="my-5" (click)="getYear('isPrevious')" mat-fab color="primary">
+        <i class="fas fa-arrow-left fa-2x"></i>
+      </button>
+    </div>
+    <div class="col-6">
+      <div class="text-center bg-primary rounded-lg">
+        <div class="row">
+          <div class="col-2">
+          </div>
+          <div class="col-8">
+            <h1 class="text-white">
+              PEG {{currentYear}}
+            </h1>
+          </div>
+          <div class="col-2 p-2">
+            <span *ngIf="isVisible">
+              <mat-slide-toggle (change)="changeCampaignStatus()" [(ngModel)]="isLocked"></mat-slide-toggle>
+            </span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="bg-white d-inline-flex p-2 m-2 rounded-pill">
+              <i class="fas fa-tools m-1 text-primary"></i>
+              {{campaignStats?.companyAdherentCount}} {{'campaign.company.adherente' | translate}}
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col text-black">
+            <div class="bg-white d-inline-flex p-2 m-2 rounded-pill">
+              <i class="fas fa-building m-1 text-primary"></i>
+              {{campaignStats?.companyValidatedCount}} {{'campaign.company.validated' | translate}} -
+              <span *ngIf="campaignStats && campaignStats.companyAdherentCount !== 0" class="ml-1">
+                {{(campaignStats.companyValidatedCount*100)/campaignStats.companyAdherentCount  | number: '.2-2'}}%
+              </span>
+              <span *ngIf="campaignStats.companyAdherentCount === 0" class="ml-1">
+                0%
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-3 text-center">
+      <button mat-fab class="my-5" *ngIf="isNextButton" (click)="getYear('isNext')" color="primary">
+        <i class="fas fa-arrow-right fa-2x"></i>
+      </button>
+    </div>
+  </div>
+
+</mat-card>
+
+<div class="mat-elevation-z8 my-4 mx-4 mw-mobile">
+  <div class="bg-info p-2 d-flex">
+    <span class="fa-stack fa-lg text-primary">
+      <i class="fas fa-circle fa-stack-1x fa-lg"></i>
+      <i class="fa fa-wrench fa-stack-1x fa-sm text-white"></i>
+    </span>
+    <h2 class="mr-auto text-white font-weight-bold pt-1">{{'campaign.header' | translate}}</h2>
+    <div class="float-right">
+      <button *ngIf="selection.selected.length > 0 && !isCampaignLocked" mat-stroked-button
+        class="text-info bg-white m-1" (click)="launchEmail()">
+        <i class="fas fa-envelope fa-lg"></i>
+        {{'common.launch' | translate}}</button>
+      <button *ngIf="selection.selected.length > 0 && !isCampaignLocked" mat-stroked-button
+        class="text-info bg-white m-1" (click)="relaunchEmail()">
+        <i class="fas fa-envelope fa-lg"></i>
+        {{'common.relaunch' | translate}}</button>
+      <button class="mr-1" mat-mini-fab color="primary" matTooltip="{{'common.filter' | translate}}"
+        (click)="toggleFilterPanel()" matBadge="{{filterCount}}" matBadgePosition="after" matBadgeColor="warn"
+        [matBadgeHidden]="filterCount===0"><i class="fas fa-filter"></i>
+      </button> 
+      <button class="mr-1" mat-mini-fab color="primary" matTooltip="{{'common.export.tooltip' | translate}}"
+        (click)="exportDetails()">
+        <i class="fas fa-file-excel"></i>
+      </button>      
+    </div>
+  </div>
+  <mat-expansion-panel [expanded]="panelFilterOpenState">
+    <form [formGroup]="advanceFilterForm" (ngSubmit)="applyAdvanceFilter()">
+      <div class="d-block p-2 bg-white" id="filter">
+        <ng-select [items]="statuses" formControlName="statutId" bindLabel="statusLabel" bindValue="statusId" [searchable]="false"
+          [dropdownPosition]="'bottom'" [openOnEnter]="false" placeholder="{{'common.statut' | translate}}"
+          appendTo="body" [selectOnTab]="true">
+          <ng-template ng-label-tmp let-item="item">
+            <span *ngIf="item"> {{ item.statusLabel }}</span>
+          </ng-template>
+        </ng-select>
+
+      </div>
+
+      <mat-action-row>
+        <button type="button" mat-raised-button color="primary"
+          (click)="resetAdvanceFilter()">{{'common.reset' | translate}} </button>
+        &nbsp;
+        <button type="submit" mat-raised-button color="primary">{{'common.search' | translate}}</button>
+      </mat-action-row>
+    </form>
+
+  </mat-expansion-panel>
+  <table class="w-100" mat-table matSort [dataSource]="campaigns" matSortActive="codeSif" matSortDisableClear
+    matSortDirection="asc">
+    <ng-container matColumnDef="codeSif">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="codeSif">{{'company.sif' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element?.codeSif }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="societeLibelle">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="societeLibelle">{{'company.libelle' | translate}}</th>
+      <td mat-cell class="text-break" *matCellDef="let element"> {{ element?.societeLibelle }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="correspondantN1">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="correspondantPrecedentNom">
+        {{'correspondant.previous' | translate}}</th>
+      <td mat-cell class="text-break" *matCellDef="let element"> {{ element?.correspondantPrecedentNom | uppercase }}
+        {{ element?.correspondantPrecedentPrenom | titlecase }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="correspondantN">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="correspondantActuelNom">
+        {{'correspondant.actual' | translate}}</th>
+      <td mat-cell class="text-break" *matCellDef="let element"> {{ element?.correspondantActuelNom | uppercase }}
+        {{ element?.correspondantActuelPrenom | titlecase }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="mail">
+      <th mat-header-cell *matHeaderCellDef>{{'common.mail' | translate}}</th>
+      <td mat-cell class="text-break" *matCellDef="let element">
+        <i *ngIf="element.flagEnvoieMail && !element.flagRelanceMail" class="fas fa-envelope fa-lg text-success"
+          matTooltip="{{'campaign.mail.send' | translate}} {{ element?.dateDernierMail | date:'dd/MM/yyyy' }}"></i>
+        <i *ngIf="element.flagRelanceMail" class="fas fa-envelope fa-lg text-info"
+          matTooltip="{{'campaign.mail.reminder' | translate}} {{ element?.dateDernierMail | date:'dd/MM/yyyy' }}"></i>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="statut">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="statutId">{{'common.statut' | translate}}</th>
+      <td mat-cell class="text-break" *matCellDef="let element">
+        <i *ngIf="element.statutId === 1" class="far fa-circle fa-lg text-secondary"
+          matTooltip="{{'common.todo' | translate}}"></i>
+        <i *ngIf="element.statutId === 2 || element.statutId === 3" class="fas fa-spinner fa-lg text-info"
+          matTooltip="{{'common.pending' | translate}}"></i>
+        <i *ngIf="element.statutId === 4" class="fas fa-check-circle fa-lg text-success"
+          matTooltip="{{'common.validated' | translate}}"></i>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox *ngIf="showSelectAllCheckbox && !isCampaignLocked" (change)="$event ? masterToggle() : null"
+          [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()"
+          [aria-label]="checkboxLabel()">
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox *ngIf="!isCampaignLocked" (click)="$event.stopPropagation()"
+          (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"
+          [aria-label]="checkboxLabel(row)">
+        </mat-checkbox>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>{{'common.actions' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">
+        <ng-container>
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+            <i class="fas fa-ellipsis-h fa-lg"></i>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item
+              (click)="replaceCorrespondant(element)">{{'correspondant.replace' | translate}}</button>
+            <button mat-menu-item (click)="deleteCorrespondant(element)">{{'correspondant.delete' | translate}}</button>
+          </mat-menu>
+        </ng-container>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns"></tr>
+  </table>
+
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="pageSize" [pageIndex]="pageIndex"
+    [length]="totalElements" showFirstLastButtons></mat-paginator>
+  <div *ngIf="isLoading || isStatsLoading" class="loading-shade">
+    <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+  </div>
+</div>

@@ -1,0 +1,64 @@
+.btn-action {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 50px;
+
+  @media (max-width: 425px) {
+    justify-content: center;
+    flex-direction: column-reverse;
+  }
+
+  &.btn-action-centered {
+    justify-content: center;
+  }
+
+  .btn-calculer, .btn-export {
+    @include gilroyBold(16px);
+    @include radius(28px);
+    margin-left: 10px;
+    padding: 15px 35px;
+    line-height: 1;
+    background-color: $color-green;
+    color: $color-white;
+    border: solid 2px $color-green;
+    @media (max-width: 425px) {
+      margin-top: 16px;
+      margin-left: 0;
+    }
+
+    &:hover {
+      background-color: $color-btnHover;
+      border-color: $color-btnHover;
+    }
+
+    &:disabled {
+      @include radius(28px);
+      @include gilroyBold(16px);
+      margin-left: 10px;
+      padding: 15px 35px;
+      line-height: 1;
+      background-color: $color-lightGreen;
+      color: $color-white;
+      border: solid 2px $color-lightGreen;
+    }
+  }
+
+  .btn-reset {
+    @include radius(28px);
+    padding: 15px 35px;
+    line-height: 1;
+    border: 2px solid $color-blue;
+    color: $color-blue;
+    background-color: inherit;
+    @media (max-width: 425px) {
+      margin-top: 16px;
+    }
+
+    &:hover {
+      background-color: $color-blue;
+      color: $color-white;
+      border: 2px solid $color-blue;
+    }
+  }
+}

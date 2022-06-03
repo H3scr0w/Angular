@@ -1,0 +1,16 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<form [formGroup]="requestCancellationForm" (ngSubmit)="onSubmit()">
+  <h1 mat-dialog-title>{{'request.cancellation.dialog.amount.header' | translate}}</h1>
+  <mat-dialog-content>
+
+    <mat-form-field>
+      <input matInput type="text" stgoNumberOnly formControlName="amount" placeholder="{{'request.cancellation.dialog.amount' | translate}}"
+             required/>
+    </mat-form-field>
+  </mat-dialog-content>
+  <div mat-dialog-actions align="center">
+    <button type="button" mat-raised-button (click)="onNoClick()">{{'common.close' | translate}}</button>
+    <button type="submit" mat-raised-button color="primary"
+            [disabled]="requestCancellationForm.invalid || isLoading">{{'common.validate' | translate}}</button>
+  </div>
+</form>

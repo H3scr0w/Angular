@@ -1,0 +1,16 @@
+<div *ngFor="let step of steps; let i = index" class="step  {{step?.stepCss}}"
+     [ngClass]="{'complete':step.isComplete(),
+     'no-progress-bar': (steps?.length>2 && i === steps?.length-2),
+     'step-out': (i === steps?.length-1) }">
+  <div *ngIf="i !== steps?.length - 1" class="step-title"
+       [ngClass]="{'active': isStepActive(i), 'complete': isStepActive(i)}">
+    <p>
+      {{ moduleName + '.step' + (i + 1) + '.title' | translate}}
+      <ngx-info-bulle *ngIf="step.tooltipContent" [disabled]="!isStepActive(i)"
+                      [html]="step.tooltipContent"></ngx-info-bulle>
+    </p>
+    <div class="number">{{i + 1}}</div>
+  </div>
+  <ng-template [ngTemplateOutlet]="step.stepInnerTemplate"></ng-template>
+</div>
+

@@ -1,0 +1,446 @@
+{
+  "application": {
+    "pageTitle": "Bienvenue sur HECTAUR"
+  },
+  "common": {
+    "nomOutil": "HECTAUR",
+    "reset": "RÉINITIALISER",
+    "recalculer": "RE-CALCULER",
+    "calculer": "CALCULER",
+    "usufruitEconomique": "usufruit économique",
+    "renteViagere": "rente viagère",
+    "rachatRenteViagere": "Revente d’un bien vendu en viager ",
+    "pret": "prêt",
+    "refinancementPret": "Refinancement de prêt",
+    "prêtRefinancementPret": "prêt et refinancement de prêt",
+    "accueil": "Accueil",
+    "calcule-avec": "Calculé avec ",
+    "tableau-amortissement": {
+      "aucune-donnee": "Les données entrées ne permettent pas de générer un échéancier.",
+      "agrandir": "Voir tout le tableau",
+      "reduire": "Réduire le tableau"
+    },
+    "annees": "années",
+    "annee": "année",
+    "mois": "mois",
+    "et": "et",
+    "facultatif": "Champ facultatif *",
+    "exporter": "TÉLÉCHARGER LES RÉSULTATS",
+    "restitution": "Restitution :",
+    "ok": "ok",
+    "ans": "ans",
+    "text-area-max": "caractères max.",
+    "cartouche": {
+      "label": "Information(s) client(s)",
+      "placeholder": "Ajouter des informations complémentaires ici."
+    },
+    "texte-libre": {
+      "label": "Texte libre",
+      "placeholder": "Ajouter une texte libre ici."
+    }
+  },
+  "sessionmodal": {
+    "title": "Session terminée",
+    "message": "Votre session s'est achevée ! Veuillez vous reconnecter pour continuer. ",
+    "button": "Ok"
+  },
+  "mobile": {
+    "form": {
+      "hide": "Masquer le formulaire",
+      "show": "Afficher le formulaire"
+    }
+  },
+  "footer": {
+    "copyright": "2020 Conseil Supérieur du Notariat© - Tous droits réservés",
+    "mentionslegales": "Mentions légales"
+  },
+  "header": {
+    "portailNotaccess": "Portail Notaccess",
+    "sedeconnecter": "Se déconnecter",
+    "moncompteidnot": "Mon compte ID.not"
+  },
+  "home": {
+    "title": "<em>h</em>ypothèses <em>e</em>t <em>c</em>alculs de <em>t</em>aux, d'<em>a</em>nnuités, d'<em>u</em>sufruit et de <em>r</em>ente",
+    "subtitle": "HECTAUR est un outil à destination des notaires et collaborateurs afin de répondre précisément au client pour toute demande associée à : "
+  },
+  "mentionsLegales": {
+    "title": "Mentions légales"
+  },
+  "validators": {
+    "required": "Ce champ est requis.",
+    "pattern": "Le format est incorrect.",
+    "date": {
+      "required": "Ce champ est requis.",
+      "pattern": "La date saisie est incorrecte.",
+      "Mask": "La date saisie est incorrecte.",
+      "maxBirthDate": "La date de naissance ne peut pas dépasser la date du jour."
+    },
+    "nombre": {
+      "required": "Ce champ est requis.",
+      "pattern": "Ce champ ne peut comporter que des chiffres.",
+      "min": "La valeur est en dessous du minimum.",
+      "max": "La valeur est au dessus du maximum.",
+      "max-bouquet": "Le montant du bouquet ne peut être supérieur à la valeur du bien."
+    },
+    "duree": {
+      "required": "Ce champ est requis.",
+      "pattern": "Ce champ ne peut comporter que des chiffres.",
+      "max": "La durée maximale est de 11 mois."
+    }
+  },
+  "usufruit": {
+    "title": "Usufruit économique",
+    "step1": {
+      "title": "Caractéristiques de l'opération",
+      "date": "Date du contrat",
+      "date-error": "La date saisie n'est pas conforme.",
+      "valeur-locative": "Valeur Locative mensuelle brute",
+      "civil": "Immeuble d'habitation et autres",
+      "commercial": "Immeuble commercial",
+      "valeur-bien": "Valeur pleine propriété",
+      "valeur-locative-brute": "Valeur locative <b>mensuelle</b> brute",
+      "charges-anu": "Charges <b>annuelles</b> du bien",
+      "viager": "Viager",
+      "temporaire": "Temporaire"
+    },
+    "step2": {
+      "title": "Démembrement",
+      "type-demembrement": "Type de démembrement",
+      "duree-demembrement": "Durée de démembrement"
+    },
+    "step3": {
+      "title": "Usufruitier(s)",
+      "usufruitier": "Usufruitier n°",
+      "bouton-ajouter": "Ajouter un usufruitier",
+      "bouton-supprimer": "Supprimer un usufruitier"
+    },
+    "restitution": {
+      "title": "Résultat : usufruit économique",
+      "taux": "Taux de rendement annuel calculé",
+      "nue-propriete-economique": "Nue-propriété économique : ",
+      "usufruit-economique": "Usufruit économique",
+      "nue-propriete-fiscale": "Nue-propriété fiscale",
+      "usufruit-fiscal": "Usufruit fiscal",
+      "esperance-vie": "Espérance de vie de l'usufruitier",
+      "esperance-des-vies": "Espérance de vie des usufruitiers",
+      "duree-demembrement": "Durée du démembrement"
+    }
+  },
+  "rente-viagere": {
+    "info-global1": "Les informations présentées dans cet écran sont une estimation et ne peuvent être considérées comme une évaluation.",
+    "info-global2": "Deux méthodes d’estimation du taux de rendement sont proposées :",
+    "info-global3": "la méthode appliquant la jurisprudence récente.",
+    "info-global4": "la méthode appliquant les principes de place..",
+    "title": "Rente viagère",
+    "step1": {
+      "title": "Caractéristiques de l'opération",
+      "date": "Date du contrat",
+      "date-error": "La date saisie n'est pas conforme.",
+      "droitUsageHabitation": "Réserve du droit d'usage d'habitation",
+      "occupe": "Oui",
+      "libre": "Non",
+      "valeur-locative": "Valeur locative",
+      "valeur-locative-info": "La valeur locative mensuelle est renseignée par le client.",
+      "civil": "Immeuble d'habitation et autres",
+      "commercial": "Immeuble commercial",
+      "valeurBien": "Valeur pleine propriété",
+      "info-valeur-bien": "La valeur vénale du bien, ou valeur en pleine propriété, est le prix\n auquel un bien peut être vendu d'après l'état du marché.",
+      "bouquetVerse": "Montant du bouquet versé",
+      "bouquetVerseInfo": "Le bouquet est une somme payée comptant par l’acheteur et versée au vendeur lors de signature du viager. Ce versement,\ndéterminé par le vendeur et l’acheteur, n’est pas obligatoire.",
+      "valeurLocativeBrute": "Valeur locative <b>mensuelle</b> brute",
+      "valeurLocativeBruteInfo": "La valeur locative mensuelle est renseignée par le client.",
+      "chargesAnu": "Charges <b>annuelles</b> du bien",
+      "chargesAnuInfo1": "Les charges usufructuaires annuelles sont communiquées par le client\net correspondent aux charges que doit supporter\nl'usufruitier sur les revenus du bien dont il a la jouissance. Ils\ncomprennent notamment: ",
+      "chargesAnuInfo2": "Les dépenses liées aux réparations d'entretien du bien en €",
+      "chargesAnuInfo3": "Les charges annuelles courantes (électricité, gaz, eau, etc.) en €",
+      "chargesAnuInfo4": "Les impôts (taxe foncière, taxe d'habitation, impôt sur le revenu) en €",
+      "chargesAnuInfo5": "Les frais de gestion et les frais d'arbitrage en €",
+      "chargesAnuInfo6": "Les charges de copropriété selon la répartition convenue entre usufruitier et nu-propriétaire en €"
+    },
+    "step2": {
+      "title": "Crédirentier(s)",
+      "credirentier": "Crédirentier n°",
+      "bouton-ajouter": "Ajouter un crédirentier",
+      "bouton-supprimer": "Supprimer un crédirentier"
+    },
+    "step3": {
+      "title": "Caractéristiques des versements",
+      "sub-title": "Caractéristiques des versements",
+      "achevement": "A l'achèvement du démembrement",
+      "jour": "Au jour du démembrement",
+      "achevement_cesure": "A l'achèvement du démem-brement",
+      "jour_cesure": "Au jour du démem-brement",
+      "sub-title1": "Périodicité des versements",
+      "mensuel": "Mensuel",
+      "trimestriel": "Trimestriel",
+      "semestriel": "Semestriel",
+      "annuel": "Annuel",
+      "sub-title2": "Terme des versements",
+      "avance": "À échoir",
+      "echu": "Echu",
+      "revalorisationRente": "Taux de revalorisation de la rente"
+    },
+    "restitution": {
+      "title": "Résultat : rente viagère" ,
+      "esperance-de-vie": "Espérance de vie du crédirentier",
+      "esperance-des-vies": "Espérance de vie des crédirentiers",
+      "rente": "Rente ",
+      "total-payer-terme": "Total à payer à terme",
+      "taux-indexe-sur": "Les versements sont à indexer sur l'indice choisi au contrat.",
+      "type-versements": {
+        "mensuelle": "mensuelle",
+        "trimestrielle": "trimestrielle",
+        "semestrielle": "semestrielle",
+        "annuelle": "annuelle"
+      },
+      "taux": "Taux de rendement annuel calculé"
+    }
+  },
+  "rachat-rente-viagere": {
+    "info-global": "Les informations présentées dans cet écran sont une estimation et ne peuvent être considérées comme une évaluation.",
+    "title": "Revente d’un bien vendu en viager ",
+    "step1": {
+      "title": "Date de l'évaluation",
+      "date-evaluation": "Date de l'évaluation",
+      "date-evaluation-error": "La date d'évaluation saisie n'est pas conforme."
+    },
+    "step2": {
+      "title": "Caractéristiques du contrat initial",
+      "date-contrat": "Date du contrat initial",
+      "date-contrat-error": "La date saisie n'est pas conforme.",
+      "vendue": "Vendue",
+      "occupe": "Occupé",
+      "libre": "Libre d'occupation",
+      "valeur-bien": "Valeur pleine propriété",
+      "valeur-bien-info": "La valeur vénale du bien, ou valeur en pleine propriété, est le prix \n auquel un bien peut être vendu d'après l'état du marché.",
+      "taux-rendement-initial": "Taux de rendement annuel initial",
+      "montant-initial-rente": "Montant initial de la rente"
+    },
+    "step3": {
+      "title": "Crédirentier(s)",
+      "date-naissance": "Date de naissance",
+      "credirentier": "Crédirentier n°",
+      "bouton-ajouter": "Ajouter un crédirentier"
+    },
+    "step4": {
+      "title": "Caractéristiques des versements",
+      "sub-title1": "Périodicité des versements",
+      "mensuel": "Mensuel",
+      "trimestriel": "Trimestriel",
+      "semestriel": "Semestriel",
+      "annuel": "Annuel",
+      "revalorisation-rente": "Taux de revalorisation de la rente"
+    },
+    "restitution": {
+      "taux": "Taux de rendement calculé",
+      "title-1": "Restitution :",
+      "title-2": "Conditions de rachat de la rente",
+      "montant-actuel-rente": "Montant actuel de la rente",
+      "taux-rendement": "Taux de rendement périodique du bien",
+      "duree": "Durée du contrat retenue",
+      "valeur-capital-rente": "Valeur en capital de la rente",
+      "montant-rachat-rente": "Montant pour racheter la rente viagère"
+    }
+  },
+  "pret": {
+    "title": "Prêt",
+    "step1": {
+      "title": "Caractéristiques du crédit",
+      "sub-title1": "Nature du crédit",
+      "immobilier": "Immobilier",
+      "consommation": "Consommation",
+      "professionnel": "Professionnel",
+      "capital-emprunt": "Capital à emprunter",
+      "type-calcul": "Que souhaitez-vous calculer ?",
+      "types-calcul": {
+        "duree": "Une durée",
+        "taux": "Un taux",
+        "mensualite": "Une mensualité"
+      },
+      "taux-debiteur-nominal": "Taux débiteur nominal annuel",
+      "mensualite": "Mensualité souhaitée",
+      "mensualite-error": "La mensualité souhaitée n'est pas conforme",
+      "duree": "Durée",
+      "taux-annuel-assurance": "Taux annuel de l'assurance du prêt",
+      "frais-octroi-credit": "Frais liés à l'octroi de crédit",
+      "date-financement": "Date de financement",
+      "date-financement-error": "La date de financement n'est pas conforme"
+    },
+    "step2": {
+      "title": "Paramètres avancés de calcul",
+      "date-premiere-echeance": "Date de la première échéance",
+      "date-premiere-echeance-error": "La date de la première échéance n'est pas conforme",
+      "type-tableau": {
+        "title": "Quel type de tableau voulez-vous établir ?",
+        "avec-date": "Avec dates d'échéances",
+        "sans-date": "Sans dates d'échéances"
+      },
+      "mode-calcul-taux": "Mode calcul du taux",
+      "actuariel": "Actuariel",
+      "proportionnel": "Proportionnel",
+      "nombre-echeances": "Nombre d'échéances par an",
+      "mode-remboursement": "Mode de remboursement",
+      "echeances-constantes": "Échéances constantes",
+      "in-fine": "In fine",
+      "interets-degressifs": "A amortissement constant et intérêts dégressifs",
+      "interets-progressifs": "A amortissement constant et intérêts progressifs"
+    },
+    "restitution": {
+      "title-1": "Restitution :",
+      "title-2": "Conditions du prêt",
+      "montant-pret": "Montant du prêt",
+      "duree-pret": "Durée du prêt",
+      "taux-debiteur-nominal": "Taux débiteur nominal",
+      "montant-periode": "Montant versé à chaque période (assurance comprise)",
+      "montant-total-du": "Montant total dû par l'emprunteur / Cumul des paiements",
+      "cout-total": "Coût total du crédit",
+      "dont-interets": "Dont intérêts",
+      "dont-assurance": "Dont assurance",
+      "dont-frais": "Dont frais",
+      "taeg-teg": "TAEG / TEG",
+      "taux-usure": "Taux d'usure de référence",
+      "tableau-amortissement": "Tableau d'amortissement",
+      "switch-info": "En cliquant sur une ligne, vous pourrez accéder au module de refinancement de prêt déjà pré-rempli."
+    },
+    "switch-modal": {
+      "title": "Attention, vous allez changer de page !",
+      "info-1": "En sélectionnant une ligne du tableau d'amortissement, vous êtes redirigé vers le module de refinancement de prêt. Les données associées à la ligne sélectionnée seront déjà saisies dans le formulaire de la simulation.",
+      "info-2": "Elles peuvent être modifiées au besoin.",
+      "confirm-question": "Confirmer vous vouloir lancer la simulation de refinancement de prêt ?",
+      "confirm": "Je confirme",
+      "cancel": "Annuler"
+    },
+    "controle-coherence": {
+      "message": "Les données saisies ne permettent pas en l’état de simuler cet emprunt. Veuillez soit allonger la durée de l’emprunt, soit augmenter la mensualité souhaitée"
+    }
+  },
+  "refinancement-pret": {
+    "title": "Refinancement de prêt",
+    "info-global1": "Le module de rachat de prêt ne peut réévaluer qu’un seul prêt à la fois",
+    "info-global2": "Le module renvoie, pour ce prêt, le reste à payer par emprunteur.",
+    "info-global3": "Pour réviser les conditions du prêt et actualiser son amortissement, l’utilisateur devra réinjecter ce montant dans le module de prêt.",
+    "info-global4": "Dans le cas d’un regroupement de plusieurs crédits, il faut répéter l’opération autant de fois qu’il y a de crédits à regrouper et réinjecter la somme des restes à charge dans le module de prêt afin de d’évaluer les conditions du nouveau prêt et d’afficher son amortissement dans le temps.",
+    "step1": {
+      "title": "Caractéristiques du crédit initial",
+      "sub-title1": "Nature du crédit",
+      "date-signature-pret": "Date de signature de prêt",
+      "date-signature-pret-error": "La date de signature du prêt n'est pas conforme",
+      "mensualite": "Mensualité souhaitée",
+      "date-financement": "Date de financement",
+      "immobilier": "Immobilier",
+      "professionnel": "Professionnel",
+      "consommation": "Consommation",
+      "capital-emprunt": "Montant initial emprunté",
+      "capital-restant-du": "Capital restant dû",
+      "taux-debiteur-nominal": "Taux hors assurance",
+      "duree": "Durée du prêt initial",
+      "taux-annuel-assurance": "Taux annuel de l'assurance du prêt",
+      "frais-octroi-credit": "Frais liés à l'octroi de crédit",
+      "date-reevaluation": "Date de réévaluation du prêt",
+      "date-reevaluation-error": "La date de réévaluation du prêt n'est pas conforme"
+    },
+    "step2": {
+      "title": "Paramètres avancés de calcul",
+      "date-premiere-echeance": "Date de la première échéance",
+      "date-premiere-echeance-error": "La date de la première échéance n'est pas conforme",
+      "mode-calcul-taux": "Mode calcul du taux",
+      "actuariel": "Actuariel",
+      "proportionnel": "Proportionnel",
+      "nombre-echeances": "Nombre d'échéances par an",
+      "mode-remboursement": "Mode de remboursement",
+      "echeances-constantes": "Échéances constantes",
+      "in-fine": "In fine",
+      "interets-degressifs": "A amortissement constant et intérêts dégressifs",
+      "interets-progressifs": "A amortissement constant et intérêts progressifs"
+    },
+    "step3": {
+      "title": "Caractéristiques du nouveau crédit",
+      "reprise-capital": "Reprise de capital",
+      "frais-garantie": "Frais de garantie",
+      "frais-annexes": "Frais annexes",
+      "duree-souhaitee": "Durée souhaitée",
+      "montant-emprunt": "Montant total emprunté",
+      "interet": "Intérêt",
+      "nouveau-taux-debiteur-nominal": "Taux débiteur nominal annuel",
+      "taux-assurance": "Taux d'assurance et frais",
+      "frais-renegociation-credit": "Frais liés à la renégociation de crédit",
+      "indemnites-remboursement": "Indemnités de remboursement"
+    },
+    "step4": {
+      "title": "Paramètres avancés du nouveau crédit",
+      "date-premiere-echeance": "Date de la première échéance",
+      "date-premiere-echeance-error": "La date de la première échéance n'est pas conforme",
+      "mode-calcul-taux": "Mode calcul du taux",
+      "actuariel": "Actuariel",
+      "proportionnel": "Proportionnel",
+      "nombre-echeances": "Nombre d'échéances par an",
+      "mode-remboursement": "Mode de remboursement",
+      "echeances-constantes": "Échéances constantes",
+      "in-fine": "In fine",
+      "interets-degressifs": "A amortissement constant et intérêts dégressifs",
+      "interets-progressifs": "A amortissement constant et intérêts progressifs"
+    },
+    "restitution": {
+      "title-1": "Restitution :",
+      "title-2": "Conditions du prêt initial à renégocier",
+      "initial-info": "Le refinancement de prêt a bien été calculé sur la base de l'échéance choisie. Vous pouvez modifier les données\n à gauche pour re-calculer le refinancement.",
+      "capital-du": "Capital dû",
+      "pret-initial": "Conditions du prêt initial",
+      "taux-interets": "Taux d'intérêts",
+      "taux-assurance": "Taux d'assurance",
+      "duree-restante": "Durée restante",
+      "mensualite": "Mensualité",
+      "trimestrialite": "Trimestrialité",
+      "semestrialite": "Semestrialité",
+      "annuite": "Annuité",
+      "taux-effectif-global": "TAEG / TEG",
+      "total-payer-terme": "Total à payer à terme",
+      "reste-a-payer": "Reste à payer",
+      "nouveau": {
+        "title": "Conditions du nouveau prêt",
+        "reprise-capital": "Reprise du capital",
+        "indemnites-remboursement-anticipe": "Indemnités de remboursement anticipé",
+        "taux-interets": "Taux d'intérêts",
+        "taux-assurance": "Taux d'assurance",
+        "duree-souhaitee": "Durée souhaitée",
+        "mensualite": "Mensualité",
+        "taux-effectif-global": "TAEG / TEG",
+        "total-payer-terme": "Total à payer à terme"
+      },
+      "comparaison": {
+        "title": "Tableau de comparaison",
+        "initial-renegocier": "Crédit initial à renégocier",
+        "nouveau-credit": "Nouveau crédit",
+        "duree-restante": "Durée restante",
+        "versement-periodique": "Versement périodique",
+        "taeg-teg": "TEG / TAEG",
+        "total-credit-restant": "Coût total du crédit restant à payer",
+        "total-payer-terme": "Total à payer à terme"
+      },
+      "resultat-rentable": "Le rachat de crédit vous permet de réaliser à terme une économie de : ",
+      "resultat-non-rentable": "Le rachat de crédit n'est pas rentable. A terme, il vous fait perdre : ",
+      "tableau-amortissement": "Tableau d'amortissement"
+    },
+    "info-calcul": "*Calculé avec la table de mortalité année 2004-2006, fournie par l'INSEE en 06/2012."
+  },
+  "persons": {
+    "sexe": "Sexe",
+    "bouton-supprimer": "Supprimer",
+    "date-naissance": "Date de naissance"
+  },
+  "print": {
+    "restit":{
+      "title": "Rappel des information(s) client(s)"
+    },
+    "footer": {
+      "subtitle": "Simulation indicative effectuée le {{thisDate}} en fonction des paramètres, des données et tables de références à cette date",
+      "copyright": "Conseil Supérieur du Notariat© - {{thisYear}}"
+    },
+    "calcul": {
+      "title": "Paramètres de saisies",
+      "step1": {
+        "title": "Caractéristiques de l'opération"
+      }
+    }
+  }
+}

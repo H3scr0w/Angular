@@ -1,0 +1,229 @@
+@import '../../../../styles/base';
+
+.content-restit {
+  color: $color-blue;
+  font-size: 20px;
+
+  .content-restit-title {
+    @include gilroyBold(20px);
+    color: $color-blue;
+    letter-spacing: -0.35px;
+    line-height: 24px;
+    margin-bottom: 45px;
+
+    @media (max-width: 425px) {
+      padding-right: 20px;
+    }
+    .title-1 {
+      display: block;
+    }
+  }
+
+  .content-restit-data {
+    display: flex;
+    flex-direction: column;
+
+    .divider {
+      margin-bottom: 20px;
+      height: 1px;
+      background-color: #e6eff6;
+    }
+
+    .restit-value.restit-value-understep {
+      flex-direction: column;
+
+
+      .restit-value-big {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin-bottom: 20px;
+        align-items: center;
+        .title {
+          @media (max-width: 425px) {
+            width: 45%;
+          }
+        }
+      }
+
+      .restit-value-small-wrapper {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        padding-left: 30px;
+
+        .restit-value-small {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 20px;
+
+          .title {
+            @include gilroyReg(16px);
+            color: $color-grey;
+            letter-spacing: -0.28px;
+            line-height: 19px;
+            font-weight: normal;
+            @media (max-width: 425px) {
+              width: 45%;
+            }
+          }
+
+          .value {
+            @include gilroyReg(16px);
+            color: $color-blue;
+            letter-spacing: -0.28px;
+            line-height: 19px;
+          }
+        }
+      }
+    }
+
+    .restit-value {
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .title {
+        @include gilroyBold(16px);
+        color: $color-blue;
+        letter-spacing: -0.28px;
+        line-height: 20px;
+        width: 50%;
+        @media (max-width: 425px) {
+          width: 38%;
+        }
+      }
+
+      .blue-value {
+        @include gilroyReg(32px);
+        color: $color-lightBlue;
+        letter-spacing: -0.56px;
+        line-height: 38px;
+      }
+
+      .green-value {
+        @include gilroyReg(32px);
+        color: $color-lightBlue;
+        letter-spacing: -0.56px;
+        line-height: 38px;
+      }
+    }
+
+    .info-notif {
+      margin-bottom: 30px;
+
+      .info-notif-content {
+        @include radius(8px);
+        display: block;
+        background-color: $color-lightGreen;
+        padding: 15px 30px 15px 60px;
+        width: 100%;
+        position: relative;
+
+        .info-notif-icon {
+          position: absolute;
+          background-image: url('../../../../assets/images/ic_info_bulle_active.svg');
+          height: 24px;
+          width: 24px;
+          top: 0;
+          left: 15px;
+          transform: translate(0, 50%);
+        }
+
+        p {
+          @include gilroyReg(14px);
+          color: $color-blue;
+          letter-spacing: -0.34px;
+          line-height: 20px;
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}
+
+.tab-container ul li {
+  width: 50%;
+  text-align: center;
+
+  a.nav-link {
+    border-bottom: solid 1px $color-grey;
+    color: $color-grey;
+  }
+
+  a.nav-link.active {
+    border-bottom: solid 1px $color-green;
+    color: $color-green;
+    border: none;
+  }
+
+  a:hover {
+    border: none;
+  }
+}
+
+.tab-container ul li.active {
+  border-bottom: solid 1px $color-green;
+  color: $color-green;
+}
+
+
+@media (min-width: 1024px) {
+  .restit-pie-chart-wrapper {
+    align-self: center;
+  }
+}
+
+@media (max-width: 425px) {
+  .restit-pie-chart-wrapper {
+    display: block;
+    overflow-x: scroll;
+
+    table {
+      width: 800px;
+      display: block;
+    }
+  }
+
+  .restit-value-wrapper {
+    padding-right: 20px;
+  }
+}
+
+
+.switch-modal-body {
+  border-radius: 8px;
+  padding: 30px;
+  background-color: $color-lightGreen;
+  color: #005b93;
+
+  .title {
+    margin-bottom: 20px;
+    font-weight: bold;
+    font-size: 24px;
+  }
+
+  .btn-cancel {
+    margin-right: 30px;
+    margin-top: 15px;
+    font-family: Gilroy-Bold, sans-serif;
+    font-size: 16px;
+    border-radius: 28px;
+    background-color: unset;
+    color: #005b93;
+    letter-spacing: -0.22px;
+    line-height: 20px;
+    text-align: center;
+    padding: 15px 35px;
+    display: block;
+    border: 2px solid #005b93;
+
+    &:hover {
+      cursor: pointer;
+      background-color: $color-blue;
+      color: $color-white;
+      border: 2px solid $color-blue;
+    }
+  }
+}

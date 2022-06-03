@@ -1,0 +1,40 @@
+<div *ngIf="echeancier && echeancier.length == 0" class="text-center">
+  <div>{{'common.tableau-amortissement.aucune-donnee' | translate}}</div>
+</div>
+<table *ngIf="echeancier && echeancier.length > 0">
+  <thead>
+  <tr>
+    <th [attr.colspan]='columns.length' scope='colgroup' class='head-table'>
+      <span class="head-table-title">{{ title | translate}}</span>
+    </th>
+  </tr>
+  <tr class='subhead-table'>
+    <th scope="col" *ngFor="let col of columns" [ngClass]="col.prop" class='subhead-column'>
+      {{col.name}}
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let row of (!btnHide ? echeancier : ech10)" class='echeancier-row'
+      (click)="clickRow(row)" [ngClass]="{'clickable': clickableRow}">
+    <td *ngFor="let col of columns">
+      <span>
+        {{col.isEuro ? (row[col.prop] | euroNumber) : (row[col.prop]) }}
+      </span>
+    </td>
+  </tr>
+  </tbody>
+  <tfoot>
+  <tr>
+    <td [attr.colspan]='columns.length'>
+      <div class="show-all-rows">
+                  <span class="msg-show-all-rows" (click)="toggleBtnHide()">
+                            {{(btnHide ? 'common.tableau-amortissement.agrandir' : 'common.tableau-amortissement.reduire') | translate}}
+                    <img src="../../../../assets/images/ic_{{btnHide ? 'dropdown':'dropup'}}_arrow.png" alt="expand"
+                         class="img-fluid logo">
+                  </span>
+      </div>
+    </td>
+  </tr>
+  </tfoot>
+</table>

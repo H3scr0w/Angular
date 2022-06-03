@@ -1,0 +1,76 @@
+.form-group {
+  &.form-group-input-dual {
+    .input-dual-wrapper {
+      input {
+        width: 35%;
+      }
+
+      .select {
+        margin-left: 14px;
+      }
+    }
+  }
+
+  .select {
+    @include gilroyReg(16px);
+    @include radius(8px);
+    border: 1px solid $color-lightGrey;
+    background-color: $color-white;
+    color: $color-blue !important;
+    line-height: 19px;
+    text-align: right;
+    width: 65%;
+    height: inherit;
+    letter-spacing: -0.28px;
+    outline: none;
+    overflow: hidden;
+  }
+
+  select {
+    @include gilroyReg(16px);
+    @include radius(8px);
+    border: none;
+    background-color: $color-white;
+    color: $color-blue !important;
+    line-height: 19px;
+    text-align: right;
+    width: 100%;
+    padding: 17px 0 17px 14px;
+    height: inherit;
+    letter-spacing: -0.28px;
+    outline: none;
+
+    /* reset */
+    margin: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    background-image: linear-gradient(45deg, transparent 50%, $color-blue 50%),
+    linear-gradient(135deg, $color-blue 50%, transparent 50%);
+    background-position: calc(100% - 20px) calc(1em + 8px),
+    calc(100% - 15px) calc(1em + 8px), calc(100% - 2.5em) 0.5em;
+    background-size: 5px 5px, 5px 5px, 1px 1.5em;
+    background-repeat: no-repeat;
+
+    /* Very imp: hide arrow in IE */
+    &::-ms-expand {
+      display: none;
+    }
+
+    &:-moz-focusring {
+      color: transparent;
+      text-shadow: none;
+    }
+  }
+
+  select:focus {
+    @include boxShadowInput;
+  }
+
+  select.ng-invalid.ng-touched, select.invalid {
+    border: 1px solid $color-red;
+  }
+}

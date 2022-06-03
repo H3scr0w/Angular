@@ -1,0 +1,40 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<form [formGroup]="operatorParameterForm" (ngSubmit)="onSubmit()">
+  <h1 mat-dialog-title>{{'operatorparameter.header' | translate}}</h1>
+  <mat-dialog-content>
+      <ng-select [items]="operators | async" [typeahead]="inputOperator" bindLabel="name"
+      placeholder="{{'operatorparameter.operator' | translate}}" [searchable]="true" [dropdownPosition]="'bottom'"
+      formControlName="operator" appendTo="body" [readonly]="data?.mode=='edit'" required>
+      <ng-template ng-label-tmp let-item="item">
+        <span *ngIf="item"> {{item?.name}}</span>
+      </ng-template>
+    </ng-select>
+    <small align="right" class="mat-error" *ngIf="hasError('operator', 'required')">
+      {{'common.validation.required.message' | translate}}
+    </small>
+
+    <mat-form-field>
+        <mat-label>{{'operatorparameter.type' | translate}}</mat-label>
+        <mat-select placeholder="{{'operatorparameter.type' | translate}}" matNativeControl formControlName="type" [disabled]="data?.mode=='edit'" required >
+          <mat-option selected value="O">{{'operatorparameter.order' | translate}}</mat-option>
+          <mat-option value="R">{{'operatorparameter.request' | translate}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput formControlName="label" placeholder="{{'operatorparameter.label' | translate}}" required/>
+         <mat-error align=" right" *ngIf="hasError('label', 'required')">
+          {{'common.validation.required.message' | translate}}
+        </mat-error>
+        <mat-error align=" right" *ngIf="operatorParameterForm.get('label').errors?.labelNotTaken">
+          {{'common.validation.taken.message' | translate}}</mat-error>
+    </mat-form-field>
+    
+  </mat-dialog-content>
+
+  <div mat-dialog-actions align="center">
+    <button type="button" mat-raised-button (click)="onNoClick()">{{'common.close' | translate}}</button>
+      <button type="submit" mat-raised-button color="primary"
+        [disabled]="operatorParameterForm.invalid || isLoading">{{'common.save' | translate}}</button>
+  </div>
+</form>

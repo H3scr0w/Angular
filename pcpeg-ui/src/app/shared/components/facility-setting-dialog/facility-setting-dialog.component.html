@@ -1,0 +1,40 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<form [formGroup]="perimeterForm" (ngSubmit)="onSubmit()" autocomplete="off">
+  <h1 mat-dialog-title>
+    {{'authority.perimeter' | translate}}
+  </h1>
+  <mat-dialog-content class="my-4 py-4">
+    <div class="row my-2">
+      <div class="col">
+        <mat-radio-group formControlName="perimeter" class="ml-4">
+          <mat-radio-button class="mr-4" color="primary" value="{{companyPerimeter}}">
+            {{'authority.perimeter.company' | translate}} </mat-radio-button>
+          <mat-radio-button color="primary" value="{{facilityPerimeter}}">{{'authority.perimeter.facility' | translate}}
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+    <div class="row my-2" *ngIf="perimeterForm.controls.perimeter.value === facilityPerimeter">
+      <div class="col">
+        <ng-select formControlName="facility" [typeahead]="inputFacility" [items]="facilities" bindLabel="facilityLabel"
+          placeholder="{{ 'facility.facilityLabel' | translate }}" [searchable]="true" [dropdownPosition]="'bottom'"
+          [selectOnTab]="true" notFoundText="" typeToSearchText="">
+          <ng-template ng-label-tmp let-item="item">
+            <span *ngIf="item"> {{item?.codeSif}} - {{item?.facilityLabel}}
+            </span>
+          </ng-template>
+        </ng-select>
+        <mat-hint class="w-100" *ngIf="perimeterForm.controls['facility'].hasError('required')">
+          <span align="right" class="mat-error">
+            {{'common.validation.required.message' | translate}}
+          </span>
+        </mat-hint>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <div mat-dialog-actions align="center">
+    <button type="button" mat-raised-button (click)="onNoClick()">{{'common.close' | translate}}</button>
+    <button type="submit" [disabled]="perimeterForm.invalid || isLoading" mat-raised-button color="primary"
+      class="mr-3">{{'common.save' | translate}}</button>
+  </div>
+</form>

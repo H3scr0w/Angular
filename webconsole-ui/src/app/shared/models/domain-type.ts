@@ -1,0 +1,5 @@
+export enum DomainType {
+  CONTRIBUTION = 'CONTRIBUTION',
+  MAIN = 'MAIN',
+  REDIRECTION = 'REDIRECTION'
+}

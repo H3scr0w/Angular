@@ -1,0 +1,14 @@
+/*
+ * Application global variables.
+ */
+@import '../../node_modules/@delivery/eworkplace/docs/_sass/variables';
+
+// Set SG fonts path
+$sg-font-path: '../../dist/fonts';
+// Set Font Awesome font path
+$fa-font-path: '../../fonts';
+
+/* stylelint-disable-next-line value-keyword-case */
+$font-family-base: Roboto, RobotoDraft, Helvetica, Arial, sans-serif, Arial, sans-serif;
+// SG CSS Fonts
+@import '../../node_modules/@delivery/eworkplace/docs/_sass/fonts';

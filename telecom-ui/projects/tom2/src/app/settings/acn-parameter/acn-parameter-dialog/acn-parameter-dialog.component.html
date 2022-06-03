@@ -1,0 +1,49 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<form [formGroup]="acnParameterForm" (ngSubmit)="onSubmit()">
+  <h1 mat-dialog-title>{{'acnparameter.header' | translate}}</h1>
+  <mat-dialog-content>
+    <ng-select [items]="networks | async" [typeahead]="inputNetwork" bindLabel="code"
+      placeholder="{{'Network' | translate}}" [searchable]="true" [dropdownPosition]="'bottom'"
+      formControlName="network" appendTo="body" required>
+      <ng-template ng-label-tmp let-item="item">
+        <span *ngIf="item"> {{item?.code}}</span>
+      </ng-template>
+    </ng-select>
+    <small align="right" class="mat-error" *ngIf="hasError('network', 'required')">
+      {{'common.validation.required.message' | translate}}
+    </small>
+
+    <ng-select [items]="deviceValuesList | async" [typeahead]="inputDeviceValuesList" bindLabel="value"
+      placeholder="{{'acnparameter.acn' | translate}}" [searchable]="true" [dropdownPosition]="'bottom'"
+      formControlName="acn" appendTo="body" (click)="onAcnSelected()">
+      <ng-template ng-label-tmp let-item="item">
+        <span *ngIf="item"> {{item?.value}}</span>
+      </ng-template>
+    </ng-select>
+    
+    <small align="right" class="mat-error" *ngIf="hasError('acn', 'required')">
+      {{'common.validation.required.message' | translate}}
+    </small>
+    <small align=" right" class="mat-error" *ngIf="acnParameterForm.get('acn')?.errors?.isAcnTaken">
+      {{'common.validation.taken.message' | translate}}
+    </small>
+
+  <ng-select [items]="reminders" bindLable="label"
+    placeholder="{{'acnparameter.reminder' | translate}}" [searchable]="false" [dropdownPosition]="'bottom'"
+    formControlName="reminder" appendTo="body">
+    <ng-template ng-label-tmp let-item="item">
+      <span> {{item?.label}}</span>
+    </ng-template>
+  </ng-select>
+  <small align="right" class="mat-error" *ngIf="hasError('reminder', 'required')">
+    {{'common.validation.required.message' | translate}}
+  </small>
+
+  </mat-dialog-content>
+
+  <div mat-dialog-actions align="center">
+    <button type="button" mat-raised-button (click)="onNoClick()">{{'common.close' | translate}}</button>
+    <button type="submit" mat-raised-button color="primary"
+      [disabled]="acnParameterForm.invalid || isLoading">{{'common.save' | translate}}</button>
+  </div>
+</form>

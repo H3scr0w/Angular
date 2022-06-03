@@ -1,0 +1,122 @@
+<mat-card class="my-2 mx-2 mat-elevation-z8" [formGroup]="formGroup">
+  <mat-card-header class="d-block">
+    <mat-card-title>Events</mat-card-title>
+    <mat-form-field class="mt-2 w-100 text-center">
+      <mat-select placeholder="Select a time range" class="w-25 p-1" formControlName="time" (selectionChange)="getAllEvents()"
+        required>
+        <mat-option *ngFor="let time of times" [value]="time">
+          {{time.tag}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="formGroup.get('time')!.hasError('required')">
+        Please select one time
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Filter" />
+    </mat-form-field>
+    <div *ngIf="isLoading" class="loading-shade">
+      <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+    </div>
+  </mat-card-header>
+  <mat-card-content>
+    <table class="mat-elevation-z8 w-100 my-1" mat-table matSort [dataSource]="dataSource">
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+        <td mat-cell *matCellDef="let element">
+          <div class="row">
+            <div class="p-1">
+              <strong>Start:</strong>
+            </div>
+            <div class="p-1">
+              {{ element.startTime | date:'d MMM yyyy H:mm:ss' }}
+            </div>
+          </div>
+          <div class="row">
+            <div class="p-1">
+              <strong>End:</strong>
+            </div>
+            <div class="p-1">
+              {{ element.endTime | date:'d MMM yyyy H:mm:ss' }}
+            </div>
+          </div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="client">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Client Details</th>
+        <td mat-cell *matCellDef="let element">
+          <div class="row">
+            {{ element.clientType }} ({{ element.clientApplication }})
+          </div>
+          <div class="row">
+            {{ element.country?.join("\n") }}
+          </div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="visit">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Visit Details</th>
+        <td mat-cell *matCellDef="let element">
+          <div class="row">
+            <div class="p-1">
+              {{ element.clientIPs?.join(",") }} |
+              <span *ngIf="element.pageViews > 0">
+                {{ element.pageViews + ' page views | '}}
+              </span>
+              <span *ngIf="element.hits > 0">
+                {{ element.hits + ' hits | '}}
+              </span>
+              <span *ngIf="element.supportsCookies">
+                {{ 'Supports Cookies | ' }}
+              </span>
+              {{ element.httpVersion | uppercase }}
+            </div>
+          </div>
+          <div class="row text-break">
+            <div class="p-1">
+              <strong>Entry Page:</strong>
+            </div>
+            <div class="p-1">
+              {{element.entryPage}}
+            </div>
+          </div>
+          <div class="row text-break">
+            <div class="p-1">
+              <strong>User Agent:</strong>
+            </div>
+            <div class="p-1">
+              {{element.userAgent}}
+            </div>
+          </div>
+          <div class="row text-break">
+            <div class="p-1">
+              <strong>Session Id:</strong>
+            </div>
+            <div class="p-1">
+              {{element.id}}
+            </div>
+          </div>
+          <div class="row" *ngIf="element.securitySummary">
+            <div class="p-1">
+              <mat-chip-list>
+                <mat-chip class="bg-primary text-white" *ngIf="element.securitySummary['api.threats.bot_access_control'] > 0"> {{ element.securitySummary['api.threats.bot_access_control'] }} Bad Bots</mat-chip>
+                <mat-chip class="bg-primary text-white" *ngIf="element.securitySummary['api.threats.cross_site_scripting'] > 0"> {{ element.securitySummary['api.threats.cross_site_scripting'] }} Cross Site Scripting</mat-chip>
+                <mat-chip class="bg-primary text-white" *ngIf="element.securitySummary['api.threats.sql_injection'] > 0"> {{ element.securitySummary['api.threats.sql_injection'] }} SQL Injections</mat-chip>
+                <mat-chip class="bg-primary text-white" *ngIf="element.securitySummary['api.threats.illegal_resource_access'] > 0"> {{ element.securitySummary['api.threats.illegal_resource_access'] }} Illegal Resources Access</mat-chip>
+                <mat-chip class="bg-primary text-white" *ngIf="element.securitySummary['api.threats.remote_file_inclusion'] > 0"> {{ element.securitySummary['api.threats.remote_file_inclusion'] }} Remote File Injections</mat-chip>
+                <mat-chip class="bg-primary text-white" *ngIf="element.securitySummary['api.threats.customRule'] > 0"> {{ element.securitySummary['api.threats.customRule'] }} Custom Rules</mat-chip>
+                <mat-chip class="bg-primary text-white" *ngIf="element.securitySummary['api.threats.ddos'] > 0"> {{ element.securitySummary['api.threats.ddos'] }} DDoS</mat-chip>
+                <mat-chip class="bg-primary text-white" *ngIf="element.securitySummary['api.threats.backdoor'] > 0"> {{ element.securitySummary['api.threats.backdoor'] }} Backdoors</mat-chip>
+                <mat-chip class="bg-primary text-white" *ngIf="element.securitySummary['api.acl.blacklisted_countries'] > 0"> {{ element.securitySummary['api.acl.blacklisted_countries'] }} Blacklisted Countries</mat-chip>
+                <mat-chip class="bg-primary text-white" *ngIf="element.securitySummary['api.acl.blacklisted_urls'] > 0"> {{ element.securitySummary['api.acl.blacklisted_urls'] }} Blacklisted Urls</mat-chip>
+                <mat-chip class="bg-primary text-white" *ngIf="element.securitySummary['api.acl.blacklisted_ips'] > 0"> {{ element.securitySummary['api.acl.blacklisted_ips'] }} Blacklisted Ips</mat-chip>
+              </mat-chip-list>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" (page)="getLastAllEvents()" [length]="totalElements" showFirstLastButtons></mat-paginator>
+  </mat-card-content>
+</mat-card>

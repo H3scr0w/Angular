@@ -1,0 +1,469 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<form [formGroup]="orderForm" autocomplete="off">
+  <h1 mat-dialog-title>
+    {{'order.make.dialogTitle' | translate}}</h1>
+  <mat-dialog-content>
+    <mat-accordion multi="true">
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h4> {{'order.make.information' | translate}}</h4>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div class="row">
+          <div class="col s6">
+            <mat-expansion-panel [expanded]="true">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <h4> {{'common.reference' | translate}}</h4>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+
+              <mat-form-field>
+                <input matInput formControlName="orderId" placeholder="{{'request.orderId' | translate}}"
+                  [readonly]="true" />
+              </mat-form-field>
+
+              <ng-select [items]="actions" bindLabel="value" placeholder="{{'common.actions' | translate}}*"
+                [searchable]="false" [dropdownPosition]="'bottom'" [openOnEnter]="false" formControlName="action"
+                appendTo="body" [selectOnTab]="true" required>
+                <ng-template ng-label-tmp let-item="item">
+                  <span *ngIf="item"> {{item?.value}}</span>
+                </ng-template>
+              </ng-select>
+              <small align="right" class="mat-error" *ngIf="hasError('action', 'required')">
+                {{'common.validation.required.message' | translate}}
+              </small>
+
+              <mat-slide-toggle color="primary" formControlName="replacementClause">
+                {{'order.make.replacementClause' | translate}}
+              </mat-slide-toggle> &nbsp;
+
+              <ng-select [items]="networks | async" [typeahead]="inputNetwork" bindLabel="name"
+                placeholder="{{'Network' | translate}}*" [searchable]="true" [virtualScroll]="true"
+                [dropdownPosition]="'bottom'" [openOnEnter]="false" formControlName="network" appendTo="body"
+                [selectOnTab]="true" [readonly]="isReadOnly" (change)="onNetworkSelected($any($event))" required>
+                <ng-template ng-label-tmp let-item="item">
+                  <span *ngIf="item"> {{item?.name}}</span>
+                </ng-template>
+              </ng-select>
+              <small align="right" class="mat-error" *ngIf="hasError('network', 'required')">
+                {{'common.validation.required.message' | translate}}
+              </small>
+
+              <ng-select [items]="services" bindLabel="value" bindValue="key"
+                placeholder="{{'common.service' | translate}}*" [searchable]="true" [dropdownPosition]="'bottom'"
+                [readonly]="isReadOnly" [openOnEnter]="false" formControlName="serviceNumber" appendTo="body"
+                [selectOnTab]="true" (change)="onServiceNumberSelected($any($event))" required>
+                <ng-template ng-label-tmp let-item="item">
+                  <span *ngIf="item"> {{item?.value}}</span>
+                </ng-template>
+              </ng-select>
+              <small align="right" class="mat-error" *ngIf="hasError('serviceNumber', 'required')">
+                {{'common.validation.required.message' | translate}}
+              </small>
+
+              <ng-select [items]="statuses" bindLabel="name" bindValue="id"
+                placeholder="{{'common.status' | translate}}*" [searchable]="false" [dropdownPosition]="'bottom'"
+                [openOnEnter]="false" formControlName="queueId" appendTo="body" [selectOnTab]="true" required
+                [readonly]="true">
+                <ng-template ng-label-tmp let-item="item">
+                  <span *ngIf="item"> {{item?.name}}</span>
+                </ng-template>
+              </ng-select>
+              <small align="right" class="mat-error" *ngIf="hasError('queueId', 'required')">
+                {{'common.validation.required.message' | translate}}
+              </small>
+
+              <label>{{'orders.requestId' | translate}}: </label>
+              <a *ngIf="orderForm?.controls?.requestId?.value"
+              href="requests/request-follow-up/{{orderForm.controls.requestId.value}}"
+              target="_blank" rel="noopener noreferrer">
+                {{orderForm.controls.requestId.value}}
+              </a>
+
+              <ng-select [items]="priorities" bindLabel="value" bindValue="value"
+                placeholder="{{'common.priority' | translate}}*" [searchable]="false" [dropdownPosition]="'bottom'"
+                [openOnEnter]="false" formControlName="priority" appendTo="body" [selectOnTab]="true" required>
+                <ng-template ng-label-tmp let-item="item">
+                  <span *ngIf="item"> {{item?.value}}</span>
+                </ng-template>
+              </ng-select>
+              <small align="right" class="mat-error" *ngIf="hasError('priority', 'required')">
+                {{'common.validation.required.message' | translate}}
+              </small>
+
+              <ng-select [items]="requesterContacts | async" [typeahead]="inputRequestedBy" bindLabel="fullName"
+                [dropdownPosition]="'bottom'" placeholder="{{'common.requestedBy' | translate}} *" [searchable]="true"
+                [virtualScroll]="true" appendTo="body" [selectOnTab]="true" formControlName="requestedBy" required>
+                <ng-template ng-label-tmp let-item="item">
+                  <span *ngIf="item">{{item?.fullName}}</span>
+                </ng-template>
+              </ng-select>
+              <small align="right" class="mat-error" *ngIf="hasError('requestedBy', 'required')">
+                {{'common.validation.required.message' | translate}}
+              </small>
+
+              <mat-form-field>
+                <input matInput formControlName="orderedBy" placeholder="{{'common.orderedBy' | translate}}"
+                  [readonly]="true" />
+              </mat-form-field>
+
+              <mat-form-field>
+                <input matInput formControlName="creationDate" placeholder="{{'common.creationDate' | translate}}"
+                  [readonly]="true" />
+              </mat-form-field>
+
+              <mat-form-field>
+                <input matInput formControlName="lastUpdate" placeholder="{{'common.lastUpdate' | translate}}"
+                  [readonly]="true" />
+              </mat-form-field>
+
+              <mat-form-field>
+                <input matInput formControlName="lastUpdateBy" placeholder="{{'common.lastUpdateBy' | translate}}"
+                  [readonly]="true" />
+              </mat-form-field>
+            </mat-expansion-panel>
+          </div>
+          <div class="col s6">
+            <mat-expansion-panel [expanded]="true">
+
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <h4> {{'common.followup' | translate}}</h4>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div>
+
+                <mat-form-field>
+                  <input matInput formControlName="customerRequestedDate" [matDatepicker]="pickerCustomerRequestedDate"
+                    placeholder="{{'request.make.customerRequestedDate' | translate}}" readonly />
+                  <mat-datepicker-toggle matSuffix [for]="pickerCustomerRequestedDate"></mat-datepicker-toggle>
+                  <mat-datepicker #pickerCustomerRequestedDate></mat-datepicker>
+                  <button type="button" mat-button *ngIf="orderForm.get('customerRequestedDate').value" matSuffix
+                    mat-icon-button aria-label="Clear" (click)="orderForm.get('customerRequestedDate').setValue('')">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </mat-form-field>
+
+                <mat-form-field>
+                  <input matInput formControlName="contractualDate" [matDatepicker]="pickerContractualDate"
+                    placeholder="{{'order.make.contractualDate' | translate}}" readonly />
+                  <mat-datepicker-toggle matSuffix [for]="pickerContractualDate"></mat-datepicker-toggle>
+                  <mat-datepicker #pickerContractualDate></mat-datepicker>
+                  <button type="button" mat-button *ngIf="orderForm.get('contractualDate').value" matSuffix
+                    mat-icon-button aria-label="Clear" (click)="orderForm.get('contractualDate').setValue('')">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </mat-form-field>
+
+                <mat-form-field>
+                  <input matInput formControlName="businessRequestDate" [matDatepicker]="pickerBusinessRequestDate"
+                    placeholder="{{'order.make.businessRequestDate' | translate}}" readonly />
+                  <mat-datepicker-toggle matSuffix [for]="pickerBusinessRequestDate"></mat-datepicker-toggle>
+                  <mat-datepicker #pickerBusinessRequestDate></mat-datepicker>
+                  <button type="button" mat-button *ngIf="orderForm.get('businessRequestDate').value" matSuffix
+                    mat-icon-button aria-label="Clear" (click)="orderForm.get('businessRequestDate').setValue('')">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </mat-form-field>
+
+                <mat-form-field>
+                  <input matInput formControlName="processingDate" [matDatepicker]="pickerProcessingDate"
+                    placeholder="{{'order.make.processingDate' | translate}}" readonly />
+                  <mat-datepicker-toggle matSuffix [for]="pickerProcessingDate"></mat-datepicker-toggle>
+                  <mat-datepicker #pickerProcessingDate></mat-datepicker>
+                  <button type="button" mat-button *ngIf="orderForm.get('processingDate').value" matSuffix
+                    mat-icon-button aria-label="Clear" (click)="orderForm.get('processingDate').setValue('')">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </mat-form-field>
+
+                <mat-form-field>
+                  <input matInput formControlName="sendingDateToOperator" [matDatepicker]="pickerSendingDateToOperator"
+                    placeholder="{{'order.followup.sendingDateToOperator' | translate}}" readonly />
+                  <mat-datepicker-toggle matSuffix [for]="pickerSendingDateToOperator"></mat-datepicker-toggle>
+                  <mat-datepicker #pickerSendingDateToOperator></mat-datepicker>
+                  <button type="button" mat-button *ngIf="orderForm.get('sendingDateToOperator').value" matSuffix
+                    mat-icon-button aria-label="Clear" (click)="orderForm.get('sendingDateToOperator').setValue('')">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </mat-form-field>
+
+                <mat-form-field>
+                  <input matInput formControlName="acknowledgmentOperatorDate"
+                    [matDatepicker]="pickerAcknowledgmentOperatorDate"
+                    placeholder="{{'order.followup.operatorAckDate' | translate}}" readonly />
+                  <mat-datepicker-toggle matSuffix [for]="pickerAcknowledgmentOperatorDate"></mat-datepicker-toggle>
+                  <mat-datepicker #pickerAcknowledgmentOperatorDate></mat-datepicker>
+                  <button type="button" mat-button *ngIf="orderForm.get('acknowledgmentOperatorDate').value" matSuffix
+                    mat-icon-button aria-label="Clear"
+                    (click)="orderForm.get('acknowledgmentOperatorDate').setValue('')">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </mat-form-field>
+
+
+              </div>
+              <mat-form-field>
+                <textarea matInput formControlName="orderComments"
+                  placeholder="{{'order.make.orderComments' | translate}}" cdkTextareaAutosize></textarea>
+              </mat-form-field>
+
+              <mat-form-field>
+                <textarea matInput formControlName="sgtFollowupComments"
+                  placeholder="{{'order.make.sgtFollowupComments' | translate}}" cdkTextareaAutosize></textarea>
+              </mat-form-field>
+
+              <mat-form-field>
+                <textarea matInput formControlName="carrierFeedback"
+                  placeholder="{{'order.make.carrierFeedback' | translate}}" cdkTextareaAutosize></textarea>
+              </mat-form-field>
+            </mat-expansion-panel>
+          </div>
+        </div>
+
+        <div class="row mt-3">
+          <div class="col s6">
+            <mat-expansion-panel [expanded]="true">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <h4>{{'common.site' | translate}} </h4>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <stgo-site-info [siteCurrent]="siteInfo" [isReadOnly]="isReadOnly" [isReset]="isSiteReset"
+                (siteChanged)="siteChanged($event)" (pstnChanged)="pstnChanged($event)"></stgo-site-info>
+            </mat-expansion-panel>
+          </div>
+          <div class="col s6">
+            <mat-expansion-panel [expanded]="true">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <h4>{{'common.Miscellaneous' | translate}} </h4>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div>
+                <ng-select [items]="managementModes" bindLabel="value" bindValue="key"
+                  placeholder="{{'request.make.managementMode' | translate}}*" [searchable]="true"
+                  [virtualScroll]="true" [openOnEnter]="false" formControlName="managementMode" appendTo="body"
+                  [selectOnTab]="true" required>
+                  <ng-template ng-label-tmp let-item="item">
+                    <span *ngIf="item"> {{item?.value}}</span>
+                  </ng-template>
+                </ng-select>
+                <small align="right" class="mat-error" *ngIf="hasError('managementMode', 'required')">
+                  {{'common.validation.required.message' | translate}}
+                </small>
+
+                <ng-select [items]="billingEntities" bindLabel="name" bindValue="id"
+                  placeholder="{{'order.make.billingEntity' | translate}}*" [virtualScroll]="true" [openOnEnter]="false"
+                  formControlName="billingEntity" appendTo="body" [selectOnTab]="true" required>
+                  <ng-template ng-label-tmp let-item="item">
+                    <span *ngIf="item"> {{item?.name}}</span>
+                  </ng-template>
+                </ng-select>
+                <small align="right" class="mat-error" *ngIf="hasError('managementMode', 'required')">
+                  {{'common.validation.required.message' | translate}}
+                </small>
+                <mat-form-field>
+                  <input matInput formControlName="connectionCodeMainAccess"
+                    placeholder="{{'order.make.connection.code1' | translate}}" />
+                </mat-form-field>
+                <mat-form-field>
+                  <input matInput formControlName="connectionCodeBackup" maxlength="11"
+                    placeholder="{{'order.make.connection.code2' | translate}}" />
+                </mat-form-field>
+                <mat-form-field>
+                  <input matInput formControlName="connectionCodeConcentrationPoint" maxlength="11"
+                    placeholder="{{'order.make.connection.code3' | translate}}" />
+                </mat-form-field>
+
+
+                <mat-form-field>
+                  <input matInput formControlName="previousOrderId"
+                    placeholder="{{'request.make.prevOrderId' | translate}}" [readonly]="true" />
+                </mat-form-field>
+
+                <ng-select [items]="acns" bindLabel="acn" placeholder="{{'acnparameter.acn' | translate}}*" [searchable]="true"
+                  [virtualScroll]="true" [openOnEnter]="false" formControlName="acnParameter" appendTo="body" [selectOnTab]="true"
+                  (change)="onACNSelected($any($event))" required>
+                  <ng-template ng-label-tmp let-item="item">
+                    <span *ngIf="item"> {{item?.acn}}</span>
+                  </ng-template>
+                </ng-select>
+                <small align="right" class="mat-error" *ngIf="hasError('acnParameter', 'required')">
+                  {{'common.validation.required.message' | translate}}
+                </small>
+              </div>
+              <div class="m-1">
+                <h4 class="text-center"> {{'request.make.chargeBack' | translate}}</h4>
+                <div *ngIf="chargebackList">
+                  <table class="w-100">
+                    <thead>
+                      <tr>
+                        <th class="w-50 text-center">{{ 'chargeback.name' | translate}}</th>
+                        <th class="w-30 text-center">{{ 'chargeback.sapCode' | translate}}</th>
+                        <th class="w-20 text-center">{{ 'chargeback.rate' | translate}}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let chargeback of chargebackList">
+                        <td class="w-50 small text-center">
+                          {{chargeback?.label}}
+                        </td>
+                        <td class="w-30 small text-center">
+                          {{chargeback?.sapAccount}}
+                        </td>
+                        <td class="w-20  small text-center">
+                          {{chargeback?.rate}}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div *ngIf="!chargebackList">
+                  {{ 'chargeback.notfound' | translate}}
+                </div>
+              </div>
+            </mat-expansion-panel>
+          </div>
+          <div>
+            <!--   billing refrnce ui pending as logic not know -->
+          </div>
+        </div>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h4> {{'installation.contact.title' | translate}}</h4>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row">
+          <div class="col s6">
+            <mat-expansion-panel [expanded]="true">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <h4> {{'installation.contact.contact1' | translate}}</h4>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <stgo-contact-selector [contactCurrent]="installationContact1"
+                (contactChanged)="installationContact1Changed($event)"></stgo-contact-selector>
+                <mat-form-field>
+                  <input matInput formControlName="notificationbusinessmail" type="email"
+                    placeholder="{{'order.make.contatct.notificationBusinessMail' | translate}}" />
+                </mat-form-field>
+                <small align="right" class="mat-error"
+                *ngIf="orderForm.get('notificationbusinessmail').errors?.email">
+                  {{'common.email.validation' | translate}}
+                </small>
+            </mat-expansion-panel>
+          </div>
+          <div class="col s6">
+            <mat-expansion-panel [expanded]="true">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <h4> {{'installation.contact.contact2' | translate}}</h4>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <stgo-contact-selector [contactCurrent]="installationContact2"
+                (contactChanged)="installationContact2Changed($event)"></stgo-contact-selector>
+            </mat-expansion-panel>
+          </div>
+
+        </div>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h4> {{'telecom.service.detail.title' | translate}}</h4>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <stgo-telecom-service-details [telecomServiceDetailCurrent]="telecomServiceDetailCurrent"
+          [isOperatorReadOnly]="true" [isReadOnly]="isServiceFieldsReadOnly" [catalogId]="catalogId"
+          [orderId]="data?.order?.orderId" [requestId]="data?.order?.requestId"
+          (telecomServiceDetailChanged)="telecomServiceDetailChanged($event)">
+        </stgo-telecom-service-details>
+
+      </mat-expansion-panel>
+
+      <mat-expansion-panel *ngIf="showISPSection">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h4> {{'isp.info.title' | translate}}</h4>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <stgo-isp-information [ispInfo]="ispInfo" [showISPSave]="showISPSave" (ispInfoChanged)="ispInfoChanged($event)">
+        </stgo-isp-information>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h4> {{'sla.info.title' | translate}}</h4>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <stgo-sla-information [slaInfoCurrent]="slaInfo" (slaInfoChanged)="slaInfoChanged($event)">
+        </stgo-sla-information>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel *ngIf="catalogInfoItemsControls && catalogInfoItemsControls.length > 0">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h4> {{'information.item.title' | translate}}</h4>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <stgo-information-items [dynamicControls]="catalogInfoItemsControls"
+          (infoItemsChanged)="infoItemsChanged($event)"></stgo-information-items>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel *ngIf="operatorFields && operatorFields.length > 0">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h4> {{'operator.info.title' | translate}}</h4>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <stgo-operator-information [dynamicControls]="operatorFields"
+          (operatorInfoChanged)="operatorInfoChanged($event)"></stgo-operator-information>
+
+      </mat-expansion-panel>
+
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h4> {{'financial.information.title' | translate}}</h4>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <stgo-financial-information [finInfoCurrent]="financialInformation" [finInfoCatalogOptions]="catalogOptions"
+          [catalogId]="catalogId" [isReadOnly]="isServiceFieldsReadOnly" (finInfoChanged)="finInfoChanged($event)"
+          (setupCatalogOptionsChanged)="setupCatalogOptionsChanged($event)"
+          (monthlyCatalogOptionsChanged)="monthlyCatalogOptionsChanged($event)">
+        </stgo-financial-information>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="d-block p-10 text-center mb-2 mt-4">
+    <button [disabled]="isLoading" type="button" mat-raised-button class="mr-2" color="primary"
+      [matMenuTriggerFor]="menuAction" *ngIf="isOrderUser || isAdmin">Actions
+    </button>
+    <mat-menu #menuAction="matMenu" yPosition="above">
+      <button color="primary" mat-menu-item *ngIf="data?.mode==='edit'"
+              (click)="selectTelecomService()">{{ 'order.make.selectTelecomService' | translate}}</button>
+
+      <button *ngIf="isServiceFieldsReadOnly" color="primary" mat-menu-item
+              (click)="onServiceFreeFillChanged()">{{ 'request.make.serviceFreeFill' | translate}}</button>
+
+      <button *ngIf="data?.mode==='edit'" (click)="onSubmit(action.save_Noitfy)" mat-menu-item>{{'common.order.save.notify' | translate}}</button>
+
+      <button *ngIf="(isOrderUser || isAdmin)" mat-menu-item
+              (click)="sendCSVToOperator()">{{'order.followup.csvFileSendToOperator' | translate}}</button>
+
+      <button mat-menu-item (click)="onSubmit(action.save)">{{'common.save' | translate}}</button>
+    </mat-menu>
+    <button type="button" mat-raised-button (click)="onNoClick()">{{'common.close' | translate}}</button>
+  </mat-dialog-actions>
+</form>

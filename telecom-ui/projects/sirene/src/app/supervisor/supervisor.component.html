@@ -1,0 +1,78 @@
+<div class="m-2">
+  <div class="bg-header p-2 d-flex">
+    <span class="fa-stack fa-lg text-primary">
+      <i class="fas fa-circle fa-stack-1x fa-lg"></i>
+      <i class="fas fa-cog fa-stack-1x fa-sm text-white"></i>
+    </span>
+    <h2 class="text-white font-weight-bold pt-1">{{ 'supervisor.title' | translate }}</h2>
+  </div>
+  <div class="d-block p-2 text-right">
+    <button class="mr-1" mat-mini-fab color="primary" matTooltip="{{'common.advanceFilter' | translate}}"
+      (click)="toggleFilterPanel()" matBadge="{{filterCount}}" matBadgePosition="after" matBadgeColor="warn"
+      [matBadgeHidden]="filterCount===0"><i class="fas fa-filter"></i>
+    </button>
+  </div>
+
+  <mat-expansion-panel [expanded]="panelFilterOpenState">
+    <form [formGroup]="supervisorAdvanceFilterForm">
+      <div class="d-block p-2 bg-white">
+        <mat-form-field>
+          <mat-select placeholder="{{'supervisor.status' | translate}}"  matNativeControl formControlName="status" required>
+            <mat-option [value]="statu?.id" *ngFor="let statu of status">
+              {{statu?.value}}</mat-option>
+          </mat-select>
+          <mat-error align="left" *ngIf="hasError('status', 'required')">
+              {{'common.validation.required.message' | translate}}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-select placeholder="{{'supervisor.action' | translate}}"  matNativeControl formControlName="action">
+            <mat-option [value]="action?.id" *ngFor="let action of actions">{{action?.value}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input formControlName="applicant" [matAutocomplete]="applicantAuto" matInput placeholder="{{'supervisor.applicant' | translate}}" />
+          <mat-autocomplete #applicantAuto="matAutocomplete" [displayWith]="getName">
+            <mat-option *ngFor="let contact of contacts | async" [value]="contact">
+              {{contact?.name}} {{contact?.firstName}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput formControlName="requestDate" [matDatepicker]="requestDatePicker" autocomplete="off"
+                   (click)="requestDatePicker.open()" (focus)="requestDatePicker.open()" 
+                   placeholder="{{'supervisor.requestDate' | translate}}" />
+            <mat-datepicker-toggle matSuffix [for]="requestDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #requestDatePicker></mat-datepicker>
+            <mat-error align="left" *ngIf="hasError('requestDate', 'matDatepickerParse')">
+              {{'common.validation.pattern.message' | translate}}</mat-error>
+        </mat-form-field>
+      </div>
+    </form>
+
+    <mat-action-row>
+      <button mat-raised-button color="primary" (click)="resetAdvanceFilter()" class="mr-1" >{{'common.reset' | translate}}</button>
+      <button mat-raised-button color="primary" (click)="applyAdvanceFilter()">{{'common.search' | translate}}</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+
+
+  <mat-tab-group dynamicHeight animationDuration="0ms" mat-align-tabs="center" (selectedTabChange)="onTabClick($event)">
+
+    <mat-tab label="{{'supervisor.tab.site.name' | translate}}">
+      <div class="mat-elevation-z4">
+        <stgo-site-request [siteSupervisorAdvanceFilter]="siteAdvanceFilter"></stgo-site-request>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="{{'supervisor.tab.comapny.name' | translate}}">
+      <div class="mat-elevation-z4">
+        <stgo-company-request [companySupervisorAdvanceFilter]="companyAdvanceFilter"></stgo-company-request>
+      </div>
+    </mat-tab>
+
+  </mat-tab-group>
+
+</div>

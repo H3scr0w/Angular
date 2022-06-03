@@ -1,0 +1,12 @@
+<div class="bg-header p-2 d-flex">
+  <h2 class="text-white font-weight-bold pt-1">{{'telecom.service.selector.selectService' | translate}}</h2>
+</div>
+<mat-dialog-content>
+  <stgo-telecom-service-selector [readOnlyCountry]="true"
+  [readOnlyOperator]="readOnlyOperator" [countryCode]="countryCode" [operatorId]="operatorId"
+  (selectedService)="onServiceSelected($event)">
+  </stgo-telecom-service-selector>
+</mat-dialog-content>
+<div mat-dialog-actions align="center">
+  <button type="button" mat-raised-button (click)="onNoClick()">{{'common.close' | translate}}</button>
+</div>

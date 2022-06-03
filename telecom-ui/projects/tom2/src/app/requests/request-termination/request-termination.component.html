@@ -1,0 +1,49 @@
+    <form [formGroup]="requestCancellationForm" (ngSubmit)="applyAdvanceFilter()">
+      <div class="d-block p-2 bg-white">
+        <mat-form-field>
+          <input matInput formControlName="orderId" placeholder="{{'common.menu.requests.orderId' | translate}}"
+                 (click)="disableInput('sgtSiteCode')"/>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput formControlName="sgtSiteCode" placeholder="{{'common.menu.requests.sgtSiteCode' | translate}}"
+                 (click)="disableInput('orderId')"/>
+        </mat-form-field>
+
+      </div>
+      <mat-action-row>
+        <button type="button" class="mr-1" mat-raised-button color="primary"
+                (click)="resetAdvanceFilter()">{{'common.reset' | translate}} </button>
+        &nbsp;
+        <button type="submit" mat-raised-button color="primary">{{'common.apply' | translate}}</button>
+      </mat-action-row>
+    </form>
+
+  <table class="w-100" mat-table matSort [dataSource]="commands" matSortActive="orderId" matSortDisableClear
+         matSortDirection="desc">
+
+    <ng-container matColumnDef="orderId">
+      <th mat-header-cell *matHeaderCellDef>{{'request.orderId' | translate}}</th>
+      <td mat-cell *matCellDef="let element;let i = index;" class="text-break"
+          [ngClass]="{'highlight': element?.allowOrderToTerminate}">{{ element.orderId }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>{{'common.actions' | translate}}</th>
+      <td mat-cell *matCellDef="let element; let i = index;" [ngClass]="{'highlight': element?.allowOrderToTerminate}" >
+        <span *ngIf="((isAdmin || isPmUser || isOrderUser) && element?.allowOrderToTerminate)" (click)="terminateRequest(element)"
+        matTooltip="{{'request.make.termination.toolTip' | translate}}">
+          <i class="fas fa-edit p-1"></i>
+        </span>
+        <span *ngIf="(element?.terminationRequestId && element?.orderStatus !== 'Ordered' && element?.orderStatus !== null)">
+              (Request Termination already exists - ID :
+              <a class="mdeep-orange-text" (click)="showRequest(element?.terminationRequestId)">{{element?.terminationRequestId}}</a>)
+        </span>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns"></tr>
+  </table>
+  <div *ngIf="isLoading" class="loading-shade">
+    <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+  </div>

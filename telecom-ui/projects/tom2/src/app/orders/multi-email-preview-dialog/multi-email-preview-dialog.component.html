@@ -1,0 +1,40 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<h1 mat-dialog-title>
+  <i class="fa fa-envelope-open" aria-hidden="true"></i>
+  {{'common.menu.settings.operator.mail.template' | translate}}
+</h1>
+
+<mat-dialog-content>
+  <div *ngIf="data?.mode === 'order' && emailPreviewOrders">
+    <mat-tab-group>
+      <mat-tab *ngFor="let emailPreviewOrder of emailPreviewOrders; let tabIndex = index">
+        <ng-template mat-tab-label>
+          {{'operator.mail.template.network' | translate}} : {{ emailPreviewOrder?.network  }} 
+          / 
+          {{'common.country' | translate}} : {{ emailPreviewOrder?.country  }}
+        </ng-template>
+        <ng-template matTabContent>
+          <stgo-order-email-preview-dialog [emailOrder]="emailPreviewOrder"></stgo-order-email-preview-dialog>
+        </ng-template>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+  <div *ngIf="data?.mode === 'request' && emailPreviewRequests">
+    <mat-tab-group>
+      <mat-tab *ngFor="let emailPreviewRequest of emailPreviewRequests; let tabIndex = index">
+        <ng-template mat-tab-label>
+          {{'operator.mail.template.network' | translate}} : {{ emailPreviewRequest?.network  }} 
+          / 
+          {{'common.country' | translate}} : {{ emailPreviewRequest?.country  }}
+        </ng-template>
+        <ng-template matTabContent>
+          <stgo-order-email-preview-dialog [emailRequest]="emailPreviewRequest"></stgo-order-email-preview-dialog>
+        </ng-template>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</mat-dialog-content>
+
+<div mat-dialog-actions align="center">
+  <button type="button" mat-raised-button (click)="onNoClick()">{{'common.close' | translate}}</button>
+</div>

@@ -1,0 +1,37 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<form [formGroup]="segmentationForm" (ngSubmit)="onSubmit()">
+  <h1 mat-dialog-title>{{'common.menu.segmentation' | translate}}</h1>
+  <mat-dialog-content>
+
+    <mat-form-field>
+      <input matInput formControlName="name" placeholder="{{'segmentation.name' | translate}}" required/>
+      <mat-error align="right" *ngIf="hasError('name', 'required')">{{'common.validation.required.message' | translate}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput formControlName="paloZoneName" placeholder="{{'segmentation.paloZone' | translate}}" required/>
+      <mat-error align=" right" *ngIf="hasError('paloZoneName', 'required')">
+        {{'common.validation.required.message' | translate}}</mat-error>
+    </mat-form-field>
+
+
+    <ng-select [items]="popItems  | async" bindLabel="name" [typeahead]="inputSegmentation" placeholder="{{'segmentation.popItems' | translate}}"
+      [searchable]="true" [virtualScroll]="true" formControlName="popItems" appendTo="body" [selectOnTab]="true" [multiple]="true" [hideSelected]="true">
+      <ng-template ng-label-tmp let-item="item" let-clear="clear">
+        <span class="ng-value-icon" (click)="clear(item)" aria-hidden="true">×</span>
+        <span *ngIf="item"> {{item.name}}</span>
+      </ng-template>
+    </ng-select>
+    <small align="right" class="mat-error" *ngIf="hasError('popItems', 'required')">
+      {{'common.validation.required.message' | translate}}</small>
+
+    <mat-form-field>
+      <input matInput formControlName="comments" placeholder="{{'segmentation.comments' | translate}}" />
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <div mat-dialog-actions align="center">
+    <button type="button" mat-raised-button (click)="onCloseClick()">{{'common.close' | translate}}</button>
+    <button type="submit" mat-raised-button color="primary" [disabled]="segmentationForm.invalid || isLoading">{{'common.save' | translate}}</button>
+  </div>
+</form>

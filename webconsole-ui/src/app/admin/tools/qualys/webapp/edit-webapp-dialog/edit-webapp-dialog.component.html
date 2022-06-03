@@ -1,0 +1,99 @@
+<form [formGroup]="formGroup">
+  <h3 mat-dialog-title *ngIf="data.webApp">Edit WebApp</h3>
+  <h3 mat-dialog-title *ngIf="!data.webApp">Add WebApp</h3>
+  <mat-dialog-content>
+    <span *ngIf="data.webApp">WebApp Name: {{ data.webApp.name }}</span>
+    <mat-form-field>
+      <input matInput placeholder="Website" formControlName="website" [matAutocomplete]="autoWebsite" name="website" required [readonly]="!!data.webApp"
+        [value]="data.webApp?.name" />
+      <i matSuffix class="fas fa-search"></i>
+      <i matSuffix *ngIf="searchWebsite" class="fas fa-circle-notch fa-spin"></i>
+      <mat-autocomplete #autoWebsite="matAutocomplete" (optionSelected)="selectInput('website', true)" (opened)="selectInput('website', false)"
+        [displayWith]="displayFn">
+        <mat-option *ngFor="let website of (website$ | async)" [value]="website">
+          <span>{{ website?.name }}</span>
+        </mat-option>
+      </mat-autocomplete>
+      <mat-error *ngIf="formGroup.get('domain')!.hasError('required')">Please select a website</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Domain" formControlName="domain" [matAutocomplete]="autoDomain" name="domain" required [value]="data.webApp?.url"
+      />
+      <i matSuffix class="fas fa-search"></i>
+      <i matSuffix *ngIf="searchDomain" class="fas fa-circle-notch fa-spin"></i>
+      <mat-autocomplete #autoDomain="matAutocomplete" (optionSelected)="selectInput('domain', true)" (opened)="selectInput('domain', false)"
+        [displayWith]="displayDomain">
+        <mat-option *ngFor="let domain of (domain$ | async)" [value]="domain">
+          <span *ngIf="domain?.httpsEnable">https://{{ domain?.code }}</span>
+          <span *ngIf="!domain?.httpsEnable">http://{{ domain?.code }}</span>
+        </mat-option>
+      </mat-autocomplete>
+      <mat-error *ngIf="formGroup.get('domain')!.hasError('required')">Please select a domain</mat-error>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="!data.webApp">
+      <input matInput placeholder="Auth Record" formControlName="webAppauthRecord" [matAutocomplete]="autoWebAppAuthRecord" name="webAppauthRecord"
+        required />
+      <i matSuffix class="fas fa-search"></i>
+      <i matSuffix *ngIf="searchAuthRecord" class="fas fa-circle-notch fa-spin"></i>
+      <mat-autocomplete #autoWebAppAuthRecord="matAutocomplete" (optionSelected)="selectInput('authRecord', true)" (opened)="selectInput('authRecord', false)"
+        [displayWith]="displayFn">
+        <mat-option *ngFor="let webAppauthRecord of (webAppauthRecord$ | async)" [value]="webAppauthRecord">
+          <span>{{ webAppauthRecord?.name}}</span>
+        </mat-option>
+      </mat-autocomplete>
+      <mat-error *ngIf="formGroup.get('webAppauthRecord')!.hasError('required')">Please select an authentication record</mat-error>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="!data.webApp">
+      <input matInput placeholder="Profile" formControlName="profile" [matAutocomplete]="autoProfile" name="profile" required/>
+      <i matSuffix class="fas fa-search"></i>
+      <i matSuffix *ngIf="searchProfile" class="fas fa-circle-notch fa-spin"></i>
+      <mat-autocomplete #autoProfile="matAutocomplete" (optionSelected)="selectInput('profile', true)" (opened)="selectInput('profile', false)"
+        [displayWith]="displayFn">
+        <mat-option *ngFor="let profile of (profile$ | async)" [value]="profile">
+          <span>{{ profile?.name}}</span>
+        </mat-option>
+      </mat-autocomplete>
+      <mat-error *ngIf="formGroup.get('profile')!.hasError('required')">Please select a profile</mat-error>
+    </mat-form-field>
+
+
+    <mat-form-field flex class="md-icon-float md-block md-title mt-2" *ngIf="!data.webApp">
+      <mat-select placeholder="Scanner Type" formControlName="scannerType">
+        <mat-option *ngFor="let scannerType of scannerTypes" [value]="scannerType">
+          {{ scannerType }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field flex class="md-icon-float md-block md-title mt-2" *ngIf="!data.webApp">
+      <mat-select placeholder="Robot Type" formControlName="robotType">
+        <mat-option *ngFor="let robotType of robotTypes" [value]="robotType">
+          {{ robotType }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class="row" *ngIf="!data.webApp">
+      <mat-checkbox class="col" color="primary" labelPosition="before" formControlName="useSitemap">
+        Use Site Map
+      </mat-checkbox>
+    </div>
+
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button type="button" mat-raised-button color="primary" (click)="cancel()">
+      Cancel
+    </button>
+    <button type="submit" mat-raised-button color="primary" (click)="confirm()" [disabled]="formGroup.pristine || formGroup.invalid || !canActivateButton()">
+      <span *ngIf="data.webApp">Edit
+        <i *ngIf="saving" class="fas fa-circle-notch fa-spin"></i>
+      </span>
+      <span *ngIf="!data.webApp">Add
+        <i *ngIf="saving" class="fas fa-circle-notch fa-spin"></i>
+      </span>
+    </button>
+  </mat-dialog-actions>
+</form>

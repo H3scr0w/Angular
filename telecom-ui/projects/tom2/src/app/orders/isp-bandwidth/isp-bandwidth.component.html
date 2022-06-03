@@ -1,0 +1,190 @@
+<div class="mat-elevation-z8 my-4 mx-4 mw-mobile">
+  <div class="bg-header p-2 d-flex">
+    <span class="fa-stack fa-lg text-primary">
+      <i class="fas fa-circle fa-stack-1x fa-lg"></i>
+      <i class="fa fa-magnet fa-stack-1x fa-sm text-white"></i>
+    </span>
+    <h2 class="text-white font-weight-bold pt-1">{{'common.menu.orders.ispbandwidth' | translate}}</h2>
+  </div>
+  <div class="d-block p-2 text-right">
+    <button class="mr-1" mat-mini-fab color="primary" matTooltip="{{'common.advanceFilter' | translate}}"
+      (click)="toggleFilterPanel()" matBadge="{{filterCount}}" matBadgePosition="after" matBadgeColor="warn"
+      [matBadgeHidden]="filterCount===0">
+      <i class="fas fa-filter"></i>
+    </button>
+    <button *ngIf="selection.selected.length>0" class="mr-1" mat-mini-fab color="primary"
+      matTooltip="{{'common.export' | translate}}" (click)="exportDetails()">
+      <i class="fas fa-file-excel"></i>
+    </button>
+  </div>
+  <mat-expansion-panel [expanded]="panelFilterOpenState">
+    <form [formGroup]="ispBandwidthAdvanceFilterForm">
+      <div class="d-block p-2 bg-white">
+        <div class="row">
+          <div class="col-lg-3">
+            <mat-form-field>
+              <input matInput formControlName="orderId" placeholder="{{'request.orderId' | translate}}" />
+            </mat-form-field>
+          </div>
+          <div class="col-lg-3">
+            <mat-form-field>
+              <input stgoNumberOnly defaultValue="" matInput formControlName="requestId"
+                placeholder="{{'orders.requestId' | translate}}" />
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-3">
+            <ng-select [items]="operators | async" [typeahead]="inputOperators" bindLabel="name"
+              placeholder="{{'contract.operator' | translate}}" [searchable]="true" [dropdownPosition]="'bottom'"
+              formControlName="operator" appendTo="body">
+              <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="item"> {{item?.name}}</span>
+              </ng-template>
+            </ng-select>
+          </div>
+          <div class="col-lg-3">
+            <ng-select [items]="statuses" bindLabel="name" bindValue="id" placeholder="{{'common.status' | translate}}"
+              [searchable]="false" [dropdownPosition]="'bottom'" formControlName="status" appendTo="body"
+              [selectOnTab]="true" required>
+              <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="item">{{item?.name}}</span>
+              </ng-template>
+            </ng-select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-3">
+            <ng-select [items]="rsms | async" [typeahead]="inputRsm" bindLabel="fullName" bindValue="id"
+              placeholder="{{'order.followup.rsm' | translate}}" [searchable]="true" [dropdownPosition]="'bottom'"
+              [openOnEnter]="false" formControlName="rsmId" appendTo="body" [selectOnTab]="true">
+              <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="item">{{item?.fullName}}</span>
+              </ng-template>
+            </ng-select>
+          </div>
+          <div class="col-lg-3">
+            <ng-select [items]="requesters" bindLabel="fullName" bindValue="id"
+              placeholder="{{'request.cancellation.folllowup.requester' | translate}}" [searchable]="true"
+              [dropdownPosition]="'bottom'" formControlName="requesterId" appendTo="body" [selectOnTab]="true" required>
+              <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="item">{{item?.fullName}}</span>
+              </ng-template>
+            </ng-select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-3">
+            <ng-select [items]="sectors | async" [typeahead]="inputSector" bindLabel="name"
+              placeholder="{{'order.followup.sector' | translate}}" [searchable]="true" [dropdownPosition]="'bottom'"
+              [openOnEnter]="false" formControlName="sectorId" (change)="onSectorSelected($any($event))" appendTo="body"
+              [selectOnTab]="true">
+              <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="item"> {{item?.name}}</span>
+              </ng-template>
+            </ng-select>
+          </div>
+          <div class="col-lg-3">
+            <ng-select [items]="zones" [typeahead]="inputZone" bindLabel="name"
+              placeholder="{{'order.followup.zone' | translate}}" [searchable]="true" [dropdownPosition]="'bottom'"
+              [openOnEnter]="false" formControlName="zoneId" (change)="onZoneSelected($any($event))" appendTo="body"
+              [selectOnTab]="true">
+              <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="item"> {{item?.name}}</span>
+              </ng-template>
+            </ng-select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-3">
+            <ng-select [items]="companies" bindLabel="companyName" bindValue="sifCode" [typeahead]="inputCompany"
+              placeholder="{{'order.followup.company' | translate}}" [searchable]="true" [dropdownPosition]="'bottom'"
+              [openOnEnter]="false" formControlName="companyId" (change)="onCompanySelected($any($event))"
+              appendTo="body" [selectOnTab]="true">
+              <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="item"> {{item?.companyName}}</span>
+              </ng-template>
+            </ng-select>
+          </div>
+          <div class="col-lg-3">
+            <mat-form-field>
+              <input matInput formControlName="mainServiceCode"
+                placeholder="{{'telecom.service.selector.mainServiceCode' | translate}}" />
+            </mat-form-field>
+          </div>
+          <div class="col-lg-3">
+            <mat-form-field>
+              <input matInput formControlName="backupServiceCode"
+                placeholder="{{'telecom.service.selector.backupServiceCode' | translate}}" />
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-3">
+            <ng-select [items]="backbones" placeholder="Backbone" bindLabel="name" bindValue="id" [searchable]="false"
+              [dropdownPosition]="'bottom'" [openOnEnter]="false" formControlName="backbone" appendTo="body"
+              [selectOnTab]="true">
+              <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="item"> {{item?.name}}</span>
+              </ng-template>
+            </ng-select>
+          </div>
+        </div>
+        <br />
+
+        <mat-slide-toggle color="primary" formControlName="lastOrderId" (change)="onLastOrderIdSelected()">
+          {{'order.followup.lastOrderId' | translate}}
+        </mat-slide-toggle> &nbsp;
+        <mat-slide-toggle color="primary" formControlName="lastFullyAcceptedOrderID"
+          (change)="onLastFullyAcceptedOrderID()">
+          {{'order.followup.lastFullyAcceptedOrderID' | translate}}
+        </mat-slide-toggle>
+      </div>
+
+      <mat-action-row>
+        <button type="button" mat-raised-button color="primary"
+          (click)="resetAdvanceFilter()">{{'common.reset' | translate}} </button>
+        &nbsp;
+        <button mat-raised-button color="primary" (click)="applyAdvanceFilter()">{{'common.apply' | translate}}</button>
+
+      </mat-action-row>
+    </form>
+  </mat-expansion-panel>
+
+  <div *ngIf="!panelFilterOpenState" class="d-block text-center bg-white">
+    <mat-form-field class="p-2">
+      <input matInput (keyup)="applyFilter($any($event).target.value)" placeholder="Filter" />
+    </mat-form-field>
+  </div>
+  <table class="w-100" mat-table matSort [dataSource]="dataSource" matSortActive="id" matSortDisableClear
+    matSortDirection="asc">
+
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef class="checkbox-col-width">
+        <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection?.hasValue() && isAllSelected()"
+          [indeterminate]="selection?.hasValue() && !isAllSelected()">
+        </mat-checkbox>
+      </th>
+      <td class="checkbox-col-width" mat-cell *matCellDef="let row">
+        <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection?.toggle(row) : null"
+          [checked]="selection?.isSelected(row)">
+        </mat-checkbox>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="orderId">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="orderId">{{'orders.orderId' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element?.orderId }}</td>
+    </ng-container>
+    <ng-container matColumnDef="bandwidth">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="bandwidth">{{'orders.bandwidth' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element?.bandwidth }}</td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="pageSize" [pageIndex]="pageIndex"
+    [length]="totalElements" showFirstLastButtons></mat-paginator>
+  <div *ngIf="isLoading" class="loading-shade">
+    <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+  </div>
+</div>

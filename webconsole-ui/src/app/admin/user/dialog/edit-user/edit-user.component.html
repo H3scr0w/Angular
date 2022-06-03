@@ -1,0 +1,41 @@
+<form [formGroup]="userForm">
+  <h3 mat-dialog-title>Edit User</h3>
+  <mat-dialog-content>
+    <mat-form-field>
+      <input matInput placeholder="Email" formControlName="email" [readonly]="!!data.user" />
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Firstname" name="firstname" formControlName="firstname" class="text-capitalize" cdkFocusInitial />
+      <mat-error *ngIf="userForm.get('firstname')!.dirty && userForm.get('firstname')!.hasError('required')">
+        Firstname is
+        <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Lastname" name="lastname" formControlName="lastname" class="text-uppercase" />
+      <mat-error *ngIf="userForm.get('lastname')!.dirty && userForm.get('lastname')!.hasError('required')">
+        Lastname is
+        <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput name="company" placeholder="Company" formControlName="company" />
+      <mat-error *ngIf="userForm.get('company')!.dirty && userForm.get('company')!.hasError('required')">
+        Company is
+        <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-checkbox color="primary" labelPosition="before" formControlName="isAdmin">
+      Admin
+    </mat-checkbox>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button type="button" mat-raised-button color="primary" (click)="cancel()">
+      Cancel
+    </button>
+    <button type="submit" mat-raised-button color="primary" (click)="save()" [disabled]="userForm.pristine || userForm.invalid">
+      Save
+      <i *ngIf="saving" class="fas fa-circle-notch fa-spin"></i>
+    </button>
+  </mat-dialog-actions>
+</form>

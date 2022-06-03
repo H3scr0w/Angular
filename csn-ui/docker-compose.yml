@@ -1,0 +1,39 @@
+# Serve ngApp as static files
+version: '3.2'
+services:
+  frontend:
+    image: registry.sedona.fr/csn/caf/frontend:0.0.5-SNAPSHOT
+    environment:
+      - SERVER_NAME=www.csn.com
+      #- OIDC_PROVIDERMETADATAURL=https://accounts.google.com/.well-known/openid-configuration
+      - SERVER_ADMIN=sedona@sedona.fr
+      - DOCUMENT_ROOT=/var/www/csn
+      # possible values for OIDC_SSL_VALIDATE_SERVER [On/Off]. In production set On
+      - OIDC_SSL_VALIDATE_SERVER=False
+      - OIDC_ISSUER=https://www.idnot.notaires.fr
+      - OIDC_AUTHORIZE_ENDPOINT=https://qual-connexion.idnot.fr/IdPOAuth2/auth/IDNOT_IDP
+      - OIDC_JWKS_URL=https://qual-connexion.idnot.fr/IdPOAuth2/jwk/IDNOT_IDP
+      - OIDC_TOKEN_ENDPOINT=https://qual-connexion.idnot.fr/IdPOAuth2/token/IDNOT_IDP
+      - OIDC_TOKEN_ENDPOINT_AUTH=client_secret_basic
+      - OIDC_USER_INFO_ENDPOINT=https://qual-connexion.idnot.fr/IdPOAuth2/userinfo/IDNOT_IDP
+      - OIDC_PROVIDER_END_SESSION_ENDOINT=https://qual-connexion.idnot.fr/auth/logout
+      - OIDC_CLIENT_ID=CE1B2B0BD83333B0
+      - OIDC_CLIENT_SECRET=C57CA41B8D0CCBABB20F4B0FC69B8CA61F512FF6451538CC7077BDA9BF419A7D
+      - OIDC_REDIRECT_URI=rec-caf.notaires.fr
+      - OIDC_PASSWORD=0123456789
+      - API_HOST=backend
+      - API_HTTP_PORT=9000
+      - API_HTTPS_PORT=9443
+      #- SSL_CERTIFICAT_FILE=/etc/https/apache-server.crt
+      #- SSL_CERTIFICAT_KEY_FILE=/etc/https/apache-server.key
+      - LOG_ERROR_FILE=/usr/local/apache2/logs/csn_error.log
+      - LOG_ACCESS_FILE=/usr/local/apache2/logs/csn_access.log
+      - BACK_OFFICE_BASE_PATH=https://test.com
+      - NOTACCESS_BASE_PATH=https://test.com
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - default
+networks:
+  default: {}

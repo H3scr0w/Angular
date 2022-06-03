@@ -1,0 +1,36 @@
+<div>
+  <form [formGroup]="contactSelectorForm">
+    <mat-form-field>
+      <input matInput formControlName="firstName" placeholder="{{'common.firstName' | translate}}" />
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput formControlName="name" placeholder="{{'common.lastName' | translate}}" />
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput formControlName="fixPhone" placeholder="{{'common.phone' | translate}}" />
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput formControlName="mobilePhone" placeholder="{{'common.mobile' | translate}}" />
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput formControlName="email" placeholder="{{'common.email' | translate}}" />
+    </mat-form-field>
+    <div class="row no-gutters">
+      <div *ngIf="searchContact" class="col-sm-9 col-md-8 col-lg-11">
+        <ng-select [items]="contacts | async" [typeahead]="inputContact" bindLabel="fullName"
+          placeholder="{{'contact.selector.search' | translate}}" [searchable]="true" dropdownPosition="bottom"
+          appendTo="body" [selectOnTab]="true" (change)="onContactSelected($any($event))">
+          <ng-template ng-label-tmp let-item="item">
+            <span *ngIf="item">{{item.fullName}}</span>
+          </ng-template>
+        </ng-select>
+      </div>
+      <div class="col-sm-3 col-md-4 col-lg-1">
+        <button type="button" class="mr-1" mat-mini-fab color="primary"
+          matTooltip="{{'contact.selector.search' | translate}}" (click)="searchContact=!searchContact">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

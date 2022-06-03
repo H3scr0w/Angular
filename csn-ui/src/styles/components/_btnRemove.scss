@@ -1,0 +1,94 @@
+.btn-add-remove {
+	display: flex;
+	justify-content: flex-end;
+	margin: 10px 0;
+
+  &.last {justify-content: space-between;}
+  &.max-reached {justify-content: flex-end;}
+	&.intermediate { justify-content: flex-start; }
+
+	/*** Usufruit & viagere ***/
+	.person-add {
+		padding-bottom: 0;
+
+		.add {
+			@include gilroyHeav(16px);
+			color: $color-green;
+			letter-spacing: -0.5px;
+			line-height: 20px;
+			text-decoration: underline;
+			text-align: right;
+			width: 100%;
+			margin: 0;
+			background-color: inherit;
+			padding-bottom: 40px;
+
+			&:focus {
+				outline: none;
+				box-shadow: none;
+			}
+		}
+	}
+	.person-remove {
+		padding-bottom: 0;
+
+		.remove {
+			@include gilroyHeav(16px);
+			color: $color-red;
+			letter-spacing: -0.5px;
+			line-height: 20px;
+			text-decoration: underline;
+			text-align: right;
+			background-color: inherit;
+      padding-bottom: 40px;
+
+			&:focus {
+				outline: none;
+				box-shadow: none;
+			}
+		}
+	}
+}
+/*** Pret ***/
+
+.form-group {
+	&-credirentier-add {
+		padding-bottom: 20px;
+
+		.add-cre {
+			@include gilroyHeav(16px);
+			color: $color-green;
+			letter-spacing: -0.5px;
+			line-height: 20px;
+			text-decoration: underline;
+			text-align: right;
+			width: 100%;
+			margin: 0 0 30px;
+			background-color: inherit;
+
+			&:focus {
+				outline: none;
+				box-shadow: none;
+			}
+		}
+	}
+
+	&-credirentier-remove {
+		padding-bottom: 20px;
+
+		.remove-cre {
+			@include gilroyHeav(16px);
+			color: $color-red;
+			letter-spacing: -0.5px;
+			line-height: 20px;
+			text-decoration: underline;
+			text-align: right;
+			background-color: inherit;
+
+			&:focus {
+				outline: none;
+				box-shadow: none;
+			}
+		}
+	}
+}

@@ -1,0 +1,112 @@
+<div class="mat-elevation-z8 my-4 mx-4 mw-mobile">
+  <div class="bg-header p-2 d-flex">
+    <span class="fa-stack fa-lg text-primary">
+      <i class="fas fa-circle fa-stack-1x fa-lg"></i>
+      <i class="fab fa-mizuni fa-stack-1x fa-sm text-white"></i>
+    </span>
+    <h2 class="text-white font-weight-bold pt-1">{{'common.menu.bulksite' | translate}}</h2>
+  </div>
+
+  <div class="d-block p-2 text-right">
+    <button class="mr-1" mat-mini-fab color="primary" matTooltip="{{'common.advanceFilter' | translate}}"
+      (click)="toggleFilterPanel()" matBadge="{{filterCount}}" matBadgePosition="after" matBadgeColor="warn"
+      [matBadgeHidden]="filterCount===0">
+      <i class="fas fa-filter"></i>
+    </button>
+  </div>
+
+  <mat-expansion-panel [expanded]="panelFilterOpenState">
+    <form [formGroup]="bulkSiteAdvanceFilterForm">
+      <div class="d-block p-2 bg-white">
+
+        <ng-select [items]="sifCodes | async" bindLabel="sifCode" [typeahead]="inputSifCode" [searchable]="true"
+                   placeholder="{{'site.dialogbox.tab.description.sifCode' | translate}}" [openOnEnter]="false"
+                   [dropdownPosition]="'bottom'" formControlName="sifCode" (change)="onSifSelected($any($event))"
+                   appendTo="body" [selectOnTab]="true">
+          <ng-template ng-label-tmp let-item="item">
+            <span *ngIf="item"> {{item?.sifCode}}</span>
+          </ng-template>
+        </ng-select>
+
+        <ng-select [items]="companies" bindLabel="companyName" [typeahead]="inputCompany" [dropdownPosition]="'bottom'"
+                   placeholder="{{'site.datatable.column.company' | translate}}" [searchable]="true" [openOnEnter]="false"
+                   formControlName="company" (change)="onCompanySelected($any($event))" [selectOnTab]="true" appendTo="body">
+          <ng-template ng-label-tmp let-item="item">
+            <span *ngIf="item"> {{item?.companyName}}</span>
+          </ng-template>
+        </ng-select>
+
+        <ng-select [items]="rsms" bindLabel="fullName" [dropdownPosition]="'bottom'" [searchable]="true"
+                   placeholder="{{'site.dialogbox.tab.description.rsm' | translate}}" [openOnEnter]="false"
+                   formControlName="rsm" [selectOnTab]="true" appendTo="body">
+          <ng-template ng-label-tmp let-item="item">
+            <span *ngIf="item">{{item?.fullName}}</span>
+          </ng-template>
+        </ng-select>
+
+      </div>
+
+      <mat-action-row>
+        <button type="button" *ngIf="selection.hasValue() && isAdmin " mat-raised-button color="primary"
+          (click)="editBulkSite()">{{'bulk.site.modification.setnew' | translate}}</button>
+        &nbsp;
+        <button type="button" class="mr-1" mat-raised-button color="primary"
+          (click)="resetAdvanceFilter()">{{'common.reset' | translate}} </button>
+        &nbsp;
+        <button type="submit" mat-raised-button color="primary"
+          (click)="applyAdvanceFilter()">{{'common.apply' | translate}}</button>
+      </mat-action-row>
+    </form>
+  </mat-expansion-panel>
+
+  <div *ngIf="!panelFilterOpenState" class="d-block text-center bg-white">
+    <mat-form-field class="p-2">
+      <input matInput (keyup)="applyFilter($any($event).target.value)" placeholder="{{'common.search' | translate}}" />
+      <i matPrefix class="fas fa-search mr-2"></i>
+    </mat-form-field>
+  </div>
+  <table class="w-100" mat-table matSort [dataSource]="sites" matSortActive="siteCode" matSortDisableClear
+    matSortDirection="desc">
+
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef class="checkbox-col-width">
+        <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()">
+        </mat-checkbox>
+      </th>
+      <td class="checkbox-col-width" mat-cell *matCellDef="let row">
+        <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+          [checked]="selection.isSelected(row)">
+        </mat-checkbox>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="usualName">
+      <th *matHeaderCellDef mat-header-cell>{{'site.datatable.column.siteName' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.siteCode}} - {{ element.city.name}} -
+        {{ element.company?.companyName}} - {{element.usualName }}
+        <mat-chip *ngIf="element.archiveDate" color="primary" selected>{{'common.archived' | translate}}</mat-chip>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="company">
+      <th *matHeaderCellDef mat-header-cell>{{'site.datatable.column.company' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.company?.companyName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="rsm">
+      <th mat-header-cell *matHeaderCellDef>{{'site.dialogbox.tab.description.rsm' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.rsm?.fullName }}
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns" [ngClass]="{'highlight': i === 0}"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="pageSize" [pageIndex]="pageIndex"
+    [length]="totalElements" showFirstLastButtons></mat-paginator>
+  <div *ngIf="isLoading || isRsmLoading" class="loading-shade">
+    <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+  </div>
+</div>

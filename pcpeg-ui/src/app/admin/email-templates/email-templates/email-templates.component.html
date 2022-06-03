@@ -1,0 +1,62 @@
+<div class="mat-elevation-z8 my-4 mx-4">
+  <div class="bg-info p-2 d-flex">
+    <span class="fa-stack fa-lg text-primary">
+      <i class="fas fa-circle fa-stack-1x fa-lg"></i>
+      <i class="fa fa-wrench fa-stack-1x fa-sm text-white"></i>
+    </span>
+    <h2 class="mr-auto text-white font-weight-bold pt-1">{{'email.template.header' | translate}}</h2>
+  </div>
+  <form [formGroup]="emailTemplateForm" (ngSubmit)="onSubmit()">
+    <div class="d-block p-2 bg-white">
+      <mat-card>
+        <mat-card-content>
+
+          <mat-form-field>
+            <input matInput formControlName="objetInitial" placeholder="{{'email.template.objetInitial' | translate}}" required/>
+          </mat-form-field>
+
+          <mat-label> {{'email.template.mailInitial' | translate}} </mat-label>
+          <quill-editor [style]="{height: '250px'}" [preserveWhitespace]="true" formControlName="mailInitial"
+                        placeholder="{{'email.template.mailInitial' | translate}}"></quill-editor>
+
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card>
+        <mat-card-content>
+
+          <mat-form-field>
+            <input matInput formControlName="objetRelance" placeholder="{{'email.template.objetRelance' | translate}}" required/>
+          </mat-form-field>
+
+          <mat-label> {{'email.template.mailRelance' | translate}} </mat-label>
+          <quill-editor [style]="{height: '250px'}" [preserveWhitespace]="true" formControlName="mailRelance"
+                        placeholder="{{'email.template.mailRelance' | translate}}"></quill-editor>
+
+        </mat-card-content>
+      </mat-card>
+      <br/>
+      <div class="row">
+        <div class="col-lg-3">
+          <mat-form-field>
+            <input matInput formControlName="formulaireDateLimiteReponse" [min]="defaultDate" [matDatepicker]="formulaireDateLimiteReponse"
+                   placeholder="{{'email.template.formulaireDateLimiteReponse' | translate}}" required [readonly]="true" />
+            <mat-datepicker-toggle matSuffix [for]="formulaireDateLimiteReponse"></mat-datepicker-toggle>
+            <mat-datepicker #formulaireDateLimiteReponse ></mat-datepicker>
+            <button type="button" mat-button  matSuffix mat-icon-button
+                    aria-label="Clear" (click)="emailTemplateForm.get('formulaireDateLimiteReponse')!.setValue('')">
+              <i class="fas fa-times"></i>
+            </button>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="clearfix">
+        <button type="submit" mat-raised-button color="primary" class="btn btn-secondary float-right"
+                [disabled]="emailTemplateForm.invalid || isLoading">{{'common.save' | translate}}</button>
+      </div>
+    </div>
+  </form>
+  <div *ngIf="isLoading" class="loading-shade">
+    <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+  </div>
+</div>

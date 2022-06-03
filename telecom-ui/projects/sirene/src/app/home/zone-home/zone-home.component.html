@@ -1,0 +1,31 @@
+<div>
+  <div *ngIf="!isLoading" class="d-block p-2 bg-white">
+    <span>
+      {{ 'site.zones.countMessage' | translate:{'siteCount': siteCount, 'zoneCount': total} }}
+    </span>
+  </div>
+  <div class="d-block text-center bg-white">
+    <mat-form-field class="p-2">
+      <input matInput (keyup)="applyFilter($any($event).target.value)" placeholder="{{'common.search' | translate}}" autofocus/>
+      <i matPrefix class="fas fa-search mr-2"></i>
+    </mat-form-field>
+  </div>
+  <table class="w-100" mat-table matSort [dataSource]="zones" matSortActive="name" matSortDisableClear
+    matSortDirection="asc">
+    <ng-container matColumnDef="zoneName">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header="name">{{'zone.name' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.zoneName }}</td>
+    </ng-container>
+    <ng-container matColumnDef="sitesCount">
+      <th mat-header-cell *matHeaderCellDef>{{'common.numberOfSites' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.sitesCount }}</td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="pageSize" [pageIndex]="pageIndex"
+    [length]="totalElements" showFirstLastButtons></mat-paginator>
+  <div *ngIf="isLoading" class="loading-shade">
+    <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+  </div>
+</div>

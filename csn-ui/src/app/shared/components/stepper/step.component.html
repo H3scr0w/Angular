@@ -1,0 +1,8 @@
+<ng-template #stepInnerTemplate>
+  <div *ngFor="let input of stepInputs ; let j = index"
+       [ngClass]="{'active': input.enabledStatus(), 'complete': input.isValid(),
+       'step-title-spacer': j==0, 'form-group': input.hasFormGroupCssClass}"
+       class="{{input.formGroupClass}}">
+    <ng-template [ngTemplateOutlet]="input.innerTemplate"></ng-template>
+  </div>
+</ng-template>

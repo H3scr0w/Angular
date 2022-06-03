@@ -1,0 +1,77 @@
+<div class="mat-elevation-z8">
+  <div class="mx-2 d-block text-center">
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Filter" />
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="openDialog()">
+      <i class="fas fa-plus p-1"></i>Add Domain</button>
+  </div>
+  <table class="w-100" mat-table matSort [dataSource]="datasource">
+    <ng-container matColumnDef="code">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Code</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.code }}</td>
+    </ng-container>
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.name }}</td>
+    </ng-container>
+    <ng-container matColumnDef="registarCode">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Registar Code</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.registarCode }}</td>
+    </ng-container>
+    <ng-container matColumnDef="wafId">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>WAF Id</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.wafId }}</td>
+    </ng-container>
+    <ng-container matColumnDef="realm">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Realm</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.realm }}</td>
+    </ng-container>
+    <ng-container matColumnDef="user">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>User</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.user }}</td>
+    </ng-container>
+    <ng-container matColumnDef="password">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Password</th>
+      <td mat-cell *matCellDef="let element" class="text-break">
+        <div *ngIf="element.password">
+          <input matInput [type]="hide ? 'password' : 'text'" [value]="element.password" readonly name="password" />
+          <button mat-icon-button matSuffix color="primary" (click)="hide = !hide">
+            <i *ngIf="hide" class="fas fa-eye-slash"></i>
+            <i *ngIf="!hide" class="fas fa-eye"></i>
+          </button>
+        </div>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="useDocrootEnvAuth">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>DocrootEnv Auth</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.useDocrootEnvAuth }}</td>
+    </ng-container>
+    <ng-container matColumnDef="isBasicAuth">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Basic Auth</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.isBasicAuth }}</td>
+    </ng-container>
+    <ng-container matColumnDef="httpsEnable">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>HTTPS Enabled</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.httpsEnable }}</td>
+    </ng-container>
+    <ng-container matColumnDef="isQualysEnable">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Qualys Enabled</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.isQualysEnable }}</td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let element">
+        <span (click)="openDialog(element)">
+          <i class="fas fa-edit"></i>
+        </span>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" (page)="getAllDomain()" [length]="totalElements"></mat-paginator>
+  <div *ngIf="isLoading" class="loading-shade">
+    <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+  </div>
+</div>

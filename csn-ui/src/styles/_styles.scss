@@ -1,0 +1,295 @@
+/* You can add global styles to this file, and also import other style files */
+html,
+body {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  min-height: 100vh;
+}
+.rente-form-content,
+.pret-form-content,
+.refinancement-pret-form-content,
+.calcul-form-content {
+  padding: 40px 65px;
+  @media(min-width: 425px) and (max-width: 1024px) {
+    padding: 40px 5px 30px 20px;
+  }
+
+  @media(max-width: 425px) {
+    position: relative;
+    padding: 15px 0;
+  }
+}
+
+button:focus {
+  outline: none !important;
+}
+
+body {
+  background: #fbfdff;
+  @media print {
+    background: white;
+  }
+
+  &.modal-open {
+    @media(min-width: 1024px) {
+      overflow: visible;
+    }
+  }
+}
+
+.main-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  padding-top: 75px;
+  @media print {
+    padding-top: 0;
+  }
+}
+
+.header-container .logo {
+  background-image: url('/assets/images/logo_RV-UP.png');
+  display: inline-block;
+  height: 22px;
+  width: 87px;
+  float: left;
+}
+
+.footer-container .logo {
+  background-image: url('/assets/images/logo_csn_white.png');
+  display: inline-block;
+  height: 48px;
+  width: 82px;
+  float: left;
+}
+
+input[type=date]::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
+input[type=date]::-webkit-inner-spin-button,
+input[type=date]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  background-color: transparent;
+  padding: 0;
+  margin-bottom: 0;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  content: url('/assets/images/ic_arrow.png');
+}
+
+.breadcrumb-item {
+  @include gilroyHeav(16px);
+  color: $color-blue;
+  line-height: 20px;
+}
+
+.breadcrumb-item.active > a {
+  color: $color-green;
+}
+
+/* Restit */
+.info-calcul ul {
+  padding: 0;
+}
+.info-calcul ul > li {
+  list-style-type: none;
+  margin: 10px 0;
+}
+/* End of Restit */
+
+/* webkit solution */
+::-webkit-input-placeholder {
+  text-align: right;
+}
+
+/* mozilla solution */
+input:-moz-placeholder {
+  text-align: right;
+}
+
+input[type='text'],
+input[type='date'] {
+  text-align: right;
+}
+
+input[type='text'],
+input[type='date']:focus {
+  text-align: right;
+}
+
+.form {
+  color: $color-blue;
+  font-family: Gilroy-Bold, sans-serif;
+}
+
+label {
+  font-size: 16px;
+}
+
+.input-hidden {
+  position: absolute;
+  left: -9999px;
+}
+
+
+.card h3 {
+  @include gilroyBold(14px);
+  color: $color-blue;
+  letter-spacing: -0.35px;
+}
+
+.card h3::first-letter {
+  text-transform: uppercase;
+}
+
+
+
+.card:first-child {
+  margin-right: 25px;
+}
+
+.card .img-on,
+.card2 .img-on {
+  display: none;
+}
+
+.card:hover,
+.card2:hover {
+  cursor: pointer;
+  .img-off {
+    display: none;
+  }
+
+  .img-on {
+    display: block;
+  }
+}
+
+.card.active,
+.card2.active {
+  .img-off {
+    display: none;
+  }
+
+  .img-on {
+    display: block;
+  }
+}
+
+.step3 {
+  margin-top: 70px;
+}
+
+.card2 {
+  @include radius(8px);
+  @include boxShadow;
+  height: 58px;
+  width: 58px;
+  text-align: center;
+  border: 0;
+  background-color: $color-white;
+  z-index: 100;
+  padding: 2px;
+}
+
+.card2 img {
+  max-width: 64px;
+  max-height: 64px;
+}
+
+.card2:hover,
+.card2:checked {
+  @include boxShadow;
+  border: 2px solid $color-green;
+  padding: 0;
+}
+
+.card2.active {
+  @include boxShadow;
+  border: 2px solid $color-green !important;
+}
+.card2:first-child {
+  margin-right: 25px;
+}
+
+.person-icons,
+.person-text {
+  float: left;
+  height: 60px;
+}
+
+.add-usu {
+  margin-top: 30px;
+}
+
+.input-euro::before {
+  position: absolute;
+  top: 0;
+  content: '€';
+}
+
+.input-euro.right::before {
+  font-family: Gilroy-Regular, sans-serif;
+  right: 12px;
+  top: 15px;
+}
+
+.input-percent::before {
+  position: absolute;
+  top: 0;
+  content: '%';
+}
+
+.input-percent.right::before {
+  font-family: Gilroy-Regular, sans-serif;
+  right: 12px;
+  top: 15px;
+}
+
+.input-year::before {
+  position: absolute;
+  top: 0;
+  content: ' ans';
+}
+
+.input-year.right::before {
+  right: 2px;
+  top: 15px;
+}
+.revalRente {
+  .input-percent.right::before {
+    color: $color-grey;
+  }
+}
+.banner em {
+  text-transform: capitalize;
+  font-style: normal;
+  color: $color-green;
+}
+
+.result-content {
+  background-color: #fbfdff;
+  padding: 50px 80px;
+  @media(max-width: 425px) {
+    padding: 24px 15px 50px 6px;
+    margin-right: -15px;
+  }
+}
+
+/* Sizing */
+.mh-100px {
+  max-height: 100px;
+}

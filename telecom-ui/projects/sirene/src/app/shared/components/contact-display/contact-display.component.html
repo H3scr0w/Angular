@@ -1,0 +1,13 @@
+<small>
+  <div *ngIf="selectedContact" class="d-flex flex-row mb-4">
+    <div *ngIf="showName" class="p-2"><i class="fas fa-user-circle mr-2"></i>{{selectedContact?.title}}
+      {{selectedContact?.firstName}} {{selectedContact?.name}}
+    </div>
+    <div *ngIf="selectedContact.fixPhone" class="p-2"><i class="fas fa-phone mr-2"></i>{{selectedContact?.fixPhone}}
+    </div>
+    <div *ngIf="selectedContact.mobilePhone" class="p-2"><i
+        class="fas fa-mobile mr-2"></i>{{selectedContact?.mobilePhone}}</div>
+    <div *ngIf="selectedContact.email" class="p-2"><i class="fas fa-envelope mr-2"></i>{{selectedContact?.email}}
+    </div>
+  </div>
+</small>

@@ -1,0 +1,63 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<form [formGroup]="emailNotifyForm" (ngSubmit)="notifyOrder()" autocomplete="off">
+  <h1 mat-dialog-title>
+    <i class="fa fa-envelope-open" aria-hidden="true"></i>
+    {{'order.notify.header' | translate}}
+  </h1>
+
+  <mat-dialog-content>
+    <mat-form-field>
+      <mat-chip-list #emailListTo>
+        <mat-chip *ngFor="let email of emailsTo" removable (removed)="remove(email,'to')">
+          {{email}}
+          <mat-icon fontSet="fa" fontIcon="fa-times" matChipRemove *ngIf="removable"></mat-icon>
+        </mat-chip>
+        <input placeholder="{{'common.mail.to' | translate}}" [matChipInputAddOnBlur]="true"
+          [matChipInputFor]="emailListTo" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          (matChipInputTokenEnd)="add($event,'to')" />
+
+        <mat-error align=" right" *ngIf="emailNotifyForm.get('to').errors?.required">
+          {{'common.validation.required.message' | translate}}</mat-error>
+        <mat-error align=" right" *ngIf="emailNotifyForm.get('to').errors?.email">
+          {{'common.email.validation' | translate}}</mat-error>
+      </mat-chip-list>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-chip-list #emailListCC>
+        <mat-chip *ngFor="let email of emailsCC" removable (removed)="remove(email,'cc')">
+          {{email}}
+          <mat-icon fontSet="fa" fontIcon="fa-times" matChipRemove *ngIf="removable"></mat-icon>
+        </mat-chip>
+        <input placeholder="{{'common.mail.cc' | translate}}" [matChipInputAddOnBlur]="true"
+          [matChipInputFor]="emailListCC" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          (matChipInputTokenEnd)="add($event,'cc')" />
+
+        <mat-error align=" right" *ngIf="emailNotifyForm.get('cc').errors?.required">
+          {{'common.validation.required.message' | translate}}</mat-error>
+        <mat-error align=" right" *ngIf="emailNotifyForm.get('cc').errors?.email">
+          {{'common.email.validation' | translate}}</mat-error>
+
+      </mat-chip-list>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="{{'common.mail.subject' | translate}}" formControlName="subject" />
+    </mat-form-field>
+
+    <mat-label> {{'common.mail.body' | translate}} </mat-label>
+
+    <quill-editor [style]="{height: '250px'}" [preserveWhitespace]="true" formControlName="message"
+      placeholder="{{'common.mail.body' | translate}}"></quill-editor>
+
+  </mat-dialog-content>
+
+  <div mat-dialog-actions align="center">
+    <button type="button" mat-raised-button (click)="onNoClick()">{{'common.close' | translate}}</button>
+
+    <button type="submit" mat-raised-button color="primary" [disabled]="emailNotifyForm.invalid || isLoading">
+      {{'common.send' | translate}}
+    </button>
+  </div>
+
+</form>

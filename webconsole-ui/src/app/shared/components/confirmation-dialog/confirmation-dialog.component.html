@@ -1,0 +1,15 @@
+<div class="p-2 mr-3">
+  <h1 mat-dialog-title>Confirmation</h1>
+  <div mat-dialog-content>
+    <p *ngIf="message">
+      {{ message }}
+    </p>
+    <p *ngIf="!message">
+      Are you sure you want to perform this action ?
+    </p>
+  </div>
+  <div mat-dialog-actions align="center">
+    <button mat-raised-button (click)="onNoClick()"> No</button>
+    <button mat-raised-button (click)="onYesClick()" color="primary" cdkFocusInitial>Yes</button>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+<div class="p-2 mr-3">
+  <h1 mat-dialog-title *ngIf="data && !data.header">{{'common.confirmation' | translate}}</h1>
+  <h1 mat-dialog-title *ngIf="data && data.header">{{data.header}}</h1>
+  <div mat-dialog-content>
+    <div class="text-center m-2">
+      <i class="fas fa-exclamation-circle text-primary my-fab"></i>
+    </div>
+    <br />
+    <p *ngIf="data && !data.message">{{'company.delete.confirmation.message' | translate}}</p>
+    <p *ngIf="data && data.message">{{data.message}} {{data.year}} {{data.value}}</p>
+    <p *ngIf="data && data.title && data.record"><b>{{data.title}}</b>&nbsp;{{data.record}}</p>
+  </div>
+  <div mat-dialog-actions align="center">
+    <button mat-raised-button (click)="onYesClick()" color="primary"
+      cdkFocusInitial>{{'common.yes' | translate}}</button>
+    <button mat-raised-button (click)="onNoClick()">{{'common.no' | translate}}</button>    
+  </div>
+</div>

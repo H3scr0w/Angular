@@ -1,0 +1,19 @@
+<table class="w-100 mb-6">
+  <mat-tab-group mat-align-tabs="center" dynamicHeight>
+    <mat-tab label="Cache Mode">
+      <ng-template matTabContent>
+        <stgo-cache-mode [domain]="domain" [isAdmin]="isAdmin"></stgo-cache-mode>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Cache Settings">
+      <ng-template matTabContent>
+        <stgo-cache-settings [domain]="domain" [cacheConf]="cacheConf" [isAdmin]="isAdmin"></stgo-cache-settings>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Cache Rules">
+      <ng-template matTabContent>
+        <stgo-cache-rules [domain]="domain" [cacheConf]="cacheConf" [isAdmin]="isAdmin"></stgo-cache-rules>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+</table>

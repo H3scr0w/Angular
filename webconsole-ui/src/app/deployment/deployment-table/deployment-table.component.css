@@ -1,0 +1,12 @@
+.ACCEPTED {
+  background-color: #5a78fa;
+}
+
+.SUCCEEDED {
+  background-color: #00be00;
+}
+
+.FAILED,
+.ABORTED {
+  background-color: #e1141e;
+}

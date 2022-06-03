@@ -1,0 +1,111 @@
+<mat-sidenav-container class="mat-sidenav-container-position position-absolute mt-4 min-height-mobile min-width-mobile">
+  <mat-sidenav #snav [mode]="mediaMatch ? 'over' : 'side'" opened class="font-bold font-white mx-4 mt-3 pt-5">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title class="text-gray">Qualys</mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="m-2" [ngClass]="{
+                    'text-primary': sidenavElement === sidenavSelected
+                  }" *ngFor="let sidenavElement of qualysSidenavMenu">
+          <a (click)="show(sidenavElement)"> {{ sidenavElement }} </a>
+            <br />
+        </div>
+      </mat-expansion-panel>
+      <mat-expansion-panel [expanded]="false">
+        <mat-expansion-panel-header>
+          <mat-panel-title class="text-gray">Incapsula</mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="m-2" [ngClass]="{
+                      'text-primary': sidenavElement === sidenavSelected
+                    }" *ngFor="let sidenavElement of incapsulaSidenavMenu">
+          <a (click)="show(sidenavElement)"> {{ sidenavElement }} </a>
+          <br />
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </mat-sidenav>
+  <mat-sidenav-content class="px-5 pt-4">
+    <div (click)="snav.toggle()" class="sidebar-button">
+      <button mat-icon-button color="primary" class="text-danger">
+        <i *ngIf="!snav.opened" class="fas fa-angle-double-right fa-2x"></i>
+        <i *ngIf="snav.opened" class="fas fa-angle-double-left fa-2x"></i>
+      </button>
+    </div>  
+    <div class="p-1 ml-4">
+      <!-- Qualys -->
+      <ng-template [ngIf]="sidenavSelected === 'Report'">
+        <stgo-report></stgo-report>
+      </ng-template>
+
+      <ng-template [ngIf]="sidenavSelected === 'Scan'">
+        <stgo-scan></stgo-scan>
+      </ng-template>
+
+      <ng-template [ngIf]="sidenavSelected === 'WebApp'">
+        <stgo-webapp></stgo-webapp>
+      </ng-template>
+
+      <ng-template [ngIf]="sidenavSelected === 'WebAppAuthRecord'">
+        <stgo-webappauthrecord></stgo-webappauthrecord>
+      </ng-template>
+
+      <!-- Incapsula -->
+      <ng-template [ngIf]="incapsulaSidenavMenu.includes(sidenavSelected)">
+        <table class="w-100" [formGroup]="formGroup">
+          <mat-form-field>
+            <input matInput placeholder="Domain*" formControlName="domain" [matAutocomplete]="auto" name="domain" />
+            <i matSuffix class="fas fa-search"></i>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="changeDomain($event.option.value)" (closed)="closed()" [displayWith]="displayFn">
+              <mat-option *ngFor="let domain of (domains$ | async)" [value]="domain">
+                <span>{{ domain?.name }}</span>
+              </mat-option>
+            </mat-autocomplete>
+            <mat-error *ngIf="formGroup.get('domain')!.dirty && formGroup.get('domain')!.hasError('required')">
+              Domain is
+              <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center mb-2">
+            <mat-progress-bar color="primary" mode="indeterminate"> </mat-progress-bar>
+          </div>
+        </table>
+      </ng-template>
+
+      <div *ngIf="domainSelected && !isLoading">
+        <ng-template [ngIf]="sidenavSelected === 'Site'">
+          <stgo-incapsula-site [domain]="domain"></stgo-incapsula-site>
+        </ng-template>
+
+        <ng-template [ngIf]="sidenavSelected === 'Site Configuration'">
+          <stgo-incapsula-site-conf [domain]="domain" [siteConfs]="siteConfs" [isAdmin]="true"></stgo-incapsula-site-conf>
+        </ng-template>
+
+        <ng-template [ngIf]="sidenavSelected === 'DNS'">
+          <stgo-incapsula-dns [originalDn]="originalDn" [dn]="dn" [isAdmin]="true"></stgo-incapsula-dns>
+        </ng-template>
+
+        <ng-template [ngIf]="sidenavSelected === 'SSL'">
+          <stgo-incapsula-ssl [domain]="domain" [generatedCertificate]="generatedCertificate" [customCertificate]="customCertificate" [isAdmin]="true"></stgo-incapsula-ssl>
+        </ng-template>
+
+        <ng-template [ngIf]="sidenavSelected === 'Cache'">
+          <stgo-incapsula-cache [domain]="domain" [cacheConf]="cacheConf" [isAdmin]="true"></stgo-incapsula-cache>
+        </ng-template>
+
+        <ng-template [ngIf]="sidenavSelected === 'Acls'">
+          <stgo-incapsula-acls [domain]="domain" [aclsConf]="aclsConf" [isAdmin]="true"></stgo-incapsula-acls>
+        </ng-template>
+
+        <ng-template [ngIf]="sidenavSelected === 'Threats'">
+          <stgo-incapsula-threats [domain]="domain" [wafConf]="wafConf" [isAdmin]="true"></stgo-incapsula-threats>
+        </ng-template>
+
+        <ng-template [ngIf]="sidenavSelected === 'Monitoring'">
+          <stgo-incapsula-monitoring [domain]="domain" [isAdmin]="true"></stgo-incapsula-monitoring>
+        </ng-template>
+      </div>
+
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

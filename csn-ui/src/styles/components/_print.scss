@@ -1,0 +1,382 @@
+.print-view {
+  //to display background color in printer
+  //works for all browsers except IE & Edge
+  color-adjust: exact !important;
+  background: $color-white;
+
+  &.print {
+    visibility: hidden;
+    max-height: 0;
+    overflow: hidden;
+  }
+
+  .print-header {
+    border-bottom: 2px solid #aac0d4;
+    // -10 px to avoid blank margin line
+    margin: 0 -10px;
+    background-color: $color-white;
+    margin-bottom: 50px;
+    padding: 35px;
+
+    label {
+      color: #5a7a96;
+      @include gilroyReg(22px);
+      letter-spacing: -0.39px;
+      line-height: 26px;
+    }
+  }
+
+  .print-body {
+    margin-top: 280px;
+  }
+
+  .footer {
+    label {
+      margin-bottom: 32px;
+      color: #5a7a96;
+      @include gilroyReg(13px);
+      letter-spacing: -0.41px;
+      line-height: 17px;
+    }
+
+    .print-footer {
+      background-color: $color-blue;
+      padding: 10px 40px;
+
+      .footer__content {
+        .copyright {
+          @include gilroyReg(14px);
+          color: $color-white;
+          letter-spacing: -0.44px;
+          line-height: 20px;
+          margin: 0 0 0 50px;
+          @media (max-width: 425px) {
+            margin: 0 0 24px;
+          }
+        }
+      }
+    }
+  }
+
+  h1,
+  h2,
+  h5,
+  label {
+    color: $color-blue;
+  }
+
+  h1,
+  h2 {
+    font-family: Gilroy-Heavy, sans-serif;
+    line-height: 41px;
+  }
+
+  h5 {
+    font-family: Gilroy-Bold, sans-serif;
+  }
+
+  label {
+    font-family: Gilroy-Regular, sans-serif;
+  }
+
+  .form-group {
+    color: $color-blue;
+
+    input {
+      border: 2px solid $color-btnHover;
+    }
+
+    label {
+      font-family: Gilroy-Bold, sans-serif;
+      font-size: 16px;
+    }
+
+    &.form-group-btn {
+      .btn-group {
+        &.with-label {
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+
+  .step {
+    &.step-out {
+      padding-left: 70px;
+      padding-right: 30px;
+    }
+
+    &.page-break {
+      page-break-before: always;
+      margin-top: 280px;
+    }
+
+    .step-title {
+      margin-bottom: 15px;
+
+      .number {
+        display: none;
+      }
+    }
+
+    .step-title-spacer {
+      &.active {
+        margin-top: 1px !important;
+        padding-top: 1px;
+      }
+    }
+
+    .form-group {
+      padding-bottom: 15px;
+
+      &.complete {
+        &::before {
+          display: none;
+        }
+      }
+
+      &:last-child {
+        margin-bottom: 20px;
+      }
+
+      &.active {
+        padding-bottom: 20px;
+      }
+
+      .form-group-person-content {
+        padding: 32px;
+        margin-bottom: 15px;
+      }
+
+      .btn-add-remove {
+        display: none;
+      }
+    }
+
+    .form-group.form-group-person {
+      .form-group-person-content {
+        background-color: #e2f1ff;
+      }
+
+      &:last-child {
+        padding-bottom: 0;
+      }
+    }
+  }
+
+  .print-restit {
+    .step {
+      &.step-out {
+        padding-left: 0;
+      }
+    }
+  }
+
+  .active > .badge-checked-print {
+    position: absolute;
+    background-image: url('/assets/images/ic_checkmark.png');
+    background-color: transparent;
+    border: none;
+    height: 24px;
+    width: 24px;
+    z-index: 1;
+
+    &.inside {
+      right: 5px;
+      top: 5px;
+    }
+
+    &.edge {
+      right: -10px;
+      top: -10px;
+    }
+  }
+
+  .info-client {
+    margin-top: 40px;
+
+    .info-client-title {
+      margin-bottom: 20px;
+      color: #005b93;
+      @include gilroyBold(20px);
+      letter-spacing: -0.35px;
+      line-height: 24px;
+    }
+  }
+  .content-restit {
+    color: $color-blue;
+    font-size: 20px;
+
+    .content-restit-title {
+      @include gilroyBold(20px);
+      color: $color-blue;
+      letter-spacing: -0.35px;
+      line-height: 24px;
+      margin-bottom: 45px;
+    }
+
+    .content-restit-data {
+      display: flex;
+      @media (max-width: 425px) {
+        display: block;
+      }
+
+      .restit-value-wrapper {
+        width: 100%;
+
+        .restit-value {
+          width: 100%;
+          margin-bottom: 30px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          .title {
+            width: 45%;
+            @include gilroyBold(16px);
+            color: $color-blue;
+            letter-spacing: -0.28px;
+            line-height: 20px;
+          }
+
+          .blue-value {
+            text-align: right;
+            width: 55%;
+            @include gilroyReg(32px);
+            color: $color-lightBlue;
+            letter-spacing: -0.56px;
+            line-height: 38px;
+          }
+
+          .green-value {
+            text-align: right;
+            width: 55%;
+            @include gilroyReg(32px);
+            color: $color-green;
+            letter-spacing: -0.56px;
+            line-height: 38px;
+          }
+
+          .caption {
+            @include gilroyReg(13px);
+            color: #829db4;
+            letter-spacing: -0.41px;
+            line-height: 17px;
+          }
+        }
+
+        .restit-value-small {
+          @include gilroyBold(14px);
+          margin-bottom: 20px;
+          color: $color-blue;
+          letter-spacing: -0.44px;
+          line-height: 14px;
+
+          span {
+            font-family: Gilroy-Regular, sans-serif;
+            font-weight: 400;
+          }
+        }
+      }
+
+  .input-year,
+  .input-percent,
+  .input-euro {
+    &.right::before {
+      top: 17px;
+    }
+  }
+      .restit-value-wrapper-half {
+        width: 50%;
+
+        .restit-value {
+          margin-bottom: 30px;
+
+          .title {
+            @include gilroyBold(16px);
+            color: $color-blue;
+            letter-spacing: -0.28px;
+            line-height: 20px;
+            margin-bottom: 15px;
+          }
+
+          .blue-value {
+            @include gilroyReg(32px);
+            color: $color-lightBlue;
+            letter-spacing: -0.56px;
+            line-height: 38px;
+          }
+
+          .green-value {
+            @include gilroyReg(32px);
+            color: $color-green;
+            letter-spacing: -0.56px;
+            line-height: 38px;
+          }
+
+          .caption {
+            @include gilroyReg(13px);
+            color: #829db4;
+            letter-spacing: -0.41px;
+            line-height: 17px;
+          }
+        }
+
+        .restit-value-small {
+          @include gilroyBold(14px);
+          margin-bottom: 20px;
+          color: $color-blue;
+          letter-spacing: -0.44px;
+          line-height: 14px;
+
+          span {
+            font-family: Gilroy-Regular, sans-serif;
+            font-weight: 400;
+          }
+        }
+      }
+    }
+  }
+
+  zoom: 85%;
+
+  // Edge
+  @supports (-ms-ime-align:auto) {
+    zoom: 75%;
+  }
+}
+
+@media print {
+  /* invert the display (show/hide) properties of the main */
+  /* aplication component and the printing component       */
+
+
+  @page {
+    margin: 0;
+    size: A4 portrait;
+  }
+
+  .print-view {
+    // Edge
+   // @supports (-ms-ime-align:auto) {
+   // }
+
+   // // Firefox
+   // @-moz-document url-prefix() {
+   // }
+
+   // // Safari > 10.1
+   // @media not all and (min-resolution: .001dpcm) {
+   // }
+
+
+    &.print {
+      visibility: visible;
+      overflow: visible !important;
+    }
+  }
+
+  .no-print {
+    display: none;
+  }
+}

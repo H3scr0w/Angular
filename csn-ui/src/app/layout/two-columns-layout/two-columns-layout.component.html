@@ -1,0 +1,21 @@
+<div class="main-wrapper" >
+  <ngx-app-header class="no-print"></ngx-app-header>
+  <div class="main-content" >
+    <div class="container-fluid">
+      <div class="row no-print">
+        <div class="col-12 col-md-12 col-lg-6 form-content">
+          <router-outlet ></router-outlet>
+        </div>
+        <div class="col-12 col-md-12 col-lg-6">
+          <router-outlet name="result"></router-outlet>
+        </div>
+      </div>
+      <div class="row print-view print" >
+        <div class="w-100 form-content px-1">
+          <router-outlet name="export"></router-outlet>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ngx-app-footer class="no-print"></ngx-app-footer>
+</div>

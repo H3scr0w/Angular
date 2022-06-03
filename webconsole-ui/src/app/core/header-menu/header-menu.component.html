@@ -1,0 +1,51 @@
+<div class="row justify-content-md-center">
+  <div class="col col-sm col-md align-items-center">
+    <nav class="navbar navbar-expand-xl navbar-dark" [ngClass]="{
+    'background-website': menu ? menu.label === 'Website' : false,
+    'background-deployment': menu ? menu.label === 'Deployment': false,
+    'background-admin': menu ? menu.label === 'Admin' : false
+  }">
+
+      <button class="navbar-toggler" type="button"  (click)="toggleNavbar()">
+        <div class="nav-animated-icon" [ngClass]="{ 'open': navbarOpen }">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </button>
+
+      <div class="collapse navbar-collapse" [ngClass]="{ 'show': navbarOpen }">
+        <ul class="navbar-nav w-100 nav-justified">
+          <li class="nav-item mr-2" *ngIf="menu?.label === 'Website'">
+            <mat-form-field>
+              <input matInput placeholder="Search a website" [formControl]="inputFormControl" [matAutocomplete]="auto" name="website" autofocus/>
+              <i matSuffix class="fas fa-search text-white"></i>
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option (onSelectionChange)="onSelectionChange(website)" *ngFor="let website of (websites$ | async)" [value]="website?.name">
+                  <span>{{ website?.name }}</span>
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </li>
+          <li class="nav-item px-2" [ngClass]="{
+            'background-white': rla.isActive
+          }" *ngFor="let subMenu of menu?.items" routerLink="{{subMenu?.url}}" routerLinkActive #rla="routerLinkActive" >
+            <a>
+              <span [ngClass]="{
+                    'color-website ': menu.label === 'Website' && rla.isActive,
+                    'color-deployment': menu.label === 'Deployment' && rla.isActive,
+                    'color-admin': menu.label === 'Admin' && rla.isActive,
+                    'text-white': rla.isActive === false
+                  }">
+                <span class="align-self-center pr-1 d-block">
+                  <i ngClass="{{subMenu?.icon}} align-middle"></i>
+                </span>
+                <span class="align-self-center">{{ subMenu?.label }}</span>
+              </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+</div>

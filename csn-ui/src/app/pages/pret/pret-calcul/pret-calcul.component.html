@@ -1,0 +1,125 @@
+<div class="pret-form-content" #formScroll [ngClass]="postToCalcul? 'complete' : ''">
+  <div class="form">
+    <div class="title">
+      <h1 class="active">{{ 'pret.title' | translate}}</h1>
+      <a *ngIf="postToCalcul" (click)="toggleMobileForm()" [ngClass]="showMobileForm? 'up':'down'">
+        {{(showMobileForm ? 'mobile.form.hide' : 'mobile.form.show') | translate}}
+        <img src="../../../assets/images/ic_dropdown_arrow.svg" alt=""/>
+      </a>
+    </div>
+    <form novalidate [formGroup]="pretFormGroup" (ngSubmit)="onSubmit()"
+          [ngClass]="!showMobileForm? 'd-none d-lg-block':''">
+      <ngx-stepper moduleName="pret">
+        <ngx-step [tooltipContent]="this.getInfoBulle(infoBulleCodes.PRET_ETAPE_1)">
+          <ngx-radio-input [inputCtrl]="natureCredit" class="w-100" [model]="natureCreditRadioModel"
+                           [tooltipContent]="this.getInfoBulle(infoBulleCodes.NATURE_CREDIT)"
+                           label="{{ 'pret.step1.sub-title1' | translate}}">
+          </ngx-radio-input>
+
+          <ngx-app-number-input class="wrapper-data-input" labelId="capital_emprunt"
+                                [numberType]="numberFieldTypes.EURO"
+                                label="{{  'pret.step1.capital-emprunt' | translate}}"
+                                [tooltipContent]="this.getInfoBulle(infoBulleCodes.CAPITAL_EMPRUNT)"
+                                [inputCtrl]="capitalAEmprunter">
+          </ngx-app-number-input>
+
+          <ngx-radio-input [inputCtrl]="typeCalcul" class="w-100" [model]="typeCalculRadioModel"
+                           label="{{ 'pret.step1.type-calcul' | translate}}">
+          </ngx-radio-input>
+
+          <ngx-app-number-input *ngIf="typeCalcul.value && typeCalcul.value !== typesCalcul.TAUX"
+                                class="wrapper-data-input" labelId="taux_debiteur_nominal"
+                                [numberType]="numberFieldTypes.PERCENT"
+                                label="{{  'pret.step1.taux-debiteur-nominal' | translate}}"
+                                [tooltipContent]="this.getInfoBulle(infoBulleCodes.TAUX_PRET)"
+                                [inputCtrl]="tauxDebiteurNominal">
+          </ngx-app-number-input>
+
+          <ngx-app-duree-select-input *ngIf="typeCalcul.value && typeCalcul.value !== typesCalcul.DUREE"
+                                class="wrapper-data-input" [isGroupInvalid]="this.pretFormGroup.hasError('notMatching')"
+                                label="{{ 'pret.step1.duree' | translate }}"
+                                [tooltipContent]="this.getInfoBulle(infoBulleCodes.DUREE_PRET)"
+                                [inputCtrlDuree]="duree" [inputCtrlDureeType]="dureeType"
+                                formNameDuree="duree" formNameDureeType="duree_type">
+          </ngx-app-duree-select-input>
+
+          <ngx-app-number-input *ngIf="typeCalcul.value && typeCalcul.value !== typesCalcul.MENSUALITE"
+                                class="wrapper-data-input" labelId="mensualite"
+                                [numberType]="numberFieldTypes.EURO"
+                                label="{{  'pret.step1.mensualite' | translate}}"
+                                [tooltipContent]="this.getInfoBulle(infoBulleCodes.MENSUALITE)"
+                                [inputCtrl]="mensualite">
+          </ngx-app-number-input>
+
+          <ngx-app-number-input class="wrapper-data-input" labelId="taux_annuel_assurance"
+                                [numberType]="numberFieldTypes.PERCENT"
+                                label="{{  'pret.step1.taux-annuel-assurance' | translate}}"
+                                [tooltipContent]="this.getInfoBulle(infoBulleCodes.TAUX_ANNUEL_ASSURANCE)"
+                                [inputCtrl]="tauxAnnuelAssurance">
+          </ngx-app-number-input>
+
+          <ngx-app-number-input class="wrapper-data-input" labelId="frais_octroi_credit"
+                                [numberType]="numberFieldTypes.EURO"
+                                label="{{  'pret.step1.frais-octroi-credit' | translate}}"
+                                [tooltipContent]="this.getInfoBulle(infoBulleCodes.FRAIS_OCTROI_CREDIT)"
+                                [inputCtrl]="fraisOctroiCredit">
+          </ngx-app-number-input>
+
+          <ngx-date-input labelId="date_financement" maxDate="9999-12-31"
+                          label="{{ 'pret.step1.date-financement' | translate}}"
+                          [tooltipContent]="this.getInfoBulle(infoBulleCodes.DATE_FINANCEMENT)"
+                          [inputCtrl]="dateFinancement">
+          </ngx-date-input>
+
+        </ngx-step>
+        <ngx-step [tooltipContent]="this.getInfoBulle(infoBulleCodes.PRET_ETAPE_2)">
+          <ngx-radio-input [inputCtrl]="typeTableauAmortissement" class="w-100" [model]="typeTableauAmortissementRadioModel"
+                           [tooltipContent]="this.getInfoBulle(infoBulleCodes.TYPE_TABLEAU)"
+                           label="{{ 'pret.step2.type-tableau.title' | translate}}">
+          </ngx-radio-input>
+
+          <ngx-date-input *ngIf="typeTableauAmortissement.value && typeTableauAmortissement.value === typesTableauAmortissement.AVEC_DATE"
+                          labelId="date_premiere_echeance" maxDate="9999-12-31"
+                          label="{{ 'pret.step2.date-premiere-echeance' | translate}}"
+                          [tooltipContent]="this.getInfoBulle(infoBulleCodes.DATE_PREMIERE_ECHEANCE)"
+                          [inputCtrl]="datePremiereEcheance"
+                          [isRequired]="false">
+          </ngx-date-input>
+
+          <ngx-radio-input [inputCtrl]="nombreEcheances" class="w-100" [model]="nombreEcheancesRadioModel"
+                           [isNumbers]="true"
+                           [tooltipContent]="this.getInfoBulle(infoBulleCodes.NOMBRE_ECHEANCE)"
+                           label="{{ 'pret.step2.nombre-echeances' | translate}}">
+          </ngx-radio-input>
+
+          <ngx-radio-input [inputCtrl]="modeRemboursement" class="w-100" [model]="modeRemboursementRadioModel"
+                           [tooltipContent]="this.getInfoBulle(infoBulleCodes.MODE_REMBOURSEMENT)"
+                           label="{{ 'pret.step2.mode-remboursement'| translate}}">
+          </ngx-radio-input>
+
+          <ngx-textarea-input labelId="cartouche"
+                              [tooltipContent]="this.getInfoBulle(infoBulleCodes.CARTOUCHE)"
+                              label="{{ 'common.cartouche.label' | translate }}"
+                              [inputCtrl]="cartouche"
+                              placeholder="{{ 'common.cartouche.placeholder' | translate }}">
+          </ngx-textarea-input>
+
+          <ngx-textarea-input labelId="texte_libre"
+                              [tooltipContent]="this.getInfoBulle(infoBulleCodes.TEXTE_LIBRE)"
+                              label="{{ 'common.texte-libre.label' | translate }}"
+                              [inputCtrl]="texteLibre"
+                              placeholder="{{ 'common.texte-libre.placeholder' | translate }}">
+          </ngx-textarea-input>
+        </ngx-step>
+
+      </ngx-stepper>
+      <div class="btn-action">
+        <button type="button" class="btn-reset" [hidden]="!postToCalcul && !sessionTimedOut"
+                (click)="reset()">{{ 'common.reset' | translate}}</button>
+        <button type="submit" class="btn-calculer" (click)="scroll(formScroll)"
+                [disabled]="pretFormGroup.invalid">
+          {{ (postToCalcul || sessionTimedOut ? 'common.recalculer' : 'common.calculer') | translate }}
+        </button>
+      </div>    </form>
+  </div>
+</div>

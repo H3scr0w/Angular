@@ -1,0 +1,102 @@
+<div class="rente-form-content" #formScroll [ngClass]="postToCalcul? 'complete' : ''">
+
+  <div class="form">
+    <div class="title">
+      <h1 class="active">{{ 'rachat-rente-viagere.title' | translate}}</h1>
+      <a *ngIf="postToCalcul" (click)="toggleMobileForm()" [ngClass]="showMobileForm? 'up':'down'">
+        {{(showMobileForm ? 'mobile.form.hide' : 'mobile.form.show') | translate}}
+        <img src="../../../assets/images/ic_dropdown_arrow.svg" alt=""/>
+      </a>
+    </div>
+    <form novalidate [formGroup]="rachatRenteFormGroup" (ngSubmit)="onSubmit()"
+          [ngClass]="!showMobileForm? 'd-none d-lg-block':''">
+      <ngx-stepper moduleName="rachat-rente-viagere" >
+        <ngx-step>
+          <ngx-date-input labelId="date_evaluation"
+                          label="{{ 'rachat-rente-viagere.step1.date-evaluation' | translate}}"
+                          [tooltipContent]="this.getInfoBulle(infoBulleCodes.DATE_EVALUATION)"
+                          [inputCtrl]="dateEvaluation">
+          </ngx-date-input>
+        </ngx-step>
+        <ngx-step>
+          <ngx-date-input labelId="date_contrat"
+                          label="{{ 'rachat-rente-viagere.step2.date-contrat' | translate}}"
+                          [tooltipContent]="this.getInfoBulle(infoBulleCodes.DATE_CONTRAT_INITIAL)"
+                          [inputCtrl]="dateContrat">
+          </ngx-date-input>
+
+          <ngx-radio-input [inputCtrl]="vendue" class="w-100" [model]="vendueRadioModel"
+                           label="{{ 'rachat-rente-viagere.step2.vendue' | translate}}">
+          </ngx-radio-input>
+
+          <ngx-app-number-input class="wrapper-data-input" labelId="valeur_bien"
+                                [numberType]="numberFieldTypes.EURO"
+                                label="{{  'rachat-rente-viagere.step2.valeur-bien' | translate}}"
+                                [tooltipContent]="this.getInfoBulle(infoBulleCodes.VALEUR_INITIALE_PLEINE_PROPRIETE)"
+                                [inputCtrl]="valeurBien">
+          </ngx-app-number-input>
+
+          <ngx-app-number-input class="wrapper-data-input" labelId="taux_rendement_initial"
+                                [numberType]="numberFieldTypes.PERCENT"
+                                label="{{  'rachat-rente-viagere.step2.taux-rendement-initial' | translate}}"
+                                [tooltipContent]="this.getInfoBulle(infoBulleCodes.TAUX_RENDEMENT_ANNUEL_INITIAL)"
+                                [inputCtrl]="tauxRendementInitial">
+          </ngx-app-number-input>
+
+          <ngx-app-number-input class="wrapper-data-input" labelId="montant_initial_rente"
+                                [numberType]="numberFieldTypes.EURO"
+                                label="{{  'rachat-rente-viagere.step2.montant-initial-rente'| translate}}"
+                                [tooltipContent]="this.getInfoBulle(infoBulleCodes.MONTANT_INITIAL_RENTE)"
+                                [inputCtrl]="montantInitialRente">
+          </ngx-app-number-input>
+        </ngx-step>
+
+        <ngx-step>
+          <ngx-persons [personFormArray]="credirentiersFormArray"
+                       [formGroup]="rachatRenteFormGroup"
+                       [dataToRestore]="credirentiersToRestore"
+                       [formArrayName]="'credirentiers'"
+                       [label]="'rachat-rente-viagere.step3.credirentier'"
+                       [btnAddText]="'rachat-rente-viagere.step3.bouton-ajouter'"
+                       [tooltipContent]="this.getInfoBulle(infoBulleCodes.CREDIRENTIERS)">
+          </ngx-persons>
+        </ngx-step>
+
+        <ngx-step>
+          <ngx-radio-input [inputCtrl]="periodicite" class="w-100" [model]="periodiciteRadioModel"
+                           [tooltipContent]="this.getInfoBulle(infoBulleCodes.PERIODICITE_VERSEMENTS)"
+                           label="{{ 'rachat-rente-viagere.step4.sub-title1' | translate}}">
+          </ngx-radio-input>
+
+          <ngx-app-value-display [label]="'rachat-rente-viagere.step4.revalorisation-rente'" [value]="tauxRevalRente | percentWithoutSign"
+                                 [tooltipContent]="this.getInfoBulle(infoBulleCodes.TAUX_REVALORISATION_RENTE)"
+                                 [numberType]="numberFieldTypes.PERCENT"></ngx-app-value-display>
+
+          <ngx-textarea-input labelId="cartouche"
+                              [tooltipContent]="this.getInfoBulle(infoBulleCodes.CARTOUCHE)"
+                              label="{{ 'common.cartouche.label' | translate }}"
+                              [inputCtrl]="cartouche"
+                              placeholder="{{ 'common.cartouche.placeholder' | translate }}">
+          </ngx-textarea-input>
+
+          <ngx-textarea-input labelId="texte_libre"
+                              [tooltipContent]="this.getInfoBulle(infoBulleCodes.TEXTE_LIBRE)"
+                              label="{{ 'common.texte-libre.label' | translate }}"
+                              [inputCtrl]="texteLibre"
+                              placeholder="{{ 'common.texte-libre.placeholder' | translate }}">
+          </ngx-textarea-input>
+        </ngx-step>
+      </ngx-stepper>
+      <div class="btn-action">
+        <div class="form-group">
+          <button type="reset" class="btn-reset" [hidden]="!postToCalcul && !sessionTimedOut"
+                  (click)="reset()">{{ 'common.reset' | translate }}</button>
+          <button type="submit" class="btn-calculer" (click)="scroll(formScroll)"
+                  [disabled]="rachatRenteFormGroup.invalid">
+            {{ (postToCalcul || sessionTimedOut ? 'common.recalculer' : 'common.calculer') | translate }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

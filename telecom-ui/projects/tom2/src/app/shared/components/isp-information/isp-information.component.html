@@ -1,0 +1,102 @@
+<div class="m-3">
+  <form [formGroup]="ispInfoForm">
+    <div class="m-3">
+      <mat-card>
+        <div class="row m-3">
+          <div class="col s6">
+            <h4>{{'financial.information.setupCosts' | translate}}</h4>
+          </div>
+          <div class="col s6">
+            <h4>{{'financial.information.monthlyCosts' | translate}}</h4>
+          </div>
+        </div>
+        <div class="row m-3">
+          <div class="col s6">
+            <mat-form-field>
+              <input matInput formControlName="otc" stgoNumberOnly scale="2" precision="30" defaultValue="" maxlength="30"
+                placeholder="{{'isp.cost.setupCost' | translate}}" />
+            </mat-form-field>
+
+            <mat-form-field>
+              <input matInput formControlName="currency" placeholder="{{'common.currency' | translate}}"
+                [required]="this.ispInfoForm?.get('otc')?.value > 0 || this.ispInfoForm?.get('mrc')?.value > 0"
+                pattern="^[A-Z]{3}$" maxlength="3" />
+
+              <mat-error align=" right" *ngIf="hasError('currency', 'required')">
+                {{'common.validation.required.message' | translate}}</mat-error>
+
+              <mat-error align=" right" *ngIf="hasError('currency', 'pattern')">
+                {{ 'common.validation.pattern.message' | translate}}
+              </mat-error>
+
+            </mat-form-field>
+          </div>
+          <div class="col s6">
+            <mat-form-field>
+              <input matInput formControlName="mrc" stgoNumberOnly scale="2"  precision="30" defaultValue=""
+                placeholder="{{'isp.cost.monthlyCost' | translate}}" />
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+    <div class="m-3">
+      <mat-card>
+        <div class="row m-3">
+          <div class="col s6">
+            <ng-select [items]="isps | async" bindLabel="ispCarrier" placeholder="{{'isp.info.isp' | translate}}"
+              [searchable]="true" dropdownPosition="bottom" [openOnEnter]="false" formControlName="ispCarrier"
+              appendTo="body" [selectOnTab]="true" (change)="onISPSelected($any($event))">
+              <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="item"> {{item?.ispCarrier}}</span>
+              </ng-template>
+            </ng-select>
+
+            <mat-form-field>
+              <input matInput formControlName="ispHelpDeskContact"
+                placeholder="{{'isp.info.helpdeskContact' | translate}}" readonly />
+            </mat-form-field>
+
+            <ng-select [items]="contacts | async" [typeahead]="inputContact" formControlName="sgOrderContact"
+              bindLabel="fullName" bindValue="fullName" placeholder="{{'isp.info.sgOrderContact' | translate}}"
+              [searchable]="true" dropdownPosition="bottom" appendTo="body" [selectOnTab]="true">
+              <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="item">{{item.fullName}}</span>
+              </ng-template>
+            </ng-select>
+
+            <ng-select [items]="contacts | async" [typeahead]="inputContact" formControlName="sgOperationalContact"
+              bindLabel="fullName" bindValue="fullName" placeholder="{{'isp.info.sgOperationalContact' | translate}}"
+              [searchable]="true" dropdownPosition="bottom" appendTo="body" [selectOnTab]="true">
+              <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="item">{{item.fullName}}</span>
+              </ng-template>
+            </ng-select>
+
+          </div>
+
+          <div class="col s6">
+            <mat-form-field>
+              <input matInput formControlName="sla" placeholder="{{'common.sla' | translate}}" />
+            </mat-form-field>
+
+            <mat-form-field>
+              <input matInput formControlName="technology" placeholder="{{'common.technology' | translate}}" />
+            </mat-form-field>
+
+            <mat-form-field>
+              <input matInput formControlName="bandwidth" placeholder="{{'common.bandwidth' | translate}}" />
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card>
+      <div *ngIf="ispInfo && ispInfo.id && showISPSave && (isAdmin || isRsm)" class="row mt-2 text-center">
+        <div class="col">
+          <button type="button" [disabled]="isLoading || ispInfoForm.invalid" mat-raised-button color="primary"
+            class="mr-3" (click)="onSumbit()">{{'isp.info.save' | translate}}</button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+</div>

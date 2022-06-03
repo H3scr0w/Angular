@@ -1,0 +1,56 @@
+<div class="mat-elevation-z8">
+  <div class="mx-2 d-block text-center">
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Filter" />
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="openDialog()">
+      <i class="fas fa-plus p-1"></i>Launch New Scan</button>
+  </div>
+  <table class="w-100" mat-table matSort [dataSource]="datasource">
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.name }}</td>
+    </ng-container>
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.type }}</td>
+    </ng-container>
+    <ng-container matColumnDef="webapp">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>WebApp</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.target?.webApp?.name }}</td>
+    </ng-container>
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.status }}</td>
+    </ng-container>
+    <ng-container matColumnDef="launchedDate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Launched Date</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.launchedDate | date:'dd/MM/yyyy'}}</td>
+    </ng-container>
+    <ng-container matColumnDef="endScanDate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>End Date</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.endScanDate | date:'dd/MM/yyyy' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="element.status === status.running" (click)="cancel(element)">
+          <i class="fas fa-times"></i>
+        </span>
+        <span *ngIf="element.status !== status.running " (click)="delete(element)">
+          <i class="fas fa-trash p-1"></i>
+        </span>
+        <span *ngIf="deleting && element.name === scanName">
+          <i class="fas fa-circle-notch fa-spin p-1"></i>
+        </span>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" (page)="getAllScans()" [length]="totalElements"></mat-paginator>
+  <div *ngIf="isLoading" class="loading-shade">
+    <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+  </div>
+</div>

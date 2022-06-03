@@ -1,0 +1,180 @@
+<div class="refinancement-pret-form-content" #formScroll [ngClass]="postToCalcul? 'complete' : ''">
+  <div class="form">
+    <div class="title">
+      <h1 class="active">{{ 'refinancement-pret.title' | translate}}</h1>
+      <a *ngIf="postToCalcul" (click)="toggleMobileForm()" [ngClass]="showMobileForm? 'up':'down'">
+        {{(showMobileForm ? 'mobile.form.hide' : 'mobile.form.show') | translate}}
+        <img src="../../../assets/images/ic_dropdown_arrow.svg" alt=""/>
+      </a>
+    </div>
+    <form novalidate [formGroup]="refinancementPretFormGroup" (ngSubmit)="onSubmit()"
+          [ngClass]="!showMobileForm? 'd-none d-lg-block':''">
+      <ngx-stepper moduleName="refinancement-pret">
+        <ngx-step>
+
+          <ngx-radio-input [inputCtrl]="natureCredit" class="w-100" [model]="natureCreditRadioModel"
+                           [tooltipContent]="this.getInfoBulle(infoBulleCodes.NATURE_CREDIT)"
+                           label="{{ 'refinancement-pret.step1.sub-title1' | translate}}">
+          </ngx-radio-input>
+
+          <ngx-app-number-input labelId="capital_emprunte"
+                                [numberType]="numberFieldTypes.EURO"
+                                label="{{  'refinancement-pret.step1.capital-emprunt' | translate}}"
+                                [tooltipContent]="this.getInfoBulle(infoBulleCodes.CAPITAL_EMPRUNT)"
+                                [inputCtrl]="capitalEmprunte">
+          </ngx-app-number-input>
+
+          <ngx-app-number-input labelId="capital_restant_du"
+                                [numberType]="numberFieldTypes.EURO"
+                                label="{{  'refinancement-pret.step1.capital-restant-du' | translate}}"
+                                [tooltipContent]="this.getInfoBulle(infoBulleCodes.CAPITAL_RESTANT_DU)"
+                                [inputCtrl]="capitalRestantDu">
+          </ngx-app-number-input>
+
+          <ngx-app-duree-select-input class="wrapper-data-input"
+                                      label="{{ 'refinancement-pret.step1.duree' | translate }}"
+                                      [tooltipContent]="this.getInfoBulle(infoBulleCodes.DUREE_PRET)"
+                                      [inputCtrlDuree]="dureePretInitial" [inputCtrlDureeType]="typeDureePretInitial"
+                                      formNameDuree="duree" formNameDureeType="duree_type">
+          </ngx-app-duree-select-input>
+
+          <ngx-app-number-input
+                                labelId="taux_debiteur_nominal"
+                                [numberType]="numberFieldTypes.PERCENT"
+                                label="{{  'refinancement-pret.step1.taux-debiteur-nominal' | translate}}"
+                                [tooltipContent]="this.getInfoBulle(infoBulleCodes.TAUX_PRET)"
+                                [inputCtrl]="tauxDebiteurNominal">
+          </ngx-app-number-input>
+
+          <ngx-app-number-input labelId="taux_annuel_assurance"
+                                [numberType]="numberFieldTypes.PERCENT"
+                                label="{{  'refinancement-pret.step1.taux-annuel-assurance' | translate}}"
+                                [tooltipContent]="this.getInfoBulle(infoBulleCodes.TAUX_ANNUEL_ASSURANCE)"
+                                [inputCtrl]="tauxAnnuelAssurance">
+          </ngx-app-number-input>
+
+          <ngx-app-number-input labelId="frais_octroi_credit"
+                                [numberType]="numberFieldTypes.EURO"
+                                label="{{  'refinancement-pret.step1.frais-octroi-credit' | translate}}"
+                                [tooltipContent]="this.getInfoBulle(infoBulleCodes.FRAIS_OCTROI_CREDIT)"
+                                [inputCtrl]="fraisOctroiCredit">
+          </ngx-app-number-input>
+
+          <ngx-date-input labelId="date_financement" maxDate="9999-12-31"
+                          label="{{ 'refinancement-pret.step1.date-financement' | translate}}"
+                          [tooltipContent]="this.getInfoBulle(infoBulleCodes.DATE_FINANCEMENT)"
+                          [inputCtrl]="dateFinancement">
+          </ngx-date-input>
+
+        </ngx-step>
+        <ngx-step>
+          <ngx-radio-input [inputCtrl]="typeTableauAmortissement" class="w-100" [model]="typeTableauAmortissementRadioModel"
+                           [tooltipContent]="this.getInfoBulle(infoBulleCodes.TYPE_TABLEAU)"
+                           label="{{ 'pret.step2.type-tableau.title' | translate}}">
+          </ngx-radio-input>
+
+          <ngx-date-input *ngIf="typeTableauAmortissement.value && typeTableauAmortissement.value === typesTableauAmortissement.AVEC_DATE"
+                          labelId="date_premiere_echeance" maxDate="9999-12-31"
+                          label="{{ 'refinancement-pret.step2.date-premiere-echeance' | translate}}"
+                          [tooltipContent]="this.getInfoBulle(infoBulleCodes.DATE_FINANCEMENT)"
+                          [inputCtrl]="datePremiereEcheance"
+                          [isRequired]="false">
+          </ngx-date-input>
+
+          <ngx-radio-input [inputCtrl]="nombreEcheancesRachat" class="w-100" [model]="nombreEcheancesRadioModel"
+                           [tooltipContent]="this.getInfoBulle(infoBulleCodes.NOMBRE_ECHEANCE)"
+                           [isNumbers]="true"
+                           label="{{ 'refinancement-pret.step2.nombre-echeances' | translate}}">
+          </ngx-radio-input>
+
+          <ngx-radio-input [inputCtrl]="modeRemboursement" class="w-100" [model]="modeRemboursementRadioModel"
+                           [tooltipContent]="this.getInfoBulle(infoBulleCodes.MODE_REMBOURSEMENT)"
+                           label="{{ 'refinancement-pret.step2.mode-remboursement'| translate}}">
+          </ngx-radio-input>
+        </ngx-step>
+
+        <ngx-step>
+          <ngx-app-value-display [label]="'refinancement-pret.step3.reprise-capital'" [value]="getRepriseCapital()"
+                                 [tooltipContent]="this.getInfoBulle(infoBulleCodes.REPRISE_CAPITAL)"
+                                 [numberType]="numberFieldTypes.EURO"></ngx-app-value-display>
+
+          <ngx-app-number-input labelId="indemnites_remboursement"
+                                [numberType]="numberFieldTypes.PERCENT"
+                                label="{{  'refinancement-pret.step3.indemnites-remboursement' | translate}}"
+                                [tooltipContent]="this.getInfoBulle(infoBulleCodes.INDEMNITE_REMBOURSEMENT)"
+                                [inputCtrl]="indemniteRemboursement">
+          </ngx-app-number-input>
+
+          <ngx-app-number-input labelId="frais_garantie"
+                                [numberType]="numberFieldTypes.EURO"
+                                label="{{  'refinancement-pret.step3.frais-garantie' | translate}}"
+                                [tooltipContent]="this.getInfoBulle(infoBulleCodes.FRAIS_GARANTIE)"
+                                [inputCtrl]="fraisGarantie">
+          </ngx-app-number-input>
+
+          <ngx-app-number-input labelId="frais_annexes"
+                                [numberType]="numberFieldTypes.EURO"
+                                label="{{  'refinancement-pret.step3.frais-annexes' | translate}}"
+                                [tooltipContent]="this.getInfoBulle(infoBulleCodes.FRAIS_ANNEXES)"
+                                [inputCtrl]="fraisAnnexes">
+          </ngx-app-number-input>
+
+
+          <ngx-app-value-display [label]="'refinancement-pret.step3.montant-emprunt'" [value]="getMontantTotalEmprunte()"
+                                 [tooltipContent]="this.getInfoBulle(infoBulleCodes.MONTANT_EMPRUNT)"
+                                 [numberType]="numberFieldTypes.EURO"></ngx-app-value-display>
+
+          <ngx-app-duree-select-input class="wrapper-data-input"
+                                      label="{{ 'refinancement-pret.step3.duree-souhaitee' | translate }}"
+                                      [tooltipContent]="this.getInfoBulle(infoBulleCodes.DUREE_SOUHAITEE)"
+                                      [inputCtrlDuree]="dureeSouhaitee" [inputCtrlDureeType]="typeDureeSouhaitee"
+                                      formNameDuree="duree_souhaitee" formNameDureeType="duree_souhaitee_type">
+          </ngx-app-duree-select-input>
+
+          <ngx-app-number-input labelId="interets"
+                                [numberType]="numberFieldTypes.PERCENT"
+                                label="{{  'refinancement-pret.step3.interet' | translate}}"
+                                [inputCtrl]="interets"
+                                [tooltipContent]="this.getInfoBulle(infoBulleCodes.INTERETS)">
+          </ngx-app-number-input>
+
+          <ngx-app-number-input labelId="nouveau_taux_assurance"
+                                [numberType]="numberFieldTypes.PERCENT"
+                                label="{{  'refinancement-pret.step3.taux-assurance' | translate}}"
+                                [inputCtrl]="tauxAssuranceFrais"
+                                [tooltipContent]="this.getInfoBulle(infoBulleCodes.TAUX_ASSURANCE_FRAIS)">
+          </ngx-app-number-input>
+
+          <ngx-textarea-input labelId="cartouche"
+                              [tooltipContent]="this.getInfoBulle(infoBulleCodes.CARTOUCHE)"
+                              label="{{ 'common.cartouche.label' | translate }}"
+                              [inputCtrl]="cartouche"
+                              placeholder="{{ 'common.cartouche.placeholder' | translate }}">
+          </ngx-textarea-input>
+
+          <ngx-textarea-input labelId="texte_libre"
+                              [tooltipContent]="this.getInfoBulle(infoBulleCodes.TEXTE_LIBRE)"
+                              label="{{ 'common.texte-libre.label' | translate }}"
+                              [inputCtrl]="texteLibre"
+                              placeholder="{{ 'common.texte-libre.placeholder' | translate }}">
+          </ngx-textarea-input>
+
+        </ngx-step>
+
+      </ngx-stepper>
+      <div class="btn-action">
+        <div class="form-group">
+          <button type="reset" class="btn-reset" [hidden]="!postToCalcul && !sessionTimedOut"
+                  (click)="reset()">{{ 'common.reset' | translate }}</button>
+          <button type="submit" class="btn-calculer" (click)="scroll(formScroll)"
+                  [disabled]="refinancementPretFormGroup.invalid">
+            {{(postToCalcul || sessionTimedOut ? 'common.recalculer' : 'common.calculer') | translate }}
+          </button>
+        </div>
+      </div>
+    </form>
+
+  </div>
+
+
+</div>

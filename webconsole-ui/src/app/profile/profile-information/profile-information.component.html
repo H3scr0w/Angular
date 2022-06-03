@@ -1,0 +1,37 @@
+<mat-card class="mat-elevation-z8" [formGroup]="profileForm">
+  <mat-card-content>
+    <div class="form-group">
+      <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+        <input matInput placeholder="Email" name="email" formControlName="email" readonly />
+      </mat-form-field>
+      <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+        <input matInput placeholder="Lastname" formControlName="lastname" class="text-uppercase" />
+        <mat-error *ngIf="profileForm.get('lastname')!.dirty && profileForm.get('lastname')!.hasError('required')">
+          Lastname is
+          <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+        <input matInput placeholder="Firstname" formControlName="firstname" class="text-capitalize" cdkFocusInitial />
+        <mat-error *ngIf="profileForm.get('firstname')!.dirty && profileForm.get('firstname')!.hasError('required')">
+          Firstname is
+          <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+        <input matInput placeholder="Company" formControlName="company" />
+        <mat-error *ngIf="profileForm.get('company')!.dirty && profileForm.get('company')!.hasError('required')">
+          Company is
+          <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </mat-card-content>
+  <mat-card-actions class="text-center">
+    <button type="submit" mat-raised-button color="primary" class="col-md-4 col-md-offset-4 btn btn-lg align-center" (click)="edit()"
+      [disabled]="profileForm.pristine || profileForm.invalid">
+      Edit
+      <i *ngIf="editing" class="fas fa-circle-notch fa-spin"></i>
+    </button>
+  </mat-card-actions>
+</mat-card>

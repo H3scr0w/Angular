@@ -1,0 +1,19 @@
+@import '../../../../styles/base';
+
+.print-restit {
+    .result-content {
+        background-color: $color-white;
+        padding: 0 70px 0 30px;
+    }
+    .content-taux {
+        margin-bottom: 30px;
+
+        .taux {
+            background-color: #e2f1ff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    }
+
+}

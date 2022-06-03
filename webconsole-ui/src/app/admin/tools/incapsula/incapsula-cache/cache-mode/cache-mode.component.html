@@ -1,0 +1,39 @@
+<mat-card class="my-2 mx-2 mat-elevation-z8">
+  <mat-card-header>
+    <mat-card-title>Mode</mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="container">
+    <mat-radio-group [formControl]="activeMode" class="d-inline-flex flex-column">
+      <mat-radio-button class="row p-1" *ngFor="let mode of modes" [value]="mode" color="primary" [checked]="compareFn(mode.value, activeMode.value.value)">
+        <div class="col-sm">
+          <strong>{{mode.tag}}</strong> - {{mode.desc}}</div>
+        <div class="col-sm">
+          <input *ngIf="mode?.value === 'static_and_dynamic'" [formControl]="staticDynamicNummber" type="number" />
+          <input *ngIf="mode?.value === 'aggressive'" [formControl]="aggressiveNummber" type="number" />
+          <mat-select *ngIf="mode?.value === 'static_and_dynamic'" [(value)]="mode.period" class="w-25 p-1">
+            <mat-option *ngFor="let period of periods" [value]="period?.value">
+              {{period?.viewValue}}
+            </mat-option>
+          </mat-select>
+          <mat-select *ngIf="mode?.value === 'aggressive'" [(value)]="mode.period" class="w-25 p-1">
+            <mat-option *ngFor="let period of periods" [value]="period?.value">
+              {{period?.viewValue}}
+            </mat-option>
+          </mat-select>
+        </div>
+      </mat-radio-button>
+    </mat-radio-group>
+  </mat-card-content>
+  <mat-card-actions align="end">
+    <button type="submit" mat-raised-button color="primary" (click)="purge()" [disabled]="!domain || !isAdmin">
+      <span>Purge Cache
+        <i *ngIf="purging" class="fas fa-circle-notch fa-spin"></i>
+      </span>
+    </button>
+    <button type="submit" mat-raised-button color="primary" (click)="saveMode()" [disabled]="!domain || !isAdmin">
+      <span>Save
+        <i *ngIf="savingMode" class="fas fa-circle-notch fa-spin"></i>
+      </span>
+    </button>
+  </mat-card-actions>
+</mat-card>

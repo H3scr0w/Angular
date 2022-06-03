@@ -1,0 +1,42 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<form [formGroup]="operatorMailTemplateForm" (ngSubmit)="onSubmit()">
+  <h1 mat-dialog-title>{{'common.menu.settings.operator.mail.template' | translate}}</h1>
+  <mat-dialog-content>
+
+    <ng-select [items]="networks | async" bindLabel="name" [typeahead]="inputNetworks"
+               placeholder="{{'operator.mail.template.network.select' | translate}}" [searchable]="false" [virtualScroll]="true"
+               formControlName="networks" appendTo="body" [readonly]="true">
+      <ng-template ng-label-tmp let-item="item">
+        <span *ngIf="item"> {{item?.name}}</span>
+      </ng-template>
+    </ng-select>
+    <small align="right" class="mat-error" *ngIf="hasError('networks', 'required')">
+      {{'common.validation.required.message' | translate}}</small>
+    <mat-form-field>
+      <textarea matInput [matTextareaAutosize]="true" [matAutosizeMinRows]="1" [matAutosizeMaxRows]="5" type="text"
+                placeholder="{{'operator.mail.template.recipient' | translate}}" formControlName="recipient"></textarea>
+    </mat-form-field>
+
+    <mat-form-field>
+      <textarea matInput [matTextareaAutosize]="true" [matAutosizeMinRows]="1" [matAutosizeMaxRows]="5" type="text"
+                placeholder="{{'operator.mail.template.carbon.copy' | translate}}"
+                formControlName="carbonCopy"></textarea>
+    </mat-form-field>
+
+
+    <mat-form-field>
+      <textarea matInput [matTextareaAutosize]="true" [matAutosizeMinRows]="1" [matAutosizeMaxRows]="5" type="text"
+                formControlName="mailBody" placeholder="{{'operator.mail.template.body' | translate}}"></textarea>
+    </mat-form-field>
+
+    <h1 mat-dialog-title>{{'common.menu.settings.operator.mail.template.preview' | translate}}</h1>
+    <p innerHTML="{{operatorMailTemplateForm?.controls['mailBody']?.value}}"></p>
+
+  </mat-dialog-content>
+
+  <div mat-dialog-actions align="center">
+    <button type="button" mat-raised-button (click)="onNoClick()">{{'common.close' | translate}}</button>
+    <button type="submit" mat-raised-button color="primary"
+            [disabled]="operatorMailTemplateForm.invalid || isLoading">{{'common.save' | translate}}</button>
+  </div>
+</form>

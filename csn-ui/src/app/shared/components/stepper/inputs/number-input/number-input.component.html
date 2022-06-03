@@ -1,0 +1,17 @@
+<ng-template #innerTemplate>
+  <ngx-info-bulle *ngIf="tooltipContent" [disabled]="!enabledStatus()"
+                  [html]="tooltipContent"></ngx-info-bulle>
+  <div class="wrapper-data-input">
+    <label for="{{ labelId }}" [innerHTML]="label"></label>
+    <div class="wrapper-input">
+  <span class="right"
+        [ngClass]="{'input-euro': numberType == numberFieldTypes.EURO,
+        'input-percent': numberType == numberFieldTypes.PERCENT,
+        'input-year': numberType == numberFieldTypes.YEAR}">
+    <input type="text" [mask]="'separator'" class="form-control" id="{{ labelId }}" [ngClass]="{'invalid': isGroupInvalid}"
+           formControlName="{{ labelId }}" name="{{ labelId }}" autocomplete="off">
+  </span>
+      <ngx-form-error-display [controls]="inputCtrl" [intlPath]="'nombre'"></ngx-form-error-display>
+    </div>
+  </div>
+</ng-template>

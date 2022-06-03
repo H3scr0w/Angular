@@ -1,0 +1,38 @@
+<mat-card class="mat-elevation-z8">
+  <mat-card-header>
+    <mat-card-title>Site Settings</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <table class="w-100" mat-table [dataSource]="datasource">
+      <ng-container matColumnDef="ips">
+        <th mat-header-cell *matHeaderCellDef>IP Addresses</th>
+        <td mat-cell *matCellDef="let element">{{ element.ips?.join(", ") }}</td>
+      </ng-container>
+      <ng-container matColumnDef="active">
+        <th mat-header-cell *matHeaderCellDef>Active</th>
+        <td mat-cell *matCellDef="let element">{{ element.active }}</td>
+      </ng-container>
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Status</th>
+        <td mat-cell *matCellDef="let element">{{ element.status }}</td>
+      </ng-container>
+      <ng-container matColumnDef="created">
+        <th mat-header-cell *matHeaderCellDef>Creation Date</th>
+        <td mat-cell *matCellDef="let element">{{ element.site_creation_date | date:'dd/MM/yyyy' }}</td>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let element">
+          <span (click)="openDialog(element)" *ngIf="isAdmin">
+            <i class="fas fa-edit"></i>
+          </span>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </mat-card-content>
+</mat-card>
+<div *ngIf="isLoading" class="loading-shade">
+  <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+</div>

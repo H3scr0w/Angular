@@ -1,0 +1,83 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading" class="mt-2"></mat-progress-bar>
+<form [formGroup]="emailOperatorForm" (ngSubmit)="sendEmailToOperator()" autocomplete="off">
+
+  <h1 *ngIf="!emailOrder && !emailRequest" mat-dialog-title>
+    <i class="fa fa-envelope-open" aria-hidden="true"></i>
+    {{'common.menu.settings.operator.mail.template' | translate}}
+  </h1>
+
+  <mat-dialog-content>
+    <mat-form-field>
+      <mat-chip-list #emailListTo>
+        <mat-chip *ngFor="let email of emailsTo" removable (removed)="remove(email,'to')">
+          {{email}}
+          <mat-icon fontSet="fa" fontIcon="fa-times" matChipRemove *ngIf="removable"></mat-icon>
+        </mat-chip>
+        <input placeholder="{{'common.mail.to' | translate}} *" [matChipInputAddOnBlur]="true" [matChipInputFor]="emailListTo" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          (matChipInputTokenEnd)="add($event,'to')" />
+
+        <mat-error align=" right" *ngIf="emailOperatorForm.get('to').errors?.required">
+          {{'common.validation.required.message' | translate}}</mat-error>
+        <mat-error align=" right" *ngIf="emailOperatorForm.get('to').errors?.email">
+          {{'common.email.validation' | translate}}</mat-error>
+      </mat-chip-list>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-chip-list #emailListCC>
+        <mat-chip *ngFor="let email of emailsCC" removable (removed)="remove(email,'cc')">
+          {{email}}
+          <mat-icon fontSet="fa" fontIcon="fa-times" matChipRemove *ngIf="removable"></mat-icon>
+        </mat-chip>
+        <input placeholder="{{'common.mail.cc' | translate}} *" [matChipInputAddOnBlur]="true" [matChipInputFor]="emailListCC" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          (matChipInputTokenEnd)="add($event,'cc')" />
+
+        <mat-error align=" right" *ngIf="emailOperatorForm.get('cc').errors?.required">
+          {{'common.validation.required.message' | translate}}</mat-error>
+        <mat-error align=" right" *ngIf="emailOperatorForm.get('cc').errors?.email">
+          {{'common.email.validation' | translate}}</mat-error>
+
+      </mat-chip-list>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="{{'common.mail.subject' | translate}} *" formControlName="subject" />
+    </mat-form-field>
+    <mat-error align="right" *ngIf="emailOperatorForm.get('subject').errors?.required">
+      {{'common.validation.required.message' | translate}}</mat-error>
+
+    <div *ngIf="data?.mode">
+      <mat-label> {{'common.mail.attachments' | translate}} </mat-label>
+      <br/>
+      <div *ngIf="data.mode === 'order' && emailPreviewOrder">
+        <span *ngFor="let orderId of emailPreviewOrder?.orderIds">
+          <button type="button" mat-button color="primary" *ngIf="orderId" (click)="downloadOrderCSV(orderId)">{{orderId}}.csv</button>
+        </span>
+      </div>
+      <div *ngIf="data.mode === 'request' && emailPreviewRequest">
+        <span *ngFor="let requestId of emailPreviewRequest?.requestIds">
+          <button type="button" mat-button color="primary" *ngIf="requestId" (click)="downloadRequestCSV(requestId)">{{requestId}}.csv</button>
+        </span>
+      </div>
+      <br/>
+    </div>
+
+    <mat-label> {{'common.mail.body' | translate}} </mat-label>
+    <mat-error align="right" *ngIf="emailOperatorForm.get('message').errors?.required">
+      {{'common.validation.required.message' | translate}}</mat-error>
+
+    <quill-editor [style]="{height: '250px'}" [preserveWhitespace]="true" formControlName="message" placeholder="{{'common.mail.body' | translate}}*"></quill-editor>
+
+
+  </mat-dialog-content>
+
+  <div mat-dialog-actions align="center">
+    <button *ngIf="!emailOrder && !emailRequest" type="button" mat-raised-button (click)="onNoClick()">{{'common.close' | translate}}</button>
+
+    <button type="submit" mat-raised-button color="primary" [disabled]="emailOperatorForm.invalid || isLoading">
+      {{'common.send' | translate}}
+      <i *ngIf="isSending" class="fas fa-circle-notch fa-spin"></i>
+    </button>
+  </div>
+
+</form>

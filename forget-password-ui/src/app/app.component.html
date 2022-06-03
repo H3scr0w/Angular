@@ -1,0 +1,8 @@
+<img class="logo" src="../assets/login-logo.png" width="308px" height="230px" alt="Saint-Gobain SSO From Anywhere"/>
+<div class="header">
+  {{'header.title' | translate}}
+  <i class="fas fa-lock orange"></i>
+</div>
+<div class="container" [@routerTransition]="o.isActivated && o.activatedRoute.routeConfig.path">
+  <router-outlet #o="outlet"></router-outlet>
+</div>

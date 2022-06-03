@@ -1,0 +1,1028 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "defaultProject": "sirene",
+  "projects": {
+    "sirene": {
+      "root": "projects/sirene",
+      "sourceRoot": "projects/sirene/src",
+      "projectType": "application",
+      "prefix": "stgo",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "aot": true,
+            "outputPath": "dist/sirene",
+            "index": "projects/sirene/src/index.html",
+            "main": "projects/sirene/src/main.ts",
+            "polyfills": "projects/sirene/src/polyfills.ts",
+            "tsConfig": "projects/sirene/tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "favicon.ico",
+                "input": "projects/sirene/src",
+                "output": "/"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/sirene/src/assets",
+                "output": "/assets"
+              }
+            ],
+            "styles": [
+              { "input": "node_modules/@delivery/stgo-common/main.scss" },
+              { "input": "projects/sirene/src/main-loading.scss" },
+              { "input": "projects/sirene/src/main.scss" }
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "es5": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "tsConfig": "projects/sirene/tsconfig.es5.json"
+            },
+            "server": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/sirene/src/environments/environment.ts",
+                  "with": "projects/sirene/src/environments/environment.server.ts"
+                }
+              ]
+            },
+            "server-es5": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "tsConfig": "projects/sirene/tsconfig.es5.json",
+              "fileReplacements": [
+                {
+                  "replace": "projects/sirene/src/environments/environment.ts",
+                  "with": "projects/sirene/src/environments/environment.server.ts"
+                }
+              ]
+            },
+            "uat": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/sirene/src/environments/environment.ts",
+                  "with": "projects/sirene/src/environments/environment.uat.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            },
+            "production": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/sirene/src/environments/environment.ts",
+                  "with": "projects/sirene/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "sirene:build"
+          },
+          "configurations": {
+            "es5": {
+              "browserTarget": "sirene:build:es5"
+            },
+            "server": {
+              "browserTarget": "sirene:build:server"
+            },
+            "server-es5": {
+              "browserTarget": "sirene:build:server-es5"
+            },
+            "uat": {
+              "browserTarget": "sirene:build:uat"
+            },
+            "production": {
+              "browserTarget": "sirene:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "sirene:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/sirene/src/test.ts",
+            "polyfills": "projects/sirene/src/polyfills.ts",
+            "tsConfig": "projects/sirene/tsconfig.spec.json",
+            "styles": [
+              { "input": "node_modules/@delivery/stgo-common/main.scss" },
+              { "input": "projects/sirene/src/main-loading.scss" },
+              { "input": "projects/sirene/src/main.scss" }
+            ],
+            "scripts": [],
+            "assets": [
+              {
+                "glob": "favicon.ico",
+                "input": "projects/sirene/src/",
+                "output": "/"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/sirene/src/assets",
+                "output": "/assets"
+              }
+            ],
+            "codeCoverage": true,
+            "codeCoverageExclude": [
+              "projects/sirene/src/app/core/route-reusable-strategy.ts",
+              "projects/sirene/src/app/shared/i18n/stgo-mat-paginator-intl.ts",
+              "projects/sirene/src/testing/*.ts"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/sirene/tsconfig.app.json",
+              "projects/sirene/tsconfig.spec.json",
+              "projects/sirene/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/*polyfills.ts",
+              "**/*test.ts",
+              "**/*test.common.spec.ts",
+              "**/*router.transition.ts",
+              "**/*droplist.directive.ts",
+              "**/*router-stubs.ts",
+              "**/*mock-store.component.ts",
+              "**/*spinner.service.ts",
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "delivery-organizer": {
+      "root": "projects/delivery-organizer",
+      "sourceRoot": "projects/delivery-organizer/src",
+      "projectType": "application",
+      "prefix": "stgo",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "aot": true,
+            "outputPath": "dist/delivery-organizer",
+            "index": "projects/delivery-organizer/src/index.html",
+            "main": "projects/delivery-organizer/src/main.ts",
+            "polyfills": "projects/delivery-organizer/src/polyfills.ts",
+            "tsConfig": "projects/delivery-organizer/tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "favicon.ico",
+                "input": "projects/delivery-organizer/src",
+                "output": "/"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/delivery-organizer/src/assets",
+                "output": "/assets"
+              }
+            ],
+            "styles": [
+              { "input": "node_modules/@delivery/stgo-common/main.scss" },
+              { "input": "projects/delivery-organizer/src/main-loading.scss" },
+              { "input": "projects/delivery-organizer/src/main.scss" }
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "es5": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "tsConfig": "projects/delivery-organizer/tsconfig.es5.json"
+            },
+            "server": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/delivery-organizer/src/environments/environment.ts",
+                  "with": "projects/delivery-organizer/src/environments/environment.server.ts"
+                }
+              ]
+            },
+            "server-es5": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "tsConfig": "projects/delivery-organizer/tsconfig.es5.json",
+              "fileReplacements": [
+                {
+                  "replace": "projects/delivery-organizer/src/environments/environment.ts",
+                  "with": "projects/delivery-organizer/src/environments/environment.server.ts"
+                }
+              ]
+            },
+            "uat": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/delivery-organizer/src/environments/environment.ts",
+                  "with": "projects/delivery-organizer/src/environments/environment.uat.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            },
+            "production": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/delivery-organizer/src/environments/environment.ts",
+                  "with": "projects/delivery-organizer/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "delivery-organizer:build"
+          },
+          "configurations": {
+            "es5": {
+              "browserTarget": "delivery-organizer:build:es5"
+            },
+            "server": {
+              "browserTarget": "delivery-organizer:build:server"
+            },
+            "server-es5": {
+              "browserTarget": "delivery-organizer:build:server-es5"
+            },
+            "uat": {
+              "browserTarget": "delivery-organizer:build:uat"
+            },
+            "production": {
+              "browserTarget": "delivery-organizer:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "delivery-organizer:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/delivery-organizer/src/test.ts",
+            "polyfills": "projects/delivery-organizer/src/polyfills.ts",
+            "tsConfig": "projects/delivery-organizer/tsconfig.spec.json",
+            "styles": [
+              { "input": "node_modules/@delivery/stgo-common/main.scss" },
+              { "input": "projects/delivery-organizer/src/main-loading.scss" },
+              { "input": "projects/delivery-organizer/src/main.scss" }
+            ],
+            "scripts": [],
+            "assets": [
+              {
+                "glob": "favicon.ico",
+                "input": "projects/delivery-organizer/src/",
+                "output": "/"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/delivery-organizer/src/assets",
+                "output": "/assets"
+              }
+            ],
+            "codeCoverage": true,
+            "codeCoverageExclude": [
+              "projects/delivery-organizer/src/app/core/route-reusable-strategy.ts",
+              "projects/delivery-organizer/src/app/shared/i18n/stgo-mat-paginator-intl.ts",
+              "projects/delivery-organizer/src/testing/*.ts"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/delivery-organizer/tsconfig.app.json",
+              "projects/delivery-organizer/tsconfig.spec.json",
+              "projects/delivery-organizer/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/*polyfills.ts",
+              "**/*test.ts",
+              "**/*test.common.spec.ts",
+              "**/*router.transition.ts",
+              "**/*droplist.directive.ts",
+              "**/*router-stubs.ts",
+              "**/*mock-store.component.ts",
+              "**/*spinner.service.ts",
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "spo": {
+      "root": "projects/spo",
+      "sourceRoot": "projects/spo/src",
+      "projectType": "application",
+      "prefix": "stgo",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "aot": true,
+            "outputPath": "dist/spo",
+            "index": "projects/spo/src/index.html",
+            "main": "projects/spo/src/main.ts",
+            "polyfills": "projects/spo/src/polyfills.ts",
+            "tsConfig": "projects/spo/tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "favicon.ico",
+                "input": "projects/spo/src",
+                "output": "/"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/spo/src/assets",
+                "output": "/assets"
+              }
+            ],
+            "styles": [
+              { "input": "node_modules/@delivery/stgo-common/main.scss" },
+              { "input": "projects/spo/src/main-loading.scss" },
+              { "input": "projects/spo/src/main.scss" }
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "es5": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "tsConfig": "projects/spo/tsconfig.es5.json"
+            },
+            "server": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/spo/src/environments/environment.ts",
+                  "with": "projects/spo/src/environments/environment.server.ts"
+                }
+              ]
+            },
+            "server-es5": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "tsConfig": "projects/spo/tsconfig.es5.json",
+              "fileReplacements": [
+                {
+                  "replace": "projects/spo/src/environments/environment.ts",
+                  "with": "projects/spo/src/environments/environment.server.ts"
+                }
+              ]
+            },
+            "uat": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/spo/src/environments/environment.ts",
+                  "with": "projects/spo/src/environments/environment.uat.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            },
+            "production": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/spo/src/environments/environment.ts",
+                  "with": "projects/spo/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "spo:build"
+          },
+          "configurations": {
+            "es5": {
+              "browserTarget": "spo:build:es5"
+            },
+            "server": {
+              "browserTarget": "spo:build:server"
+            },
+            "server-es5": {
+              "browserTarget": "spo:build:server-es5"
+            },
+            "uat": {
+              "browserTarget": "spo:build:uat"
+            },
+            "production": {
+              "browserTarget": "spo:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "spo:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/spo/src/test.ts",
+            "polyfills": "projects/spo/src/polyfills.ts",
+            "tsConfig": "projects/spo/tsconfig.spec.json",
+            "styles": [
+              { "input": "node_modules/@delivery/stgo-common/main.scss" },
+              { "input": "projects/spo/src/main-loading.scss" },
+              { "input": "projects/spo/src/main.scss" }
+            ],
+            "scripts": [],
+            "assets": [
+              {
+                "glob": "favicon.ico",
+                "input": "projects/spo/src/",
+                "output": "/"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/spo/src/assets",
+                "output": "/assets"
+              }
+            ],
+            "codeCoverage": true,
+            "codeCoverageExclude": [
+              "projects/spo/src/app/core/route-reusable-strategy.ts",
+              "projects/spo/src/app/shared/i18n/stgo-mat-paginator-intl.ts",
+              "projects/spo/src/testing/*.ts"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/spo/tsconfig.app.json",
+              "projects/spo/tsconfig.spec.json",
+              "projects/spo/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/*polyfills.ts",
+              "**/*test.ts",
+              "**/*test.common.spec.ts",
+              "**/*router.transition.ts",
+              "**/*droplist.directive.ts",
+              "**/*router-stubs.ts",
+              "**/*mock-store.component.ts",
+              "**/*spinner.service.ts",
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "tempo": {
+      "root": "projects/tempo",
+      "sourceRoot": "projects/tempo/src",
+      "projectType": "application",
+      "prefix": "stgo",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "aot": true,
+            "outputPath": "dist/tempo",
+            "index": "projects/tempo/src/index.html",
+            "main": "projects/tempo/src/main.ts",
+            "polyfills": "projects/tempo/src/polyfills.ts",
+            "tsConfig": "projects/tempo/tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "favicon.ico",
+                "input": "projects/tempo/src",
+                "output": "/"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/tempo/src/assets",
+                "output": "/assets"
+              }
+            ],
+            "styles": [
+              { "input": "node_modules/@delivery/stgo-common/main.scss" },
+              { "input": "projects/tempo/src/main-loading.scss" },
+              { "input": "projects/tempo/src/main.scss" }
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "es5": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "tsConfig": "projects/tempo/tsconfig.es5.json"
+            },
+            "server": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/tempo/src/environments/environment.ts",
+                  "with": "projects/tempo/src/environments/environment.server.ts"
+                }
+              ]
+            },
+            "server-es5": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "tsConfig": "projects/tempo/tsconfig.es5.json",
+              "fileReplacements": [
+                {
+                  "replace": "projects/tempo/src/environments/environment.ts",
+                  "with": "projects/tempo/src/environments/environment.server.ts"
+                }
+              ]
+            },
+            "uat": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/tempo/src/environments/environment.ts",
+                  "with": "projects/tempo/src/environments/environment.uat.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            },
+            "production": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/tempo/src/environments/environment.ts",
+                  "with": "projects/tempo/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "tempo:build"
+          },
+          "configurations": {
+            "es5": {
+              "browserTarget": "tempo:build:es5"
+            },
+            "server": {
+              "browserTarget": "tempo:build:server"
+            },
+            "server-es5": {
+              "browserTarget": "tempo:build:server-es5"
+            },
+            "uat": {
+              "browserTarget": "tempo:build:uat"
+            },
+            "production": {
+              "browserTarget": "tempo:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "tempo:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/tempo/src/test.ts",
+            "polyfills": "projects/tempo/src/polyfills.ts",
+            "tsConfig": "projects/tempo/tsconfig.spec.json",
+            "styles": [
+              { "input": "node_modules/@delivery/stgo-common/main.scss" },
+              { "input": "projects/tempo/src/main-loading.scss" },
+              { "input": "projects/tempo/src/main.scss" }
+            ],
+            "scripts": [],
+            "assets": [
+              {
+                "glob": "favicon.ico",
+                "input": "projects/tempo/src/",
+                "output": "/"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/tempo/src/assets",
+                "output": "/assets"
+              }
+            ],
+            "codeCoverage": true,
+            "codeCoverageExclude": [
+              "projects/tempo/src/app/core/route-reusable-strategy.ts",
+              "projects/tempo/src/app/shared/i18n/stgo-mat-paginator-intl.ts",
+              "projects/tempo/src/testing/*.ts"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/tempo/tsconfig.app.json",
+              "projects/tempo/tsconfig.spec.json",
+              "projects/tempo/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/*polyfills.ts",
+              "**/*test.ts",
+              "**/*test.common.spec.ts",
+              "**/*router.transition.ts",
+              "**/*droplist.directive.ts",
+              "**/*router-stubs.ts",
+              "**/*mock-store.component.ts",
+              "**/*spinner.service.ts",
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "tom2": {
+      "root": "projects/tom2",
+      "sourceRoot": "projects/tom2/src",
+      "projectType": "application",
+      "prefix": "stgo",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "aot": true,
+            "outputPath": "dist/tom2",
+            "index": "projects/tom2/src/index.html",
+            "main": "projects/tom2/src/main.ts",
+            "polyfills": "projects/tom2/src/polyfills.ts",
+            "tsConfig": "projects/tom2/tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "favicon.ico",
+                "input": "projects/tom2/src",
+                "output": "/"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/tom2/src/assets",
+                "output": "/assets"
+              }
+            ],
+            "styles": [
+              { "input": "node_modules/@delivery/stgo-common/main.scss" },
+              { "input": "projects/tom2/src/main-loading.scss" },
+              { "input": "projects/tom2/src/main.scss" }
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "es5": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "tsConfig": "projects/tom2/tsconfig.es5.json"
+            },
+            "server": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/tom2/src/environments/environment.ts",
+                  "with": "projects/tom2/src/environments/environment.server.ts"
+                }
+              ]
+            },
+            "server-es5": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "tsConfig": "projects/tom2/tsconfig.es5.json",
+              "fileReplacements": [
+                {
+                  "replace": "projects/tom2/src/environments/environment.ts",
+                  "with": "projects/tom2/src/environments/environment.server.ts"
+                }
+              ]
+            },
+            "uat": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/tom2/src/environments/environment.ts",
+                  "with": "projects/tom2/src/environments/environment.uat.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            },
+            "production": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/tom2/src/environments/environment.ts",
+                  "with": "projects/tom2/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "tom2:build"
+          },
+          "configurations": {
+            "es5": {
+              "browserTarget": "tom2:build:es5"
+            },
+            "server": {
+              "browserTarget": "tom2:build:server"
+            },
+            "server-es5": {
+              "browserTarget": "tom2:build:server-es5"
+            },
+            "uat": {
+              "browserTarget": "tom2:build:uat"
+            },
+            "production": {
+              "browserTarget": "tom2:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "tom2:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/tom2/src/test.ts",
+            "polyfills": "projects/tom2/src/polyfills.ts",
+            "tsConfig": "projects/tom2/tsconfig.spec.json",
+            "styles": [
+              { "input": "node_modules/@delivery/stgo-common/main.scss" },
+              { "input": "projects/tom2/src/main-loading.scss" },
+              { "input": "projects/tom2/src/main.scss" }
+            ],
+            "scripts": [],
+            "assets": [
+              {
+                "glob": "favicon.ico",
+                "input": "projects/tom2/src/",
+                "output": "/"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/tom2/src/assets",
+                "output": "/assets"
+              }
+            ],
+            "codeCoverage": true,
+            "codeCoverageExclude": [
+              "projects/tom2/src/app/core/route-reusable-strategy.ts",
+              "projects/tom2/src/app/shared/i18n/stgo-mat-paginator-intl.ts",
+              "projects/tom2/src/testing/*.ts"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/tom2/tsconfig.app.json",
+              "projects/tom2/tsconfig.spec.json",
+              "projects/tom2/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/*polyfills.ts",
+              "**/*test.ts",
+              "**/*test.common.spec.ts",
+              "**/*router.transition.ts",
+              "**/*droplist.directive.ts",
+              "**/*router-stubs.ts",
+              "**/*mock-store.component.ts",
+              "**/*spinner.service.ts",
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

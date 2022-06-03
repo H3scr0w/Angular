@@ -1,0 +1,9 @@
+<ul class="info-calcul">
+  <li *ngFor="let reference of donneesReferences ; let i = index">
+    <div>
+      <span>({{ i + 1 }})</span>
+      {{ 'common.calcule-avec' | translate}} {{ reference }}
+    </div>
+  </li>
+</ul>
+

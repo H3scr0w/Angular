@@ -1,0 +1,18 @@
+<mat-sidenav-container class="pb-4">
+  <div class="wrapper">
+    <stgo-lib-layout-header>
+      <stgo-lib-header>
+        <stgo-lib-logo></stgo-lib-logo>
+        <stgo-lib-toolbox [sgid]="username" [label]="toolboxLabel"></stgo-lib-toolbox>
+        <stgo-lib-picture [url]="picture"></stgo-lib-picture>
+        <stgo-lib-header-menu [appName]="appName" [languages]="languages" [languageLabel]="languageLabel" [logoutLabel]="logoutLabel"
+          (changeLanguage)="changeLanguage($event)" (logout)="logout()">
+        </stgo-lib-header-menu>
+      </stgo-lib-header>
+      <stgo-lib-menu [menus]="menus"></stgo-lib-menu>
+    </stgo-lib-layout-header>
+    <div class="content" [@routerTransition]="o.isActivated && (o.activatedRoute.routeConfig.path || o.activatedRoute.parent.routeConfig.path)">
+      <router-outlet #o="outlet"></router-outlet>
+    </div>
+  </div>
+</mat-sidenav-container>

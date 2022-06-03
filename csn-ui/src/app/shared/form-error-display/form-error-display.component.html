@@ -1,0 +1,3 @@
+<div *ngIf="errors.length && isTouched()" class="error-alert">
+  {{(intlPath ? 'validators.' + intlPath + '.' + errors[0] : 'validators.' + errors[0]) | translate}}
+</div>

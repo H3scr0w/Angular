@@ -1,0 +1,81 @@
+<div *ngIf="websiteSelected; else empty">
+  <mat-sidenav-container class="mat-sidenav-container-position position-absolute h-85 mt-4 min-height-mobile min-width-mobile">
+    <mat-sidenav #snav [mode]="mediaMatch ? 'over' : 'side'" opened class="font-bold font-white mx-4 mt-3 pt-5">
+      <mat-accordion>
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title class="text-gray">Incapsula</mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="m-2" [ngClass]="{
+                              'text-primary': sidenavElement === sidenavSelected
+                            }" *ngFor="let sidenavElement of incapsulaSidenavMenu">
+            <a (click)="show(sidenavElement)"> {{ sidenavElement }} </a>
+            <br />
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </mat-sidenav>
+    <mat-sidenav-content class="px-5 pt-4">
+      <div (click)="snav.toggle()" class="sidebar-button">
+        <button mat-icon-button color="primary" class="text-info">
+          <i *ngIf="!snav.opened" class="fas fa-angle-double-right fa-2x"></i>
+          <i *ngIf="snav.opened" class="fas fa-angle-double-left fa-2x"></i>
+        </button>
+      </div>  
+      <div class="p-1 ml-4">
+        <!-- Incapsula -->
+        <table class="w-100" [formGroup]="formGroup">
+          <mat-form-field>
+            <input matInput placeholder="Domain*" formControlName="domain" [matAutocomplete]="auto" name="domain" />
+            <i matSuffix class="fas fa-search"></i>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="changeDomain($event.option.value)" (closed)="closed()" [displayWith]="displayFn">
+              <mat-option *ngFor="let domain of (domains$ | async)" [value]="domain">
+                <span>{{ domain?.name }}</span>
+              </mat-option>
+            </mat-autocomplete>
+            <mat-error *ngIf="formGroup.get('domain')!.dirty && formGroup.get('domain')!.hasError('required')">
+              Domain is
+              <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center mb-2">
+            <mat-progress-bar color="primary" mode="indeterminate"> </mat-progress-bar>
+          </div>
+        </table>
+        <div *ngIf="domainSelected && !isLoading">
+          <ng-template [ngIf]="sidenavSelected === 'Site Configuration'">
+            <stgo-incapsula-site-conf [domain]="domain" [siteConfs]="siteConfs" [isAdmin]="isDomainAdmin"></stgo-incapsula-site-conf>
+          </ng-template>
+
+          <ng-template [ngIf]="sidenavSelected === 'DNS'">
+            <stgo-incapsula-dns [originalDn]="originalDn" [dn]="dn" [isAdmin]="isDomainAdmin"></stgo-incapsula-dns>
+          </ng-template>
+
+          <ng-template [ngIf]="sidenavSelected === 'SSL'">
+            <stgo-incapsula-ssl [domain]="domain" [generatedCertificate]="generatedCertificate" [customCertificate]="customCertificate"
+              [isAdmin]="isDomainAdmin"></stgo-incapsula-ssl>
+          </ng-template>
+
+          <ng-template [ngIf]="sidenavSelected === 'Cache'">
+            <stgo-incapsula-cache [domain]="domain" [cacheConf]="cacheConf" [isAdmin]="isDomainAdmin"></stgo-incapsula-cache>
+          </ng-template>
+
+          <ng-template [ngIf]="sidenavSelected === 'Acls'">
+            <stgo-incapsula-acls [domain]="domain" [aclsConf]="aclsConf" [isAdmin]="isDomainAdmin"></stgo-incapsula-acls>
+          </ng-template>
+
+          <ng-template [ngIf]="sidenavSelected === 'Threats'">
+            <stgo-incapsula-threats [domain]="domain" [wafConf]="wafConf" [isAdmin]="isDomainAdmin"></stgo-incapsula-threats>
+          </ng-template>
+
+          <ng-template [ngIf]="sidenavSelected === 'Monitoring'">
+            <stgo-incapsula-monitoring [domain]="domain" [isAdmin]="isDomainAdmin"></stgo-incapsula-monitoring>
+          </ng-template>
+        </div>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
+<ng-template #empty>
+  <h1 class="text-center text-info welcome position-absolute">Select a website to continue</h1>
+</ng-template>

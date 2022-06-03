@@ -1,0 +1,49 @@
+{{#each releases}}
+  # {{title}}
+  [{{isoDate}}]
+
+  {{! lit commits with feature: in message, use feature: or Feature: }}
+  {{#commit-list
+          commits
+          heading='### Features'
+          message='([Ff]eat[ure[s]?]?[ ]?(\([A-Za-z\-\d]*\))?[:]?)'
+          exclude='([Ff]ix[e[s]?]?[ ]?(\([A-Za-z\-\d]*\))?[:]?)|([Rr]efactor?[ ]?(\([A-Za-z\-\d]*\))?[:]?)|([Cc]hore[ ]?(\([A-Za-z\-\d]*\))?[:]?)'}}
+    * {{subject}} ([`{{shorthash}}`]({{href}}))
+  {{/commit-list}}
+
+  {{! use fix: or Fix: }}
+  {{#commit-list
+          commits
+          heading='### Fixes'
+          message='([Ff]ix[e[s]?]?[ ]?(\([A-Za-z\-\d]*\))?[:]?)'
+          exclude='([Ff]eat[ure[s]?]?[ ]?(\([A-Za-z\-\d]*\))?[:]?)|([Rr]efactor?[ ]?(\([A-Za-z\-\d]*\))?[:]?)|([Cc]hore[ ]?(\([A-Za-z\-\d]*\))?[:]?)'}}
+    * {{subject}} ([`{{shorthash}}`]({{href}}))
+  {{/commit-list}}
+
+  {{! user refactor: or Refactor: }}
+  {{#commit-list
+          commits
+          heading='### Refactor'
+          message='([Rr]efactor?[ ]?(\([A-Za-z\-\d]*\))?[:]?)'
+          exclude='([Ff]eat[ure[s]?]?[ ]?(\([A-Za-z\-\d]*\))?[:]?)|([Ff]ix[e[s]?]?[ ]?(\([A-Za-z\-\d]*\))?[:]?)|([Cc]hore[ ]?(\([A-Za-z\-\d]*\))?[:]?)'}}
+    * {{subject}} ([`{{shorthash}}`]({{href}}))
+  {{/commit-list}}
+
+  {{! user chore }}
+  {{#commit-list
+          commits
+          heading='### Chore'
+          message='([Cc]hore[ ]?(\([A-Za-z\-\d]*\))?[:]?)'
+          exclude='([Ff]eat[ure[s]?]?[ ]?(\([A-Za-z\-\d]*\))?[:]?)|([Ff]ix[e[s]?]?[ ]?(\([A-Za-z\-\d]*\))?[:]?)|([Rr]efactor?[ ]?(\([A-Za-z\-\d]*\))?[:]?)'}}
+    * {{subject}} ([`{{shorthash}}`]({{href}}))
+  {{/commit-list}}
+
+  {{! user refactor: or Refactor: }}
+  {{#commit-list
+          commits
+          heading='### Others'
+          exclude='([Ff]eat[ure[s]?]?[ ]?(\([A-Za-z\-\d]*\))?[:]?)|([Ff]ix[e[s]?]?[ ]?(\([A-Za-z\-\d]*\))?[:]?)|([Rr]efactor?[ ]?(\([A-Za-z\-\d]*\))?[:]?)|([Cc]hore[ ]?(\([A-Za-z\-\d]*\))?[:]?)'}}
+    * {{subject}} ([`{{shorthash}}`]({{href}}))
+  {{/commit-list}}
+
+{{/each}}

@@ -1,0 +1,66 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<form [formGroup]="companyForm" (ngSubmit)="onSubmit()">
+  <h1 mat-dialog-title>{{'company.title' | translate}}</h1>
+  <mat-dialog-content>
+    <div class="mb-2" *ngIf="isVisible">
+      <mat-chip-list>
+        <mat-chip color="primary"  selected>{{sitesCount}} {{'common.sites' | translate}} </mat-chip>
+        <mat-chip color="primary"  selected>{{usersCount}} {{'common.users' | translate}} </mat-chip>
+      </mat-chip-list>
+    </div>
+
+    <mat-form-field>
+      <input matInput formControlName="sifCode" placeholder="{{'common.sifCode' | translate}}" required [readonly]="isReadOnly"
+        maxlength="10" />
+      <mat-error align=" right" *ngIf="hasError('sifCode', 'required')">
+        {{'common.validation.required.message' | translate}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput formControlName="companyName" placeholder="{{'company.name' | translate}}" required />
+      <mat-error align=" right" *ngIf="hasError('companyName', 'required')">
+        {{'common.validation.required.message' | translate}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <textarea matInput formControlName="comments" placeholder="{{'common.comment' | translate}}"
+                cdkTextareaAutosize cdkAutosizeMinRows="5"></textarea>
+    </mat-form-field>
+
+    <div class="mb-2" *ngIf="isVisible">
+      <small>{{'rsm.attached' | translate}}</small>
+      <div class="d-flex flex-row">
+        <stgo-contact-display [selectedContact]="rsmAttached"></stgo-contact-display>
+      </div>
+    </div>
+
+    <ng-select [items]="sectors | async" [typeahead]="autoSector" bindLabel="name"  (change)="onSectorSelected()"
+      placeholder="{{'sector.title' | translate}}" [searchable]="true" [virtualScroll]="true" formControlName="sector"
+      appendTo="body">
+      <ng-template ng-label-tmp let-item="item">
+        <span *ngIf="item"> {{item?.name}}</span>
+      </ng-template>
+    </ng-select>
+
+    <ng-select [items]="zones" [typeahead]="autoZone" bindLabel="name" required  (change)="onZoneSelected()"
+      placeholder="{{'zone.title' | translate}} *" [searchable]="true" [virtualScroll]="true" formControlName="zone" appendTo="body">
+      <ng-template ng-label-tmp let-item="item">
+        <span *ngIf="item"> {{item?.name}}</span>
+      </ng-template>
+    </ng-select>
+    <small align="right" class="mat-error" *ngIf="isVisible && hasError('zone', 'required')">
+      {{'common.validation.required.message' | translate}}</small>
+
+    <div *ngIf="applicant">
+      <small>{{'supervisor.applicant' | translate}} : </small>
+      <stgo-contact-display [selectedContact]="applicant"></stgo-contact-display>
+    </div>
+
+  </mat-dialog-content>
+
+  <div mat-dialog-actions align="center">
+    <button type="button" mat-raised-button (click)="onNoClick()">{{'common.close' | translate}}</button>
+    <button *ngIf="!isViewOnly" type="submit" mat-raised-button color="primary"
+      [disabled]="!companyForm.valid || isLoading">{{btnSaveText | translate}}</button>
+  </div>
+</form>

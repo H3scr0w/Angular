@@ -1,0 +1,56 @@
+.content-taux {
+  .taux {
+    border-radius: 8px;
+    background-color: #f0f7ff;
+    padding: 30px;
+
+		.taux-left {
+			flex-basis: 70%;
+			.title {
+				margin: 10px 0;
+			}
+			.valeur {
+				.p {
+					flex-basis: none;
+				}
+			}
+		}
+    .title {
+      @include gilroyBold(16px);
+      color: $color-blue;
+      letter-spacing: -0.28px;
+      line-height: 20px;
+      margin: 0 0 10px;
+    }
+    .valeur {
+      justify-content: space-between;
+      p {
+        @include gilroyReg(13px);
+        color: $color-grey;
+        letter-spacing: -0.41px;
+        line-height: 16px;
+        margin: 0;
+      }
+      ul {
+        @include gilroyBold(16px);
+        color: $color-blue;
+      }
+      .valeur-percent {
+        @include gilroyReg(32px);
+        color: $color-lightBlue;
+        letter-spacing: -0.56px;
+        line-height: 38px;
+        text-align: right;
+      }
+    }
+    .taux-right {
+      .valeur-percent {
+        @include gilroyReg(32px);
+        color: $color-lightBlue;
+        letter-spacing: -0.56px;
+        line-height: 38px;
+        text-align: right;
+      }
+    }
+  }
+}

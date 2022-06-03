@@ -1,0 +1,21 @@
+<ng-template #innerTemplate>
+  <ngx-info-bulle *ngIf="tooltipContent" [disabled]="!enabledStatus()"
+                  [html]="tooltipContent"></ngx-info-bulle>
+  <div class="wrapper-data-input">
+    <label>{{ label | translate}}</label>
+    <div class="input-dual-wrapper with-select">
+      <div>
+        <input type="text"
+               id="{{formNameDuree}}" formControlName="{{formNameDuree}}" [ngClass]="{'invalid': isGroupInvalid}" autocomplete="off">
+        <div class="select" >
+          <select id="{{formNameDureeType}}" formControlName="{{formNameDureeType}}" [ngClass]="{'invalid': isGroupInvalid}">
+            <option [value]="dureeType.MOIS">{{ 'common.mois' | translate}}</option>
+            <option [value]="dureeType.ANNEE">{{ 'common.annees' | translate }}</option>
+          </select>
+        </div>
+      </div>
+      <ngx-form-error-display [controls]="[inputCtrlDuree,inputCtrlDureeType]"
+                              [intlPath]="'duree'"></ngx-form-error-display>
+    </div>
+  </div>
+</ng-template>

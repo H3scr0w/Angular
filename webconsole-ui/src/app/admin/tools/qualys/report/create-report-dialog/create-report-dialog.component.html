@@ -1,0 +1,33 @@
+<form [formGroup]="formGroup">
+  <h3 mat-dialog-title>Report Creation</h3>
+  <mat-dialog-content>
+
+    <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+      <input matInput placeholder="Name" name="name" formControlName="name" required />
+      <mat-error *ngIf="formGroup.get('name')!.hasError('required')">Please choose a name</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Scan" formControlName="scan" [matAutocomplete]="autoScan" required/>
+      <i matSuffix class="fas fa-search"></i>
+      <i matSuffix *ngIf="searchScan" class="fas fa-circle-notch fa-spin"></i>
+      <mat-autocomplete #autoScan="matAutocomplete" (optionSelected)="selectInput(true)" (opened)="selectInput(false)" [displayWith]="displayFn">
+        <mat-option *ngFor="let wasscan of (wasscan$ | async)" [value]="wasscan">
+          <span>{{ wasscan?.name}}</span>
+        </mat-option>
+      </mat-autocomplete>
+      <mat-error *ngIf="formGroup.get('scan')!.hasError('required')">Please select a scan</mat-error>
+    </mat-form-field>
+
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button type="button" mat-raised-button color="primary" (click)="cancel()">
+      Cancel
+    </button>
+    <button type="submit" mat-raised-button color="primary" (click)="confirm()" [disabled]="formGroup.pristine || formGroup.invalid || !scanSelected">
+      <span>Create
+        <i *ngIf="saving" class="fas fa-circle-notch fa-spin"></i>
+      </span>
+    </button>
+  </mat-dialog-actions>
+</form>

@@ -1,0 +1,18 @@
+<div class="mainContent">
+  <form class="forgotPassword" [formGroup]="forgotPasswordForm" autocomplete="off" (ngSubmit)="resetPassword()">
+    <div class="title">
+      {{'forgot.title' | translate}}
+    </div>
+    <input class="sgid" name="sgid" formControlName="sgid" placeholder="SGID" type="text" value="" autofocus/>
+    <input class="email" name="email" formControlName="email" placeholder="EMAIL" type="text" value=""/>
+    <div class="captcha">
+      <re-captcha formControlName="recaptcha" (resolved)="$event && getCaptcha($event)"></re-captcha>
+    </div>
+    <button class="cancelBtn" type="button" (click)="forgotPasswordForm.reset()">
+      {{'common.cancel' | translate}}
+    </button>
+    <button class="submitBtn" type="submit" [disabled]="forgotPasswordForm.invalid" #submitBtn>
+      {{'common.submit' | translate}}
+    </button>
+  </form>
+</div>

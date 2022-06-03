@@ -1,0 +1,176 @@
+<div class="mat-elevation-z8 my-4 mx-4 mw-mobile">
+  <div class="bg-header p-2 d-flex">
+    <span class="fa-stack fa-lg text-primary">
+      <i class="fas fa-circle fa-stack-1x fa-lg"></i>
+      <i class="fa fa-hand-lizard fa-stack-1x fa-sm text-white"></i>
+    </span>
+    <h2 class="text-white font-weight-bold pt-1">{{'common.menu.orders.catalogreplacement' | translate}}</h2>
+  </div>
+
+  <mat-horizontal-stepper #stepper>
+    <mat-step [stepControl]="catalogAdvanceFilterForm" [completed]="false">
+      <form [formGroup]="catalogAdvanceFilterForm">
+        <ng-template matStepLabel>{{'order.orderid' |translate }}</ng-template>
+        <div class="d-block p-2 bg-white mx-4 p-4 my-4">
+          <div class="row">
+            <div class="col-lg-8">
+              <ng-select [items]="orderIds | async" [typeahead]="inputOrder"
+                placeholder="{{'order.orderid' | translate}}" [searchable]="true" [dropdownPosition]="'bottom'"
+                formControlName="orderId" appendTo="body">
+                <ng-template ng-label-tmp let-item=" item">
+                  <span *ngIf="item"> {{item}} </span>
+                </ng-template>
+              </ng-select>
+            </div>
+            <div class="col-lg-1">
+              <button (click)="applyAdvanceFilter()" [disabled]="catalogAdvanceFilterForm.invalid" class="mt-2"
+                mat-raised-button color="primary">{{'common.search' |translate }}</button>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <table class="w-100" mat-table matSort [dataSource]="commands" matSortActive="orderId" matSortDisableClear
+        matSortDirection="asc">
+        <ng-container matColumnDef="orderId">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="orderId">{{'order.orderid' | translate}}</th>
+          <td mat-cell *matCellDef="let element" class="text-break">{{ element?.orderId }}</td>
+        </ng-container>
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="action">
+            {{'order.catalogreplacement.action' | translate}}</th>
+          <td mat-cell *matCellDef="let element" class="text-break">{{ element?.action?.value }}</td>
+        </ng-container>
+        <ng-container matColumnDef="operator">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="operator">{{'Operator' | translate}}</th>
+          <td mat-cell *matCellDef="let element" class="text-break">{{ element?.operatorDto?.name }}</td>
+        </ng-container>
+        <ng-container matColumnDef="serviceTitle">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="serviceTitle">
+            {{'order.catalogreplacement.servicetitle' | translate}}</th>
+          <td mat-cell *matCellDef="let element" class="text-break">{{ element?.serviceTitle }}</td>
+        </ng-container>
+        <ng-container matColumnDef="mainServiceCode">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="mainAccessCode">{{'order.mainservicecode' | translate}}
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-break">{{ element?.mainAccessCode }}</td>
+        </ng-container>
+        <ng-container matColumnDef="backupServiceCode">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="backupAccessCode">
+            {{'order.backupservicecode' | translate}}</th>
+          <td mat-cell *matCellDef="let element" class="text-break">{{ element?.backupAccessCode }}</td>
+        </ng-container>
+        <ng-container matColumnDef="optionCodes">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="optionCodes">
+            {{'order.catalogreplacement.options' | translate}}</th>
+          <td mat-cell *matCellDef="let element" class="text-break">{{ element?.optionCodes }}</td>
+        </ng-container>
+        <ng-container matColumnDef="setupTotalCost">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="setupTotalCost">
+            {{'order.catalogreplacement.setupcost' | translate}}</th>
+          <td mat-cell *matCellDef="let element" class="text-break">{{ element?.setupTotalCost }}</td>
+        </ng-container>
+        <ng-container matColumnDef="monthlyTotalCost">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="monthlyTotalCost">
+            {{'order.catalogreplacement.monthlycost' | translate}}</th>
+          <td mat-cell *matCellDef="let element" class="text-break">{{ element?.monthlyTotalCost }}</td>
+        </ng-container>
+        <ng-container matColumnDef="currency">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="currency">
+            {{'order.catalogreplacement.currency' | translate}}</th>
+          <td mat-cell *matCellDef="let element" class="text-break">{{ element?.currency }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+
+      <div *ngIf="isLoading" class="loading-shade">
+        <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+      </div>
+
+      <div>
+        <button class="my-4" mat-raised-button color="primary" matStepperNext
+          [disabled]="isNextButtonHide">{{'common.next' |translate }}</button>
+      </div>
+
+    </mat-step>
+
+    <mat-step [completed]="false">
+      <ng-template matStepLabel>{{'service.request.make.selectTelecomService' |translate }}</ng-template>
+      <stgo-telecom-service-selector (selectedService)="onServiceSelected($event)" [readOnlyCountry]="true"
+      [readOnlyOperator]="true" [countryCode]="countryCode" [operatorId]="operatorId">
+      </stgo-telecom-service-selector>
+      <div>
+        <button mat-raised-button class="mr-1" color="primary" matStepperPrevious>{{'common.back' |translate }}</button>
+      </div>
+    </mat-step>
+
+    <mat-step [completed]="false">
+      <ng-template matStepLabel>{{'order.catalogreplacement' |translate}}</ng-template>
+
+      <table class="w-100" mat-table matSort [dataSource]="dataSource" matSortActive="orderId" matSortDisableClear
+        matSortDirection="asc">
+        <ng-container matColumnDef="orderId">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="orderId">{{'order.orderid' | translate}}</th>
+          <td mat-cell *matCellDef="let element" class="text-break">{{ element?.orderId }}</td>
+        </ng-container>
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="action">
+            {{'order.catalogreplacement.action' | translate}}</th>
+          <td mat-cell *matCellDef="let element" class="text-break">{{ element?.action?.value }}</td>
+        </ng-container>
+        <ng-container matColumnDef="operator">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="operator">{{'Operator' | translate}}</th>
+          <td mat-cell *matCellDef="let element" class="text-break">{{ element?.operatorDto?.name }}</td>
+        </ng-container>
+        <ng-container matColumnDef="serviceTitle">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="serviceTitle">
+            {{'order.catalogreplacement.servicetitle' | translate}}</th>
+          <td mat-cell *matCellDef="let element" class="text-break">{{ element?.serviceTitle }}</td>
+        </ng-container>
+        <ng-container matColumnDef="mainServiceCode">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="mainAccessCode">{{'order.mainservicecode' | translate}}
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-break">{{ element?.mainAccessCode }}</td>
+        </ng-container>
+        <ng-container matColumnDef="backupServiceCode">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="backupAccessCode">
+            {{'order.backupservicecode' | translate}}</th>
+          <td mat-cell *matCellDef="let element" class="text-break">{{ element?.backupAccessCode }}</td>
+        </ng-container>
+        <ng-container matColumnDef="optionCodes">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="optionCodes">
+            {{'order.catalogreplacement.options' | translate}}</th>
+          <td mat-cell *matCellDef="let element" class="text-break">{{ element?.optionCodes }}</td>
+        </ng-container>
+        <ng-container matColumnDef="setupTotalCost">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="setupTotalCost">
+            {{'order.catalogreplacement.setupcost' | translate}}</th>
+          <td mat-cell *matCellDef="let element" class="text-break">{{ element?.setupTotalCost }}</td>
+        </ng-container>
+        <ng-container matColumnDef="monthlyTotalCost">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="monthlyTotalCost">
+            {{'order.catalogreplacement.monthlycost' | translate}}</th>
+          <td mat-cell *matCellDef="let element" class="text-break">{{ element?.monthlyTotalCost }}</td>
+        </ng-container>
+        <ng-container matColumnDef="currency">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="currency">
+            {{'order.catalogreplacement.currency' | translate}}</th>
+          <td mat-cell *matCellDef="let element" class="text-break">{{ element?.currency }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+
+      <div>
+        <button mat-raised-button class="my-4 mr-1" color="primary" matStepperPrevious
+          (click)="clearDataOnPrevious()">{{'common.back' |translate }}</button>
+        <button mat-raised-button class="my-4 mr-1" color="primary"
+          (click)="updateCommandCatalog()">{{'common.edit' |translate }}</button>
+      </div>
+    </mat-step>
+
+  </mat-horizontal-stepper>
+</div>

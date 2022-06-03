@@ -1,0 +1,77 @@
+<form [formGroup]="formGroup">
+  <h3 mat-dialog-title *ngIf="data.domain">Edit Domain</h3>
+  <h3 mat-dialog-title *ngIf="!data.domain">Add Domain</h3>
+  <mat-dialog-content>
+    <span *ngIf="data.domain">Domain ID: {{ data.domain.code }}</span>
+    <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+      <input matInput placeholder="Code" name="code" formControlName="code" required [readonly]="!!data.domain" />
+    </mat-form-field>
+
+    <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+      <input matInput placeholder="Name" name="name" formControlName="name" required />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Registar" name="registar" formControlName="registar" [matAutocomplete]="autoRegistar" [value]="data.domain?.registarCode" required />
+      <i matSuffix class="fas fa-search"></i>
+      <mat-autocomplete #autoRegistar="matAutocomplete" (optionSelected)="selectRegistar(true, $event?.option?.value)" (opened)="selectRegistar(false)"
+        [displayWith]="displayFn">
+        <mat-option *ngFor="let registar of (registar$ | async)" [value]="registar">
+          <span>{{ registar?.name }}</span>
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+      <input matInput placeholder="WAF ID" name="wafId" formControlName="wafId" />
+    </mat-form-field>
+
+    <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+      <input matInput placeholder="Realm" name="realm" formControlName="realm" />
+    </mat-form-field>
+
+    <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+      <input matInput placeholder="User" name="user" formControlName="user" />
+    </mat-form-field>
+
+    <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+      <input matInput [type]="hidePassword ? 'password' : 'text'" placeholder="Password" name="password" formControlName="password" />
+      <button mat-icon-button matSuffix color="primary" (click)="hidePassword = !hidePassword">
+        <i *ngIf="hidePassword" class="fas fa-eye-slash"></i>
+        <i *ngIf="!hidePassword" class="fas fa-eye"></i>
+      </button>
+    </mat-form-field>
+
+    <div class="row">
+      <mat-checkbox class="col" color="primary" labelPosition="before" formControlName="useDocrootEnvAuth">
+        DocrootEnv Auth
+      </mat-checkbox>
+
+      <mat-checkbox class="col" color="primary" labelPosition="before" formControlName="isBasicAuth">
+        Basic Auth
+      </mat-checkbox>
+
+      <mat-checkbox class="col" color="primary" labelPosition="before" formControlName="httpsEnable">
+        HTTPS Enabled
+      </mat-checkbox>
+
+      <mat-checkbox class="col" color="primary" labelPosition="before" formControlName="isQualysEnable">
+        Qualys Enabled
+      </mat-checkbox>
+    </div>
+
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button type="button" mat-raised-button color="primary" (click)="cancel()">
+      Cancel
+    </button>
+    <button type="submit" mat-raised-button color="primary" (click)="confirm()" [disabled]="formGroup.pristine || formGroup.invalid || !hasRegistarSelected">
+      <span *ngIf="data.domain">Edit
+        <i *ngIf="saving" class="fas fa-circle-notch fa-spin"></i>
+      </span>
+      <span *ngIf="!data.domain">Add
+        <i *ngIf="saving" class="fas fa-circle-notch fa-spin"></i>
+      </span>
+    </button>
+  </mat-dialog-actions>
+</form>

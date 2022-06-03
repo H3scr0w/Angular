@@ -1,0 +1,81 @@
+<form [formGroup]="chargebackSelectForm" (ngSubmit)="applyFilter()">
+  <h1 mat-dialog-title>
+    {{'chargeback.select' | translate}}</h1>
+
+  <mat-dialog-content>
+    <div>
+      <div class="row">
+        <div class="col-md-3">
+          <mat-form-field>
+            <input matInput formControlName="label" placeholder="{{'chargeback.name' | translate}}" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field>
+            <input matInput formControlName="sapAccount" placeholder="{{'chargeback.sapCode' | translate}}" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field>
+            <input matInput formControlName="sif" placeholder="{{'chargeback.sifCode' | translate}}" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <button type="submit" class="mr-1" mat-mini-fab color="primary"
+            matTooltip="{{'request.make.searchChargeBack' | translate}}">
+            <i class="fas fa-search"></i>
+          </button>
+          <button type="button" class="mr-1" mat-mini-fab color="primary" matTooltip="{{'common.reset' | translate}}"
+            (click)="onResetClick()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <table class="w-100" mat-table matSort [dataSource]="chargebacks" matSortActive="label" matSortDisableClear
+      matSortDirection="asc">
+      <ng-container matColumnDef="label">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="label">
+          {{'chargeback.name' | translate}}
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-break">{{ element?.label }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="sapAccount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="sapAccount">
+          {{'chargeback.sapCode' | translate}}
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-break">{{ element?.sapAccount }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="sif">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="sif">
+          {{'chargeback.sifCode' | translate}}
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-break">{{ element?.sif }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>{{'common.actions' | translate}}</th>
+        <td mat-cell *matCellDef="let element">
+          <button type="button" mat-icon-button color="primary" (click)="onChargebackSelected(element)"
+            matTooltip="{{'chargeback.select' | translate}}">
+            <i class="fa fa-plus p-1"></i>
+          </button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="pageSize" [pageIndex]="pageIndex"
+      [length]="totalElements" showFirstLastButtons></mat-paginator>
+    <div *ngIf="isLoading" class="loading-shade">
+      <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+    </div>
+  </mat-dialog-content>
+
+  <div mat-dialog-actions align="center">
+    <button type="button" mat-raised-button (click)="onNoClick()">{{'common.close' | translate}}</button>
+  </div>
+</form>

@@ -1,0 +1,184 @@
+<div class="mat-elevation-z8 my-4 mx-4 mw-mobile">
+  <div class="bg-info p-2 d-flex">
+    <span class="fa-stack fa-lg text-primary">
+      <i class="fas fa-circle fa-stack-1x fa-lg"></i>
+      <i class="fa fa-wrench fa-stack-1x fa-sm text-white"></i>
+    </span>
+    <h2 class="mr-auto text-white font-weight-bold pt-1">{{'fund.header' | translate}}</h2>
+    <button class="mr-1" mat-mini-fab color="primary" matTooltip="{{'fund.add.tooltip' | translate}}"
+      (click)="addRow()">
+      <i class="fas fa-plus"></i>
+    </button>
+    <button class="mr-1" mat-mini-fab color="primary" matTooltip="{{'common.export.tooltip' | translate}}"
+      (click)="exportDetails()">
+      <i class="fas fa-file-excel"></i>
+    </button>
+  </div>
+
+  <table class="w-100" mat-table matSort [dataSource]="funds" matSortActive="codeFondsAmundi" matSortDisableClear
+    matSortDirection="asc">
+    <ng-container matColumnDef="fundId">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="fondsSid">{{'fund.fundId' | translate}}</th>
+      <td mat-cell *matCellDef="let element; let i = index" class="text-break" [hidden]="hideFirstRow && i === 0">
+        {{ element?.fundId}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="amundiCode">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="codeFondsAmundi">{{'fund.amundi-code' | translate}}</th>
+      <td mat-cell *matCellDef="let element; let i = index" class="text-break" [hidden]="hideFirstRow && i === 0">
+        <ng-container *ngIf="element?.fundId === addFund?.fundId && i === 0">
+          <mat-form-field class="px-1">
+            <input matInput placeholder="{{'fund.amundi-code' | translate}}" maxlength="10" name="addAmundiCode"
+              [(ngModel)]="element.amundiCode" />
+          </mat-form-field>
+        </ng-container>
+        <ng-container *ngIf="(!editFund?.fundId || !element?.fundId || element?.fundId!== editFund?.fundId) && i !== 0">
+          {{ element?.amundiCode}}</ng-container>
+        <ng-container *ngIf="editFund?.fundId && element?.fundId && element?.fundId === editFund?.fundId && i !== 0">
+          <mat-form-field class="px-1">
+            <input matInput placeholder="{{'fund.amundi-code' | translate}}" maxlength="10" name="amundiCode"
+              [(ngModel)]="element.amundiCode" />
+          </mat-form-field>
+        </ng-container>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="fundLabel">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="fondsLibelle">{{'fund.label' | translate}}</th>
+      <td mat-cell *matCellDef="let element; let i = index" class="text-break" [hidden]="hideFirstRow && i === 0">
+        <ng-container *ngIf="element?.fundId === addFund?.fundId && i === 0">
+          <mat-form-field class="px-1">
+            <input matInput placeholder="{{'fund.label' | translate}}" maxlength="100" name="addFundLabel"
+              [(ngModel)]="element.fundLabel" />
+          </mat-form-field>
+        </ng-container>
+        <ng-container *ngIf="(!editFund?.fundId || !element?.fundId || element?.fundId!== editFund?.fundId) && i !== 0">
+          {{ element?.fundLabel}}</ng-container>
+        <ng-container *ngIf="editFund?.fundId && element?.fundId && element?.fundId === editFund?.fundId && i !== 0">
+          <mat-form-field class="px-1">
+            <input matInput placeholder="{{'fund.label' | translate}}" maxlength="100" name="fundLabel"
+              [(ngModel)]="element.fundLabel" />
+          </mat-form-field>
+        </ng-container>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="fundGroupId">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="peDimGrpFonds.grpFondsId">{{'fund.group-id' | translate}}
+      </th>
+      <td mat-cell *matCellDef="let element; let i = index" class="text-break" [hidden]="hideFirstRow && i === 0">
+        <ng-container *ngIf="element?.fundId === addFund?.fundId && i === 0">
+          <mat-form-field class="px-1">
+            <select matNativeControl placeholder="{{'fund.group-id' | translate}}" name="addFundGroupId"
+              [(value)]="element.fundGroupId" [(ngModel)]="element.fundGroupId">
+              <option *ngFor="let fundGroupId of fundGroupIdList" [value]="fundGroupId">
+                {{fundGroupId}}
+              </option>
+            </select>
+          </mat-form-field>
+        </ng-container>
+        <ng-container
+          *ngIf="(!editFund?.fundId || !element?.fundId || element?.fundId !== editFund?.fundId) && i !== 0">
+          {{ element?.fundGroupId}}</ng-container>
+        <ng-container *ngIf="editFund?.fundId && element?.fundId && element?.fundId === editFund?.fundId && i !== 0">
+          <mat-form-field class="px-1">
+            <select matNativeControl placeholder="{{'fund.group-id' | translate}}" name="fundGroupId"
+              [(value)]="element.fundGroupId" [(ngModel)]="element.fundGroupId">
+              <option *ngFor="let fundGroupId of fundGroupIdList" [value]="fundGroupId">
+                {{fundGroupId}}
+              </option>
+            </select>
+          </mat-form-field>
+        </ng-container>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="tenantAccounts">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="peRefTeneurCompte.teneurCompteLibelle">
+        {{'tenant-account' | translate}}</th>
+      <td mat-cell *matCellDef="let element; let i = index" class="text-break" [hidden]="hideFirstRow && i === 0">
+        <ng-container *ngIf="element?.fundId === addFund?.fundId && i === 0">
+            <ng-select [items]="tenantAccounts" [typeahead]="inputTenantAccount" bindLabel="teneurCompteLibelle" bindValue="teneurCompteId" [searchable]="true"
+              [dropdownPosition]="'bottom'" [openOnEnter]="false" appendTo="body" [selectOnTab]="true" placeholder=" {{'tenant-account' | translate}}"
+              [(ngModel)]="element.tenantAccount.teneurCompteId" class="align-select-column">
+              <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="tenantAccounts"> {{item?.teneurCompteLibelle}}</span>
+              </ng-template>
+            </ng-select>
+        </ng-container>
+        <ng-container *ngIf="(!editFund?.fundId || !element?.fundId || element?.fundId!== editFund?.fundId) && i !== 0">
+          {{ element?.tenantAccount?.teneurCompteLibelle }}</ng-container>
+        <ng-container *ngIf="editFund?.fundId && element?.fundId && element?.fundId === editFund?.fundId && i !== 0">
+          <ng-select [items]="tenantAccounts" [typeahead]="inputTenantAccount" bindLabel="teneurCompteLibelle" bindValue="teneurCompteId" [searchable]="true"
+          [dropdownPosition]="'bottom'" [openOnEnter]="false" appendTo="body" [selectOnTab]="true"
+          [(ngModel)]="element.tenantAccount.teneurCompteId" placeholder=" {{'tenant-account' | translate}}" class="align-select-column">
+          <ng-template ng-label-tmp let-item="item">
+            <span *ngIf="tenantAccounts"> {{item?.teneurCompteLibelle}}</span>
+          </ng-template>
+        </ng-select>
+        </ng-container>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="active">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="flagEnCoursCreation">{{'fund.active' | translate}}</th>
+      <td mat-cell *matCellDef="let element; let i = index" class="text-break" [hidden]="hideFirstRow && i === 0">
+        <ng-container *ngIf="element?.fundId === addFund?.fundId && i === 0">
+          <mat-form-field class="px-1">
+            <select matNativeControl placeholder="{{'fund.active' | translate}}" name="addActive"
+              [(value)]="element.isActive" [(ngModel)]="element.isActive">
+              <option value="true">{{'true' | translate}}</option>
+              <option value="false">{{'false' | translate}}</option>
+            </select>
+          </mat-form-field>
+        </ng-container>
+        <ng-container *ngIf="(!editFund?.fundId || !element?.fundId || element?.fundId!== editFund?.fundId) && i !== 0">
+          {{ element?.isActive + '' | translate }}</ng-container>
+        <ng-container *ngIf="editFund?.fundId && element?.fundId && element?.fundId === editFund?.fundId && i !== 0">
+          <mat-form-field class="px-1">
+            <select matNativeControl placeholder="{{'fund.active' | translate}}" name="active"
+              [(value)]="element.isActive" [(ngModel)]="element.isActive">
+              <option value="true">{{'true' | translate}}</option>
+              <option value="false">{{'false' | translate}}</option>
+            </select>
+          </mat-form-field>
+        </ng-container>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>{{'company.actions' | translate}}</th>
+      <td mat-cell *matCellDef="let element;let i = index" class="text-break" [hidden]="hideFirstRow && i === 0">
+        <ng-container *ngIf="(!editFund?.fundId || !element?.fundId || element?.fundId!== editFund?.fundId) && i !== 0">
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+            <i class="fas fa-ellipsis-h fa-lg"></i>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="editRow(element)"
+              [disabled]="!element?.amundiCode || !element?.fundGroupId || !element?.fundLabel">{{'common.edit' | translate }}</button>
+          </mat-menu>
+        </ng-container>
+
+        <ng-container
+          *ngIf="(editFund?.fundId && element?.fundId && element?.fundId === editFund?.fundId) || (i === 0 && element?.fundId === addFund?.fundId)">
+          <button mat-icon-button color="primary" (click)="saveFund()"
+            [disabled]="!element?.amundiCode || !element?.fundGroupId || !element?.fundLabel">
+            <i class="fas fa-check p-1"></i>
+          </button>
+          <button mat-icon-button (click)="cancelEdit()">
+            <i class="fas fa-times p-1"></i>
+          </button>
+        </ng-container>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns" [ngClass]="{'h-auto': i === 0 }"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="pageSize" [pageIndex]="pageIndex"
+    [length]="totalElements" showFirstLastButtons></mat-paginator>
+  <div *ngIf="isLoading" class="loading-shade">
+    <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+  </div>
+</div>

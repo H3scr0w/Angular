@@ -1,0 +1,26 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<form [formGroup]="ispCarrierForm" (ngSubmit)="onSubmit()">
+  <h1 mat-dialog-title>{{'ispcarrier.header' | translate}}</h1>
+  <mat-dialog-content>
+    <mat-form-field>
+      <input matInput formControlName="ispCarrier" placeholder="{{'ispcarrier.ispcarrier' | translate}}" required />
+      <mat-error align=" right" *ngIf="hasError('ispCarrier', 'required')">
+        {{'common.validation.required.message' | translate}}
+      </mat-error>
+      <mat-error align=" right" *ngIf="ispCarrierForm.get('ispCarrier')?.errors?.isIspCarrierTaken">
+        {{'common.validation.taken.message' | translate}}</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput formControlName="ispHelpdeskContact" placeholder="{{'ispcarrier.ispHelpdeskContact' | translate}}" required />
+      <mat-error align=" right" *ngIf="hasError('ispHelpdeskContact', 'required')">
+        {{'common.validation.required.message' | translate}}
+      </mat-error>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <div mat-dialog-actions align="center">
+    <button type="button" mat-raised-button (click)="onNoClick()">{{'common.close' | translate}}</button>
+      <button type="submit" mat-raised-button color="primary"
+        [disabled]="ispCarrierForm.invalid || isLoading">{{'common.save' | translate}}</button>
+      </div>
+</form>

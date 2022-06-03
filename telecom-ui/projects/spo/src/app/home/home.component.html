@@ -1,0 +1,16 @@
+<div class="m-2 mat-elevation-z8">
+  <div class="bg-header p-2 d-flex">
+    <span class="fa-stack fa-lg text-primary">
+      <i class="fas fa-circle fa-stack-1x fa-lg"></i>
+      <i class="fas fa-home fa-stack-1x fa-sm text-white"></i>
+    </span>
+    <h2 class="text-white font-weight-bold pt-1">{{ 'Home' | translate }}</h2>
+  </div>
+  <mat-card>
+    <mat-card-content>
+      <div class="text-center">
+        <span translate [translateParams]="{firstName: credentials.sgid, lastName: ''}">Hello</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

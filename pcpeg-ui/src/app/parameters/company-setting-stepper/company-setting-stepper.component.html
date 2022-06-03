@@ -1,0 +1,67 @@
+<div class="p-2 mw-mobile overflow-auto">
+
+  <mat-card class="mat-elevation-z8 my-4 mx-4">
+    <mat-card-header>
+      <mat-card-title>
+        <button mat-mini-fab color="primary" class="float-left" (click)="back()">
+          <i class="fas fa-arrow-left fa-lg"></i>
+        </button>
+        <div class="mx-2 text-center">
+          <h2 class="mr-auto font-weight-bold pt-1">{{'company.setting.header' | translate}} {{campaignModel?.codeSif}}
+            - {{campaignModel?.societeLibelle}}</h2>
+        </div>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <!-- STEPPER -->
+      <mat-vertical-stepper [linear]="true" #stepper>
+        <ng-template matStepperIcon="edit" let-index="index">
+          {{index+1}}
+        </ng-template>
+        <ng-template matStepperIcon="done">
+          <i class="fas fa-check"></i>
+        </ng-template>
+
+        <!-- INTEREST STEP -->
+        <mat-step #intStep [completed]="false" label="{{'company.setting.interest' | translate }}" state="{{ intStep.completed ? 'done' : 'number' }}">
+          <stgo-company-setting-payment [stepper]="stepper" [campaign]="campaignModel" [paymentType]="interestPayment"
+            [defaultFundsSetting]="fundsSetting">
+          </stgo-company-setting-payment>
+        </mat-step>
+        <!-- PARTICIPATION STEP -->
+        <mat-step #partStep [completed]="false" label="{{'company.setting.participation' | translate }}" state="{{ partStep.completed ? 'done' : 'number' }}">
+          <stgo-company-setting-payment [stepper]="stepper" [campaign]="campaignModel"
+            [paymentType]="participationPayment" [defaultFundsSetting]="fundsSetting"></stgo-company-setting-payment>
+        </mat-step>
+        <!-- ADDITIONAL INTEREST STEP -->
+        <mat-step #addIntStep [completed]="false" label="{{'company.setting.interest-supp' | translate }}" state="{{ addIntStep.completed ? 'done' : 'number' }}">
+          <stgo-company-setting-payment [stepper]="stepper" [campaign]="campaignModel"
+            [paymentType]="interestSuppPayment" [defaultFundsSetting]="fundsSetting"></stgo-company-setting-payment>
+        </mat-step>
+        <!-- ADDITIONAL PARTICIPATION STEP -->
+        <mat-step #addPartStep [completed]="false" label="{{'company.setting.participation-supp' | translate }}" state="{{ addPartStep.completed ? 'done' : 'number' }}">
+          <stgo-company-setting-payment [stepper]="stepper" [campaign]="campaignModel"
+            [paymentType]="participationSuppPayment" [defaultFundsSetting]="fundsSetting">
+          </stgo-company-setting-payment>
+        </mat-step>
+        <!-- CET STEP -->
+        <mat-step #cetStep [completed]="false" label="{{'company.setting.cet' | translate }}" state="{{ cetStep.completed ? 'done' : 'number' }}">
+          <stgo-company-setting-payment [stepper]="stepper" [campaign]="campaignModel" [paymentType]="cetPayment"
+            [defaultFundsSetting]="fundsSetting"></stgo-company-setting-payment>
+        </mat-step>
+        <!-- AUTHORITIES STEP -->
+        <mat-step #authStep [completed]="false" label="{{'company.setting.authority' | translate }}" state="{{ authStep.completed ? 'done' : 'number' }}">
+          <stgo-company-setting-authority [stepper]="stepper" [campaign]="campaignModel">
+          </stgo-company-setting-authority>
+        </mat-step>
+      </mat-vertical-stepper>
+    </mat-card-content>
+  </mat-card>
+  <div *ngIf="isInterestLoading || 
+  isParticipationLoading || 
+  isInterestSuppLoading ||
+  isParticipationSuppLoading ||
+  isCetLoading || isFundLoading" class="loading-shade">
+    <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+  </div>
+</div>

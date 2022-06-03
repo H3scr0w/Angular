@@ -1,0 +1,42 @@
+<div class="w-100 h-100" [formGroup]="formGroup">
+  <h3 mat-dialog-title *ngIf="data.server">Edit Server</h3>
+  <h3 mat-dialog-title *ngIf="!data.server">Add Server</h3>
+  <div>
+    <span *ngIf="data.server">Server ID: {{ data.server.hostname }}</span>
+    <div class="form-group">
+      <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+        <input matInput placeholder="Hostname" name="hostname" formControlName="hostname" required [readonly]="!!data.server" />
+      </mat-form-field>
+
+      <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+        <input matInput placeholder="Domain" name="domain" formControlName="domain" required />
+      </mat-form-field>
+
+      <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+        <input matInput [type]="hideLogin ? 'password' : 'text'" placeholder="Login" name="login" formControlName="login" required />
+        <button mat-icon-button matSuffix color="primary" (click)="hideLogin = !hideLogin">
+          <i *ngIf="hideLogin" class="fas fa-eye-slash"></i>
+          <i *ngIf="!hideLogin" class="fas fa-eye"></i>
+        </button>
+      </mat-form-field>
+
+      <section flex>
+        <mat-checkbox color="primary" labelPosition="before" formControlName="sshServer" class="pr-2"> SSH </mat-checkbox>
+        <mat-checkbox color="primary" labelPosition="before" formControlName="enable"> Enable </mat-checkbox>
+      </section>
+    </div>
+  </div>
+  <div class="float-right mt-3">
+    <button type="button" mat-raised-button color="primary" (click)="cancel()" class="mr-1">
+      Cancel
+    </button>
+    <button type="submit" mat-raised-button color="primary" (click)="confirm()" [disabled]="formGroup.pristine || formGroup.invalid">
+      <span *ngIf="data.server">Edit
+        <i *ngIf="saving" class="fas fa-circle-notch fa-spin"></i>
+      </span>
+      <span *ngIf="!data.server">Add
+        <i *ngIf="saving" class="fas fa-circle-notch fa-spin"></i>
+      </span>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+<div class="info-bulle-global msg-warning">
+  <div class="info-bulle-content">
+    <div *ngIf="html" [innerHTML]="html">
+    </div>
+    <div class="button-wrapper">
+      <button type="submit" class="btn-agree" (click)="hide()">{{ 'common.ok' | translate }}
+      </button>
+    </div>
+  </div>
+</div>

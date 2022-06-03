@@ -1,0 +1,135 @@
+<table class="w-100 mx-4">
+  <button *ngIf="isAdmin && screen !== 'environment'" mat-icon-button color="primary" (click)="back()">
+    <i class="fas fa-chevron-circle-left"></i> Back
+  </button>
+  <div *ngIf="screen === 'environment'">
+    <div *ngIf="isLoading" class="loading-shade">
+      <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+    </div>
+    <button *ngIf="isAdmin" mat-raised-button color="primary" (click)="deployWebsiteEnvironment()"
+      matTooltip="deploy website on a new environment">
+      <i class="fas fa-cloud-upload-alt mr-1"></i>
+    </button>
+
+    <div *ngIf="docroots && docroots.length > 0">
+
+      <div *ngFor="let docroot of docroots; last as isLast">
+
+        <mat-card class="my-2 min-width-mobile mat-elevation-z8">
+          <mat-card-content>
+            <mat-grid-list cols="4" rowHeight="8:1">
+              <mat-grid-tile [colspan]="1" [rowspan]="2" class="border border-dark" [ngClass]="{
+                'background-website': !isAdmin,
+                'background-admin': isAdmin
+              }">
+                <mat-grid-tile-header>
+                  <div class="container">
+                    <div class="row">
+                      <div class="col"> Docroot Name </div>
+                    </div>
+                    <div class="row">
+                      <div class="col"> Hosting Provider</div>
+                    </div>
+                  </div>
+                </mat-grid-tile-header>
+              </mat-grid-tile>
+              <mat-grid-tile [colspan]="3" [rowspan]="2" class="border border-dark">
+                <div class="container">
+                  <div class="row">
+                    <div class="col"> {{docroot?.name}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col"> {{docroot?.hostingProviderName ? docroot?.hostingProviderName : 'N/A'}}</div>
+                  </div>
+                </div>
+              </mat-grid-tile>
+            </mat-grid-list>
+          </mat-card-content>
+        </mat-card>
+
+        <div *ngFor="let env of docroot?.environments; last as envLast">
+          <mat-card class="my-2 min-width-mobile mat-elevation-z8">
+
+            <mat-card-content>
+
+              <mat-grid-list cols="4" rowHeight="4:1">
+                <mat-grid-tile [colspan]="4" [rowspan]="1" class="border border-dark" [ngClass]="{
+                  'background-website': !isAdmin,
+                  'background-admin': isAdmin
+                }">
+                  <mat-grid-tile-header>
+                    <div class="w-100 float-left">
+                      {{env?.name}}
+                    </div>
+                    <div class="float-right">
+                      <button *ngIf="isAdmin" class="ml-1" mat-raised-button color="primary"
+                        matTooltip="delete website environment"
+                        (click)="deleteWebsiteEnvironment(docroot.code, env.environmentCode)">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </mat-grid-tile-header>
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="1" [rowspan]="4" class="border border-dark">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col"> Version deployed </div>
+                    </div>
+                    <div class="row">
+                      <div class="col"> CMS Name</div>
+                    </div>
+                    <div class="row">
+                      <div class="col"> CMS Version</div>
+                    </div>
+                    <div class="row">
+                      <div class="col"> Domains</div>
+                    </div>
+                    <div class="row mt-2" *ngIf="isAdmin">
+                      <div class="col">
+                        <button mat-raised-button color="primary" (click)="manageWebsiteDomains(docroot, env)"
+                          matTooltip="manage domains">
+                          <i class="fas fa-globe mr-1"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="3" [rowspan]="4" class="border border-dark">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col"> {{env?.websiteVersion ? env?.websiteVersion : 'N/A' }}</div>
+                    </div>
+                    <div class="row">
+                      <div class="col"> {{env?.cmsName ? env?.cmsName : 'N/A'}}</div>
+                    </div>
+                    <div class="row">
+                      <div class="col"> {{env?.cmsVersion ? env?.cmsVersion : 'N/A'}}</div>
+                    </div>
+                    <div class="row" *ngFor="let domain of env?.domains">
+                      <div class="col" [class.ml-4]="domain?.domainType?.toUpperCase() === 'REDIRECTION'">
+                        ({{domain.domainType | titlecase }}) -
+                        {{domain.httpsEnable ? 'https://' : 'http://'}}{{domain.code}}
+                        <button *ngIf="docroot?.hostingProviderCode?.toLowerCase()?.includes('acquia')"
+                          mat-icon-button color="primary" (click)="clearAcquiaVarnish(docroot, env, domain)"
+                          matTooltip="clear acquia varnish cache">
+                          <i class="fas fa-broom mb-2"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </mat-grid-tile>
+              </mat-grid-list>
+
+            </mat-card-content>
+          </mat-card>
+
+        </div>
+
+        <mat-divider *ngIf="!isLast" class="my-4"></mat-divider>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="screen === 'domain'">
+    <stgo-website-domain [website]="website" [docroot]="docroot" [environment]="environment"></stgo-website-domain>
+  </div>
+</table>

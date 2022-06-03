@@ -1,0 +1,43 @@
+/*
+	**** Mixin de texte ****
+*/
+@mixin gilroyBold ($fontsize) {
+	font-family: Gilroy-Bold, sans-serif;
+	font-size: $fontsize;
+}
+@mixin gilroyReg ($fontsize) {
+	font-family: Gilroy-Regular, sans-serif;
+	font-size: $fontsize;
+}
+@mixin gilroyHeav ($fontsize) {
+	font-family: Gilroy-Heavy, sans-serif;
+	font-size: $fontsize;
+}
+
+/*
+	**** Mixin style ****
+*/
+@mixin radius ($borderRadius) {
+	border-radius: $borderRadius;
+	-webkit-border-radius: $borderRadius;
+	-moz-border-radius: $borderRadius;
+	-o-border-radius: $borderRadius;
+}
+@mixin boxShadowInput {
+	box-shadow: 0 0 0 2px #39e5b1;
+	-webkit-box-shadow: 0 0 0 2px #39e5b1;
+	-moz-box-shadow: 0 0 0 2px #39e5b1;
+	-o-box-shadow: 0 0 0 2px #39e5b1;
+}
+@mixin boxShadow {
+	box-shadow: 0 7px 11px 0 rgba(14, 16, 61, 0.1);
+	-webkit-box-shadow: 0 7px 11px 0 rgba(14, 16, 61, 0.1);
+	-moz-box-shadow: 0 7px 11px 0 rgba(14, 16, 61, 0.1);
+	-o-box-shadow: 0 7px 11px 0 rgba(14, 16, 61, 0.1);
+}
+@mixin boxShadowHeader {
+	box-shadow: 0 6px 10px 0 rgba(168, 168, 168, 0.5);
+	-webkit-box-shadow: 0 6px 10px 0 rgba(168, 168, 168, 0.5);
+	-moz-box-shadow: 0 6px 10px 0 rgba(168, 168, 168, 0.5);
+	-o-box-shadow: 0 6px 10px 0 rgba(168, 168, 168, 0.5);
+}

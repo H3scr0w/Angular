@@ -1,0 +1,73 @@
+<div class="mat-elevation-z8 my-4 mx-4 mw-mobile">
+  <div class="bg-header p-2 d-flex">
+    <span class="fa-stack fa-lg text-primary">
+      <i class="fas fa-circle fa-stack-1x fa-lg"></i>
+      <i class="fa fa-minus-square fa-stack-1x fa-sm text-white"></i>
+    </span>
+    <h2 class="text-white font-weight-bold pt-1">{{'common.menu.requests.header' | translate}}</h2>
+  </div>
+
+  <mat-expansion-panel [expanded]="true">
+    <form [formGroup]="requestCancellationForm" (ngSubmit)="applyAdvanceFilter()">
+      <div class="d-block p-2 bg-white">
+        <mat-form-field>
+          <input matInput formControlName="orderId" placeholder="{{'common.menu.requests.orderId' | translate}}"
+                 maxlength="15" (click)="disableInput('sgtSiteCode')"/>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput formControlName="sgtSiteCode" placeholder="{{'common.menu.requests.sgtSiteCode' | translate}}"
+                 maxlength="6" (click)="disableInput('orderId')"/>
+        </mat-form-field>
+
+      </div>
+      <mat-action-row>
+        <button type="button" class="mr-1" mat-raised-button color="primary"
+                (click)="resetAdvanceFilter()">{{'common.reset' | translate}} </button>
+        &nbsp;
+        <button type="submit" mat-raised-button color="primary">{{'common.apply' | translate}}</button>
+      </mat-action-row>
+    </form>
+  </mat-expansion-panel>
+
+  <table class="w-100" mat-table matSort [dataSource]="cancellationDTO" matSortActive="Id" matSortDisableClear
+         matSortDirection="desc">
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>{{'common.id' | translate}}</th>
+      <td mat-cell *matCellDef="let element"
+          [ngClass]="{'highlight': ( element?.allowCancellation)}"
+          class="text-break">{{ element.id }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="orderId">
+      <th mat-header-cell *matHeaderCellDef>{{'request.orderId' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break"
+          [ngClass]="{'highlight': element?.allowCancellation }">{{ element?.orderId }}
+        <span
+          *ngIf="!element?.allowCancellation &&  element?.status!=null && element?.status!='' && (element?.status==='Pending' || element?.status==='Done') ">is now
+        Cancelled[{{element?.status}}]</span>
+        <span
+          *ngIf="element?.allowCancellation && element?.deploymentStatus=='Accepted_carrier'">{{'request.cancellation.reject' | translate}}</span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>{{'common.actions' | translate}}</th>
+      <td mat-cell *matCellDef="let element;let i = index;"
+          [ngClass]="{'highlight': element?.allowCancellation }">
+        <span
+          *ngIf="((isAdmin || isPmUser || isOrderUser) && element?.allowCancellation && element?.deploymentStatus!='Accepted_carrier');"
+          (click)="cancelRequest(element)"
+          matTooltip="{{'common.menu.requests.header' | translate}}">
+          <i class="fas fa-edit p-1"></i>
+        </span>
+
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns"></tr>
+  </table>
+  <div *ngIf="isLoading" class="loading-shade">
+    <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+  </div>
+</div>

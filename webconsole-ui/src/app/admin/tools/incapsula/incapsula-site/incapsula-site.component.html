@@ -1,0 +1,23 @@
+<table class="w-100">
+  <mat-card [formGroup]="formGroup" class="mat-elevation-z8">
+    <mat-card-content>
+      <h2>Site</h2>
+      <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+        <textarea matInput placeholder="Site Ip Addresses" formControlName="siteIp"></textarea>
+        <mat-error *ngIf=" formGroup.get('siteIp')!.dirty && formGroup.get('siteIp')!.hasError('pattern')">
+          Please enter valid Site Ip Addresses
+        </mat-error>
+      </mat-form-field>
+      <mat-checkbox color="primary" labelPosition="before" formControlName="removeSSL">
+        Remove SSL
+      </mat-checkbox>
+    </mat-card-content>
+    <mat-card-actions class="text-center">
+      <button type="submit" mat-raised-button color="primary" (click)="confirm()" [disabled]="formGroup.pristine || formGroup.invalid">
+        <span>Add
+          <i *ngIf="saving" class="fas fa-circle-notch fa-spin"></i>
+        </span>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</table>

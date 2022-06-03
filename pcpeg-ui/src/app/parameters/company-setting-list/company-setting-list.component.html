@@ -1,0 +1,27 @@
+<div class="mat-elevation-z8 my-4 mx-4">
+  <div class="p-2 d-flex">
+    <h2 class="mr-auto font-weight-bold pt-1">{{'parameters.companies.header' | translate}}</h2>
+  </div>
+  <mat-card class="mx-2 pointer" *ngFor="let campaign of campaigns" (click)="goToCompanySettings(campaign)">
+    <mat-card-header>
+      <mat-card-title class="p-2 d-flex flex-row">
+        <div>
+          <i *ngIf="campaign?.statutId === 1" class="far fa-circle fa-lg text-secondary" matTooltip="{{'common.todo' | translate}}"></i>
+          <i *ngIf="campaign?.statutId === 2 || campaign?.statutId === 3" class="fas fa-spinner fa-lg text-info" matTooltip="{{'common.pending' | translate}}"></i>
+          <i *ngIf="campaign?.statutId === 4" class="fas fa-check-circle fa-lg text-success" matTooltip="{{'common.validated' | translate}}"></i>
+        </div>
+        <div class="flex-fill flex-grow-1 company-name">
+          {{campaign?.codeSif}} - {{campaign?.societeLibelle}}
+        </div>
+        <div>
+          <i class="fas fa-arrow-right fa-lg text-info"></i>
+        </div>
+      </mat-card-title>
+    </mat-card-header>
+  </mat-card>
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="pageSize" [pageIndex]="pageIndex" [length]="totalElements"
+    showFirstLastButtons></mat-paginator>
+  <div *ngIf="isLoading" class="loading-shade">
+    <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+  </div>
+</div>

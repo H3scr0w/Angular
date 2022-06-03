@@ -1,0 +1,28 @@
+html {
+  margin: 0;
+  padding: 0;
+  background-image: linear-gradient(to bottom, #fefefe, #ddd);
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+
+  * {
+    font-family: 'Ubuntu-Bold', Verdana, Arial, Helvetica, sans-serif;
+  }
+}
+
+p {
+  text-align: justify;
+  margin: 20px 20px;
+  color: white;
+  font-family: 'Ubuntu', Verdana, Arial, Helvetica, sans-serif;
+  white-space: pre-line;
+}
+
+.orange {
+  color: #ff582b;
+}

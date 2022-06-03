@@ -1,0 +1,46 @@
+<form [formGroup]="formGroup">
+  <h3 mat-dialog-title *ngIf="data.certificate">Edit Certificate</h3>
+  <h3 mat-dialog-title *ngIf="!data.certificate">Add Certificate</h3>
+  <mat-dialog-content>
+    <span *ngIf="data.certificate">Certificate ID: {{ data.certificate.code }}</span>
+    <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+      <input matInput placeholder="Code" name="code" formControlName="code" required [readonly]="!!data.certificate" />
+    </mat-form-field>
+
+    <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+      <input matInput placeholder="Name" name="name" formControlName="name" required />
+    </mat-form-field>
+
+    <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+      <input matInput [type]="hidePassword ? 'password' : 'text'" placeholder="Passphrase" name="passphrase" formControlName="passphrase" />
+      <button mat-icon-button matSuffix color="primary" (click)="hidePassword = !hidePassword">
+        <i *ngIf="hidePassword" class="fas fa-eye-slash"></i>
+        <i *ngIf="!hidePassword" class="fas fa-eye"></i>
+      </button>
+    </mat-form-field>
+
+    <div class="flex-column d-inline-flex">
+      <button type="button" mat-raised-button class="m-1" color="primary" (click)="certFileInput.click()"><i class="fas fa-plus p-1"></i>Certificate File</button>
+      <input hidden type="file" #certFileInput (change)="selectFile(true, $event)" />
+      <label class="ml-2 text-primary"> {{ certFileName }} </label>
+
+      <button type="button" mat-raised-button class="m-1" color="primary" (click)="keyFileInput.click()"><i class="fas fa-plus p-1"></i>Private Key File</button>
+      <input hidden type="file" #keyFileInput (change)="selectFile(false, $event)" />
+      <label class="ml-2 text-primary"> {{ keyFileName }} </label>
+    </div>
+
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button type="button" mat-raised-button color="primary" (click)="cancel()">
+      Cancel
+    </button>
+    <button type="submit" mat-raised-button color="primary" (click)="confirm()" [disabled]="formGroup.pristine || formGroup.invalid">
+      <span *ngIf="data.certificate">Edit
+        <i *ngIf="saving" class="fas fa-circle-notch fa-spin"></i>
+      </span>
+      <span *ngIf="!data.certificate">Add
+        <i *ngIf="saving" class="fas fa-circle-notch fa-spin"></i>
+      </span>
+    </button>
+  </mat-dialog-actions>
+</form>

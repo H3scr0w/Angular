@@ -1,0 +1,14 @@
+<table class="w-100  mb-6" >
+  <mat-tab-group mat-align-tabs="center" dynamicHeight>
+    <mat-tab label="Block Specific Sources">
+      <ng-template matTabContent>
+        <stgo-acls-block [domain]="domain" [aclsConf]="aclsConf" [isAdmin]="isAdmin"></stgo-acls-block>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Whitelist Specific Sources">
+      <ng-template matTabContent>
+        <stgo-acls-whitelist [domain]="domain" [aclsConf]="aclsConf" [isAdmin]="isAdmin"></stgo-acls-whitelist>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+</table>

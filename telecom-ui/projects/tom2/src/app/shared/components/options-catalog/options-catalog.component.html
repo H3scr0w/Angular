@@ -1,0 +1,26 @@
+<div *ngIf="dynamicControls && dynamicControls.length > 0" class="m-3">
+  <form [formGroup]="catalogOptionsForm">
+    <div class="m-3">
+      <ng-container *ngFor="let control of dynamicControls;">
+        <div [ngSwitch]="control.controlType">
+          <mat-form-field>
+            <div *ngSwitchCase="'textbox'">
+              <input matInput [formControlName]="control?.key" [placeholder]="control?.label"
+                [type]="control?.controlType" [readonly]="isReadOnly" />
+            </div>
+            <div *ngSwitchCase="'stgoNumber'">
+              <div *ngIf="isReadOnly">
+                <input matInput [formControlName]="control?.key" [placeholder]="control?.label"
+                  [readonly]="isReadOnly" />
+              </div>
+              <div *ngIf="!isReadOnly">
+                <input matInput [formControlName]="control?.key" [placeholder]="control?.label" stgoNumberOnly
+                  [scale]="control?.scale" [precision]="control?.precision" />
+              </div>
+            </div>
+          </mat-form-field>
+        </div>
+      </ng-container>
+    </div>
+  </form>
+</div>

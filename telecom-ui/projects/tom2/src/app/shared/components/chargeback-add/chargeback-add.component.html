@@ -1,0 +1,24 @@
+<form [formGroup]="chargebackAddForm" (ngSubmit)="addChargeback()">
+  <h1 mat-dialog-title>
+    {{'chargeback.add.title' | translate}}</h1>
+
+  <mat-dialog-content>
+    <mat-form-field>
+      <input matInput formControlName="label" placeholder="{{'chargeback.name' | translate}}" required/>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput formControlName="sapAccount" placeholder="{{'chargeback.sapCode' | translate}}" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput formControlName="sif" placeholder="{{'chargeback.sifCode' | translate}}" />
+    </mat-form-field>
+
+  </mat-dialog-content>
+
+  <div mat-dialog-actions align="center">
+    <button type="submit" mat-raised-button color="primary" [disabled]="chargebackAddForm.invalid">{{'common.save' | translate}}</button>
+    <button type="button" mat-raised-button (click)="onNoClick()">{{'common.close' | translate}}</button>
+  </div>
+</form>

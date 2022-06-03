@@ -1,0 +1,53 @@
+
+<ngx-spinner class="spinner-container"></ngx-spinner>
+<div id="banner" class="banner">
+  <div class="container">
+    <h1>{{ 'common.nomOutil' | translate}} <span class="title" [innerHTML]="'home.title' | translate"></span></h1>
+    <h2>{{ 'home.subtitle' | translate}}</h2>
+  </div>
+</div>
+<div class="content">
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="row justify-content-center content-card">
+          <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+            <a [routerLink]="['/usufruit']">
+              <div class="card">
+                <div>
+                <img id="usufruit" src="/assets/images/ic_tool_usufruit_off.svg" class="card-img-top img-off" alt="">
+                <img id="usufruit" src="/assets/images/ic_tool_usufruit_on.svg" class="card-img-top img-on" alt="">
+                </div>
+                <div class="card-body">
+                  <h3>{{ 'common.usufruitEconomique' | translate}}</h3>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+            <a [routerLink]="['/rente-viagere']">
+              <div class="card single-line">
+                <img id="viager" src="/assets/images/ic_tool_viager_off.svg" class="card-img-top img-off" alt="">
+                <img id="viager" src="/assets/images/ic_tool_viager_on.svg" class="card-img-top img-on" alt="">
+                <div class="card-body">
+                  <h3>{{ 'common.renteViagere' | translate}}</h3>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+            <a [routerLink]="['/pret']">
+              <div class="card single-line">
+                <img id="pret" src="/assets/images/ic_tool_pret_off.svg" class="card-img-top img-off" alt="">
+                <img id="pret" src="/assets/images/ic_tool_pret_on.svg" class="card-img-top img-on" alt="">
+                <div class="card-body">
+                  <h3>{{ 'common.prêtRefinancementPret' | translate}}</h3>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

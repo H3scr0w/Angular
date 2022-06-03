@@ -1,0 +1,223 @@
+<div>
+  <form [formGroup]="financialInfoForm">
+    <div>
+      <div class="row m-3">
+        <div class="col s6">
+          <h4>{{'financial.information.setupCosts' | translate}}</h4>
+        </div>
+        <div class="col s6">
+          <h4>{{'financial.information.monthlyCosts' | translate}}</h4>
+        </div>
+      </div>
+      <mat-card class="m-3">
+        <mat-card-header>
+          <mat-card-title>
+            <small>{{'financial.information.mainService' | translate}}</small>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="row m-3">
+            <div class="col s6">
+              <mat-form-field>
+                <input matInput formControlName="setupMainLlCost"
+                  placeholder="{{'financial.info.service.accessLocalLoop' | translate}}" stgoNumberOnly scale="2" defaultValue=""
+                  [readonly]="isReadOnly" />
+              </mat-form-field>
+
+              <mat-form-field>
+                <input matInput formControlName="setupMainIpPortCost"
+                  placeholder="{{'financial.info.service.ipPort' | translate}}" stgoNumberOnly scale="2" defaultValue=""
+                  [readonly]="isReadOnly" />
+              </mat-form-field>
+
+              <mat-form-field>
+                <input matInput formControlName="setupMainCpeCost"
+                  placeholder="{{'financial.info.service.router' | translate}}" stgoNumberOnly scale="2" defaultValue=""
+                  [readonly]="isReadOnly" />
+              </mat-form-field>
+            </div>
+            <div class="col s6">
+              <mat-form-field>
+                <input matInput formControlName="monthlyMainLlCost"
+                  placeholder="{{'financial.info.service.accessLocalLoop' | translate}}" stgoNumberOnly scale="2" defaultValue=""
+                  [readonly]="isReadOnly" />
+              </mat-form-field>
+
+              <mat-form-field>
+                <input matInput formControlName="monthlyMainIpPortCost"
+                  placeholder="{{'financial.info.service.ipPort' | translate}}" stgoNumberOnly scale="2" defaultValue=""
+                  [readonly]="isReadOnly" />
+              </mat-form-field>
+
+              <mat-form-field>
+                <input matInput formControlName="monthlyMainCpeCost"
+                  placeholder="{{'financial.info.service.router' | translate}}" stgoNumberOnly scale="2" defaultValue=""
+                  [readonly]="isReadOnly" />
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="m-3">
+        <mat-card-header>
+          <mat-card-title>
+            <small>{{'financial.information.backupService' | translate}}</small>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="row m-3">
+            <div class="col s6">
+              <mat-form-field>
+                <input matInput formControlName="setupBackupLlCost"
+                  placeholder="{{'financial.info.service.accessLocalLoop' | translate}}" stgoNumberOnly scale="2" defaultValue=""
+                  [readonly]="isReadOnly" />
+              </mat-form-field>
+
+              <mat-form-field>
+                <input matInput formControlName="setupBackupIpPortCost"
+                  placeholder="{{'financial.info.service.ipPort' | translate}}" stgoNumberOnly scale="2" defaultValue=""
+                  [readonly]="isReadOnly" />
+              </mat-form-field>
+
+              <mat-form-field>
+                <input matInput formControlName="setupBackupCpeCost"
+                  placeholder="{{'financial.info.service.router' | translate}}" stgoNumberOnly scale="2" defaultValue=""
+                  [readonly]="isReadOnly" />
+              </mat-form-field>
+            </div>
+            <div class="col s6">
+              <mat-form-field>
+                <input matInput formControlName="monthlyBackupLlCost"
+                  placeholder="{{'financial.info.service.accessLocalLoop' | translate}}" stgoNumberOnly scale="2" defaultValue=""
+                  [readonly]="isReadOnly" />
+              </mat-form-field>
+
+              <mat-form-field>
+                <input matInput formControlName="monthlyBackupIpPortCost"
+                  placeholder="{{'financial.info.service.ipPort' | translate}}" stgoNumberOnly scale="2" defaultValue=""
+                  [readonly]="isReadOnly" />
+              </mat-form-field>
+
+              <mat-form-field>
+                <input matInput formControlName="monthlyBackupCpeCost"
+                  placeholder="{{'financial.info.service.router' | translate}}" stgoNumberOnly scale="2" defaultValue=""
+                  [readonly]="isReadOnly" />
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="m-3" *ngIf="finInfoCatalogOptions && finInfoCatalogOptions.length > 0">
+        <mat-card-header>
+          <mat-card-title>
+            <small>{{'financial.information.optionsCatalog' | translate}}</small>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="row">
+            <div class="col s6">
+              <stgo-options-catalog [dynamicControls]="catalogOptionsSetupControls" [isReadOnly]="isReadOnly"
+                (catalogOptionChanged)="catalogOptionSetupCostChanged($event)">
+              </stgo-options-catalog>
+            </div>
+            <div class="col s6">
+              <stgo-options-catalog [dynamicControls]="catalogOptionsMonthlyControls" [isReadOnly]="isReadOnly"
+                (catalogOptionChanged)="catalogOptionMonthlyCostChanged($event)">
+              </stgo-options-catalog>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="m-3">
+        <mat-card-header>
+          <mat-card-title>
+            <small>{{'common.total' | translate}}</small>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="row m-3">
+            <div class="col s6">
+              <mat-form-field>
+                <input matInput formControlName="setupTotalCost"
+                  placeholder="{{'financial.information.setupTotal' | translate}}" stgoNumberOnly scale="2"
+                  [readonly]="true" />
+              </mat-form-field>
+
+              <mat-form-field>
+                <input matInput formControlName="setupOtherDiscount"
+                  placeholder="{{'financial.information.discountRate' | translate}}" stgoNumberOnly scale="2"
+                  [readonly]="true" />
+                <span matSuffix>%</span>
+              </mat-form-field>
+
+              <mat-form-field>
+                <input matInput formControlName="setupTotalCostAfterDiscount"
+                  placeholder="{{'financial.information.setupTotalAfterDiscount' | translate}}" stgoNumberOnly scale="2"
+                  [readonly]="true" />
+              </mat-form-field>
+
+              <mat-form-field>
+                <input matInput formControlName="setupTotalCostTaxes"
+                  placeholder="{{'financial.information.setupTotalIncludingTaxes' | translate}}" stgoNumberOnly
+                  scale="2"  precision="30" />
+              </mat-form-field>
+
+              <mat-form-field>
+                <input matInput formControlName="currency" placeholder="{{'common.currency' | translate}}"
+                  [readonly]="isReadOnly" required maxlength="3" pattern="^[A-Z]{3}$" />
+
+                <mat-error align=" right" *ngIf="hasError('currency', 'required')">
+                  {{'common.validation.required.message' | translate}}</mat-error>
+
+                <mat-error align=" right" *ngIf="hasError('currency', 'pattern')">
+                  {{ 'common.validation.pattern.message' | translate}}
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field>
+                <textarea matInput formControlName="setupComments" [readonly]="isReadOnly"
+                  placeholder="{{'financial.information.commentsOnSetupCost' | translate}}"
+                  cdkTextareaAutosize></textarea>
+              </mat-form-field>
+            </div>
+            <div class="col s6">
+              <mat-form-field>
+                <input matInput formControlName="monthlyTotalCost"
+                  placeholder="{{'financial.information.monthlyRentalTotal' | translate}}" stgoNumberOnly scale="2"
+                  [readonly]="true" />
+              </mat-form-field>
+
+              <mat-form-field>
+                <input matInput formControlName="monthlyOtherDiscount"
+                  placeholder="{{'financial.information.monthlyDiscountRate' | translate}}" stgoNumberOnly scale="2"
+                  [readonly]="true" />
+                <span matSuffix>%</span>
+              </mat-form-field>
+
+              <mat-form-field>
+                <input matInput formControlName="monthlyTotalCostAfterDiscount"
+                  placeholder="{{'financial.information.monthlyRentalTotalAfterDiscount' | translate}}" stgoNumberOnly
+                  scale="2" [readonly]="true" />
+              </mat-form-field>
+
+              <mat-form-field>
+                <input matInput formControlName="monthlyTotalCostTaxes"
+                  placeholder="{{'financial.information.monthlyRentalTotalIncludingTaxes' | translate}}" stgoNumberOnly
+                  scale="2" precision="30" />
+              </mat-form-field>
+
+              <mat-form-field>
+                <textarea matInput formControlName="monthlyComments" [readonly]="isReadOnly"
+                  placeholder="{{'financial.information.commentsOnMonthlyRentalCost' | translate}}"
+                  cdkTextareaAutosize></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </form>
+</div>

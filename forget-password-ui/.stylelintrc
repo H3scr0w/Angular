@@ -1,0 +1,44 @@
+{
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-recommended-scss"
+  ],
+  "rules": {
+    "function-url-quotes": [
+      "always",
+      {
+        "except": [
+          "empty"
+        ]
+      }
+    ],
+    "selector-attribute-quotes": "always",
+    "string-quotes": "single",
+    "max-nesting-depth": 3,
+    "selector-max-compound-selectors": 3,
+    "no-empty-source": null,
+    "selector-class-pattern": "[a-z-]+",
+    "selector-id-pattern": "[a-z-]+",
+    "selector-max-universal": 1,
+    "selector-pseudo-element-no-unknown": [
+      true,
+      {
+        "ignorePseudoElements": [
+          "ng-deep"
+        ]
+      }
+    ],
+    "unit-whitelist": [
+      "px",
+      "%",
+      "rem",
+      "vw",
+      "vh",
+      "deg",
+      "s"
+    ],
+    "max-empty-lines": 2,
+    "max-line-length": 120,
+    "selector-pseudo-element-colon-notation": "single"
+  }
+}

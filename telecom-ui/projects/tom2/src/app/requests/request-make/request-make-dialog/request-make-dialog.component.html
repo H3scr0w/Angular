@@ -1,0 +1,422 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading || isITManagerLoading || isPreviousOrderLoading">
+</mat-progress-bar>
+
+<form [formGroup]="requestForm" autocomplete="off">
+  <h1 mat-dialog-title>
+    {{'request.make.dialogTitle' | translate}}</h1>
+  <mat-dialog-content>
+    <mat-accordion multi="true">
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h4> {{'request.make.requestInformation' | translate}}</h4>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div>
+          <div class="row m-3">
+            <div class="col-md-6">
+
+              <mat-expansion-panel [expanded]="true">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <h4> {{'common.reference' | translate}}</h4>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <mat-form-field *ngIf="data?.request?.id > 0">
+                  <input matInput formControlName="requestId" placeholder="{{'request.requestId' | translate}}"
+                    [readonly]="true" />
+                </mat-form-field>
+
+                <ng-select [items]="requestTypes" bindLabel="name" bindValue="id"
+                  placeholder="{{'request.make.requestType' | translate}}*" [searchable]="false"
+                  dropdownPosition="bottom" formControlName="requestType" appendTo="body" [selectOnTab]="true" required
+                  [readonly]="true">
+                  <ng-template ng-label-tmp let-item="item">
+                    <span *ngIf="item">{{item.name}}</span>
+                  </ng-template>
+                </ng-select>
+                <small align="right" class="mat-error" *ngIf="hasError('requestType', 'required')">
+                  {{'common.validation.required.message' | translate}}
+                </small>
+
+                <ng-select [items]="statuses" bindLabel="name" bindValue="id"
+                  placeholder="{{'common.status' | translate}}*" [searchable]="true" dropdownPosition="bottom"
+                  [openOnEnter]="false" formControlName="requestStatus" appendTo="body" [selectOnTab]="true" required
+                  [readonly]="true">
+                  <ng-template ng-label-tmp let-item="item">
+                    <span *ngIf="item"> {{item?.name}}</span>
+                  </ng-template>
+                </ng-select>
+                <small align="right" class="mat-error" *ngIf="hasError('requestStatus', 'required')">
+                  {{'common.validation.required.message' | translate}}
+                </small>
+
+                <ng-select [items]="priorities" bindLabel="value" bindValue="key"
+                  placeholder="{{'common.priority' | translate}}*" [searchable]="true" dropdownPosition="bottom"
+                  [openOnEnter]="false" formControlName="priority" appendTo="body" [selectOnTab]="true" required>
+                  <ng-template ng-label-tmp let-item="item">
+                    <span *ngIf="item"> {{item?.value}}</span>
+                  </ng-template>
+                </ng-select>
+                <small align="right" class="mat-error" *ngIf="hasError('priority', 'required')">
+                  {{'common.validation.required.message' | translate}}
+                </small>
+
+                <mat-form-field>
+                  <input matInput formControlName="requestedBy" placeholder="{{'common.requestedBy' | translate}}"
+                    [readonly]="true" />
+                </mat-form-field>
+
+                <mat-form-field>
+                  <input matInput formControlName="creationDate" placeholder="{{'common.creationDate' | translate}}"
+                    [readonly]="true" />
+                </mat-form-field>
+
+                <mat-form-field>
+                  <input matInput formControlName="lastUpdateBy" placeholder="{{'common.lastUpdateBy' | translate}}"
+                    [readonly]="true" />
+                </mat-form-field>
+
+                <mat-form-field>
+                  <input matInput formControlName="lastUpdate" placeholder="{{'common.lastUpdate' | translate}}"
+                    [readonly]="true" />
+                </mat-form-field>
+
+              </mat-expansion-panel>
+
+            </div>
+            <div class="col-md-6">
+              <mat-expansion-panel [expanded]="true">
+
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <h4> {{'common.followup' | translate}}</h4>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div *ngIf="showFollowupFullSection">
+                  <mat-slide-toggle formControlName="autoValidationOnOperator" color="primary">
+                    {{'request.make.autoValidationOnOperator' | translate}}
+                  </mat-slide-toggle>
+
+                  <ng-select *ngIf="showEligibilityField" [items]="eligibilityResponses" bindLabel="name" bindValue="id"
+                    placeholder="{{'request.make.eligibilityResponse' | translate}}" [searchable]="false"
+                    dropdownPosition="bottom" formControlName="eligibilityResponse" appendTo="body"
+                    [selectOnTab]="true">
+                    <ng-template ng-label-tmp let-item="item">
+                      <span *ngIf="item">{{item.name}}</span>
+                    </ng-template>
+                  </ng-select>
+
+                  <mat-form-field>
+                    <input matInput formControlName="operatorSDate" [matDatepicker]="pickerOperatorSDate"
+                      placeholder="{{'request.make.sendingOperatorDate' | translate}}" readonly />
+                    <mat-datepicker-toggle matSuffix [for]="pickerOperatorSDate"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerOperatorSDate></mat-datepicker>
+                    <button type="button" mat-button *ngIf="requestForm.get('operatorSDate').value" matSuffix
+                      mat-icon-button aria-label="Clear" (click)="requestForm.get('operatorSDate').setValue('')">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </mat-form-field>
+
+                  <mat-form-field>
+                    <input matInput formControlName="operatorRDate" [matDatepicker]="pickerOperatorRDate"
+                      placeholder="{{'request.make.dateOfOperatorResponse' | translate}}" readonly />
+                    <mat-datepicker-toggle matSuffix [for]="pickerOperatorRDate"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerOperatorRDate></mat-datepicker>
+                    <button type="button" mat-button *ngIf="requestForm.get('operatorRDate').value" matSuffix
+                      mat-icon-button aria-label="Clear" (click)="requestForm.get('operatorRDate').setValue('')">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </mat-form-field>
+                </div>
+                <mat-form-field>
+                  <textarea matInput formControlName="comments" placeholder="{{'common.comment' | translate}}"
+                    cdkTextareaAutosize></textarea>
+                </mat-form-field>
+
+                <mat-form-field>
+                  <input matInput formControlName="itManager" placeholder="{{'request.make.itManager' | translate}}"
+                    [readonly]="true" />
+                </mat-form-field>
+
+                <mat-slide-toggle formControlName="sendNotificationToITManager" color="primary">
+                  {{'request.make.sendNotificationToITManager' | translate}}
+                </mat-slide-toggle>
+              </mat-expansion-panel>
+            </div>
+          </div>
+          <div class="row m-3">
+            <div class="col-md-6">
+              <mat-expansion-panel [expanded]="true">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <h4>{{'common.site' | translate}} </h4>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <stgo-site-info [siteCurrent]="siteInfo" [isReset]="isSiteReset" (siteChanged)="siteChanged($event)"
+                  (pstnChanged)="pstnChanged($event)"></stgo-site-info>
+              </mat-expansion-panel>
+            </div>
+            <div class="col-md-6">
+              <mat-expansion-panel [expanded]="true">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <h4> {{'request.make.mandatoryInfoToPlaceOrder' | translate}}</h4>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <ng-select [items]="managementModes" bindLabel="value" bindValue="key"
+                  placeholder="{{'request.make.managementMode' | translate}}*" [searchable]="true"
+                  dropdownPosition="bottom" [openOnEnter]="false" formControlName="managementMode" appendTo="body"
+                  [selectOnTab]="true" required>
+                  <ng-template ng-label-tmp let-item="item">
+                    <span *ngIf="item"> {{item?.value}}</span>
+                  </ng-template>
+                </ng-select>
+                <small align="right" class="mat-error" *ngIf="hasError('managementMode', 'required')">
+                  {{'common.validation.required.message' | translate}}
+                </small>
+
+                <mat-form-field>
+                  <input matInput formControlName="customerRequestedDate" [matDatepicker]="pickerCustomerRequestedDate"
+                    placeholder="{{'request.make.customerRequestedDate' | translate}}" readonly
+                    [required]="isCRDRequired" (dateChange)="onCRDChange('change', $event)" />
+                  <mat-datepicker-toggle matSuffix [for]="pickerCustomerRequestedDate"></mat-datepicker-toggle>
+                  <mat-datepicker #pickerCustomerRequestedDate></mat-datepicker>
+                  <button type="button" mat-button *ngIf="requestForm.get('customerRequestedDate').value" matSuffix
+                    mat-icon-button aria-label="Clear" (click)="requestForm.get('customerRequestedDate').setValue('')">
+                    <i class="fas fa-times"></i>
+                  </button>
+                  <mat-error align="right" *ngIf="hasError('customerRequestedDate', 'required')">
+                    {{'common.validation.required.message' | translate}}
+                  </mat-error>
+                </mat-form-field>
+
+                <ng-select [items]="actions | async" bindLabel="value" placeholder="{{'common.actions' | translate}}*"
+                  [searchable]="true" dropdownPosition="bottom" [openOnEnter]="false" formControlName="action"
+                  appendTo="body" [selectOnTab]="true" required [readonly]="isTermination">
+                  <ng-template ng-label-tmp let-item="item">
+                    <span *ngIf="item"> {{item?.value}}</span>
+                  </ng-template>
+                </ng-select>
+                <small align="right" class="mat-error" *ngIf="hasError('action', 'required')">
+                  {{'common.validation.required.message' | translate}}
+                </small>
+
+                <mat-slide-toggle class="mb-1" *ngIf="showReplacementClause" color="primary"
+                  formControlName="replacementClause">
+                  {{'order.make.replacementClause' | translate}}
+                </mat-slide-toggle>
+
+                <ng-select [items]="networks" [typeahead]="inputNetwork" bindLabel="name"
+                  placeholder="{{'Network' | translate}}*" [searchable]="true" dropdownPosition="bottom"
+                  [openOnEnter]="false" formControlName="network" appendTo="body" [selectOnTab]="true"
+                  (change)="onNetworkSelected($any($event))" required>
+                  <ng-template ng-label-tmp let-item="item">
+                    <span *ngIf="item"> {{item?.name}}</span>
+                  </ng-template>
+                </ng-select>
+                <small align="right" class="mat-error" *ngIf="hasError('network', 'required')">
+                  {{'common.validation.required.message' | translate}}
+                </small>
+
+                <ng-select [items]="services" bindLabel="value" bindValue="key"
+                  placeholder="{{'common.service' | translate}}*" [searchable]="true" dropdownPosition="bottom"
+                  (change)="onServiceNumberSelected($any($event))" [openOnEnter]="false" formControlName="serviceNumber"
+                  appendTo="body" [selectOnTab]="true" required>
+                  <ng-template ng-label-tmp let-item="item">
+                    <span *ngIf="item"> {{item?.value}}</span>
+                  </ng-template>
+                </ng-select>
+                <small align="right" class="mat-error" *ngIf="hasError('serviceNumber', 'required')">
+                  {{'common.validation.required.message' | translate}}
+                </small>
+
+                <ng-select [items]="acns" bindLabel="acn" placeholder="{{'acnparameter.acn' | translate}}*"
+                  [searchable]="true" dropdownPosition="bottom" [openOnEnter]="false" formControlName="acnParameter"
+                  appendTo="body" [selectOnTab]="true" (change)="onACNSelected($any($event))" required>
+                  <ng-template ng-label-tmp let-item="item">
+                    <span *ngIf="item"> {{item?.acn}}</span>
+                  </ng-template>
+                </ng-select>
+                <small align="right" class="mat-error" *ngIf="hasError('acnParameter', 'required')">
+                  {{'common.validation.required.message' | translate}}
+                </small>
+
+                <mat-form-field>
+                  <input matInput formControlName="previousOrderId"
+                    placeholder="{{'request.make.prevOrderId' | translate}}" [readonly]="true" />
+                </mat-form-field>
+
+              </mat-expansion-panel>
+            </div>
+          </div>
+          <div class="row m-3">
+            <div class="col-md-12">
+              <mat-expansion-panel [expanded]="true">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <h4> {{'request.make.chargeBack' | translate}}</h4>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="mb-3">
+                  <mat-chip-list>
+                    <mat-chip>{{'request.make.multipleChargeback.message' | translate}}</mat-chip>
+                  </mat-chip-list>
+                </div>
+                <mat-form-field>
+                  <input matInput formControlName="selectedChargeback"
+                    placeholder="{{'request.make.chargeBackSelected' | translate}}" [readonly]="true" required />
+
+                  <mat-error align=" right" *ngIf="hasError('selectedChargeback', 'required')">
+                    {{'common.validation.required.message' | translate}}
+                  </mat-error>
+                </mat-form-field>
+                <div class="d-block p-2 text-right">
+                  <button class="mr-1" mat-mini-fab color="primary" (click)="onChargebackSearchClick()"
+                    matTooltip="{{'request.make.searchChargeBack' | translate}}">
+                    <i class="fas fa-search"></i>
+                  </button>
+                  <button class="mr-1" mat-mini-fab color="primary" (click)="onChargebackCreateClick()"
+                    matTooltip="{{'request.make.createChargeBack' | translate}}">
+                    <i class="fas fa-plus"></i>
+                  </button>
+                </div>
+              </mat-expansion-panel>
+            </div>
+          </div>
+        </div>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h4> {{'installation.contact.title' | translate}}</h4>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div>
+          <div class="row m-3">
+            <div class="col-md-6">
+              <mat-expansion-panel [expanded]="true">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <h4> {{'installation.contact.contact1' | translate}}</h4>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <stgo-contact-selector [contactCurrent]="installationContact1"
+                  (contactChanged)="installationContact1Changed($event)"></stgo-contact-selector>
+              </mat-expansion-panel>
+            </div>
+            <div class="col-md-6">
+              <mat-expansion-panel [expanded]="true">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <h4> {{'installation.contact.contact2' | translate}}</h4>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <stgo-contact-selector [contactCurrent]="installationContact2"
+                  (contactChanged)="installationContact2Changed($event)"></stgo-contact-selector>
+              </mat-expansion-panel>
+            </div>
+          </div>
+        </div>
+        <div class="text-center">
+          <button type="button" mat-raised-button color="primary"
+            [disabled]="!(selectedNetwork && selectedNetwork.id && siteInfo && siteInfo.siteCode)"
+            (click)="getContactsFromSPO('primary')">{{'request.make.contact.getFromSPO' | translate}}</button>
+        </div>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h4> {{'telecom.service.detail.title' | translate}}</h4>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <stgo-telecom-service-details [telecomServiceDetailCurrent]="telecomServiceDetailCurrent"
+          [catalogId]="catalogId" [requestId]="data?.request?.id"
+          [isOperatorReadOnly]="isServiceFieldsReadOnly" [isReadOnly]="isServiceFieldsReadOnly"
+          (telecomServiceDetailChanged)="telecomServiceDetailChanged($event)">
+        </stgo-telecom-service-details>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel *ngIf="showISPSection">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h4> {{'isp.info.title' | translate}}</h4>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <stgo-isp-information [ispInfo]="ispInfo" [showISPSave]="showISPSave" (ispInfoChanged)="ispInfoChanged($event)">
+        </stgo-isp-information>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h4> {{'sla.info.title' | translate}}</h4>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <stgo-sla-information [slaInfoCurrent]="slaInfo" (slaInfoChanged)="slaInfoChanged($event)">
+        </stgo-sla-information>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel *ngIf="catalogInfoItemsControls && catalogInfoItemsControls.length > 0">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h4> {{'information.item.title' | translate}}</h4>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <stgo-information-items [dynamicControls]="catalogInfoItemsControls"
+          (infoItemsChanged)="infoItemsChanged($event)"></stgo-information-items>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel *ngIf="operatorFields && operatorFields.length > 0">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h4> {{'operator.info.title' | translate}}</h4>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <stgo-operator-information [dynamicControls]="operatorFields"
+          (operatorInfoChanged)="operatorInfoChanged($event)"></stgo-operator-information>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h4> {{'financial.information.title' | translate}}</h4>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <stgo-financial-information [finInfoCurrent]="financialInformation" [finInfoCatalogOptions]="catalogOptions"
+          [catalogId]="catalogId" [isReadOnly]="isServiceFieldsReadOnly" (finInfoChanged)="finInfoChanged($event)"
+          (setupCatalogOptionsChanged)="setupCatalogOptionsChanged($event)"
+          (monthlyCatalogOptionsChanged)="monthlyCatalogOptionsChanged($event)">
+        </stgo-financial-information>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </mat-dialog-content>
+  <mat-dialog-actions class="d-block p-10 text-center mb-2 mt-4">
+    <button [disabled]="isLoading|| isITManagerLoading || isPreviousOrderLoading"
+      *ngIf="showMainAction && (isAdmin || isOrderUser || isRequesterUser || isPMUser)" type="button" mat-raised-button
+      class="mr-2" color="primary" [matMenuTriggerFor]="menuAction">{{ 'common.actions' | translate}}</button>
+    <mat-menu #menuAction="matMenu" yPosition="above">
+      <button color="primary" mat-menu-item
+        *ngIf="showServiceChange && (isAdmin || isOrderUser || isRequesterUser || isPMUser)"
+        (click)="selectTelecomService()">{{ 'order.make.selectTelecomService' | translate}}</button>
+      <button *ngIf="showServiceFreeFill && isServiceFieldsReadOnly" color="primary" mat-menu-item
+        (click)="onServiceFreeFillChanged()">{{ 'request.make.serviceFreeFill' | translate}}</button>
+     <button *ngIf="showOrderThisRequest && (isAdmin || isOrderUser)" mat-menu-item
+        (click)="orderThisRequest()">{{ 'request.make.orderThisRequest' | translate}}</button>
+      <button *ngIf="showValidateToOrder && (isAdmin || isOrderUser || isRequesterUser || isPMUser)" mat-menu-item
+        (click)="validateToOrder()">{{ 'request.make.validateToOrder' | translate}}</button>
+      <button *ngIf="showCancel && (isAdmin || isOrderUser || isRequesterUser || isPMUser)" mat-menu-item
+        (click)="cancelRequest()">{{ 'common.cancel' | translate}}</button>
+      <button *ngIf="showSendCSV && (isAdmin || isOrderUser || isRequesterUser || isPMUser)" mat-menu-item
+        (click)="sendCSVToOperator()">{{'order.followup.csvFileSendToOperator' | translate}}</button>
+      <button *ngIf="showSave && (isAdmin || isOrderUser || isRequesterUser || isPMUser)" mat-menu-item
+        (click)="onSubmit(false, false, false, false)">{{'common.save' | translate}}</button>
+    </mat-menu>
+    <button type="button" mat-raised-button (click)="onNoClick()">{{'common.close' | translate}}</button>
+  </mat-dialog-actions>
+
+</form>

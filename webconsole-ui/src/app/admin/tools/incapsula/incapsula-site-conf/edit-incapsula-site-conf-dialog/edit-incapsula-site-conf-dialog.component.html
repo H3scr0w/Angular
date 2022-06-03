@@ -1,0 +1,28 @@
+<div class="w-100 h-100" [formGroup]="formGroup">
+  <h3 mat-dialog-title>Configure Site</h3>
+  <div mat-dialog-content>
+    <span>Site ID: {{ data.domainCode }}</span>
+    <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+      <textarea matInput placeholder="Site Ip Addresses* (e.g: 8.8.8.8)" formControlName="siteIp"></textarea>
+      <mat-error *ngIf="formGroup.get('siteIp')!.dirty && formGroup.get('siteIp')!.hasError('pattern')">
+        Please enter valid Site Ip Addresses
+      </mat-error>
+      <mat-error *ngIf="formGroup.get('siteIp')!.hasError('required')">
+          Please type at least one Ip Address
+      </mat-error>
+    </mat-form-field>
+    <mat-checkbox color="primary" labelPosition="before" formControlName="removeSSL">
+      Remove SSL
+    </mat-checkbox>
+  </div>
+  <div class="float-right mt-3">
+    <button type="button" mat-raised-button color="primary" (click)="cancel()" class="mr-1">
+      Cancel
+    </button>
+    <button type="submit" mat-raised-button color="primary" (click)="confirm()" [disabled]="formGroup.pristine || formGroup.invalid">
+      <span>Edit
+        <i *ngIf="saving" class="fas fa-circle-notch fa-spin"></i>
+      </span>
+    </button>
+  </div>
+</div>

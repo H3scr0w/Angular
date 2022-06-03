@@ -1,0 +1,69 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<form [formGroup]="companyForm" (ngSubmit)="onSubmit()">
+  <h1 mat-dialog-title cdkDrag cdkDragRootElement=".cdk-overlay-pane">{{'company.title' | translate}}</h1>
+  <mat-dialog-content>
+    <div *ngIf="data?.mode=='edit'">
+      <mat-chip-list>
+        <mat-chip color="primary" selected>{{data.company.sitesCount}} {{'common.sites' | translate}} </mat-chip>
+        <mat-chip color="primary" selected>{{data.company.usersCount}} {{'common.users' | translate}} </mat-chip>
+      </mat-chip-list>
+      <br />
+    </div>
+
+    <mat-form-field>
+      <input matInput formControlName="sifCode" placeholder="{{'common.sifCode' | translate}}" required
+        [readonly]="data?.mode=='edit'" maxlength="10" (input)="onSifCodeInput($any($event).target.value)" />
+      <mat-error align=" right" *ngIf="hasError('sifCode', 'required')">
+        {{'common.validation.required.message' | translate}}</mat-error>
+      <mat-error align=" right" *ngIf="companyForm.get('sifCode').errors?.companyIdNotTaken">
+        {{'common.validation.taken.message' | translate}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input  matInput formControlName="companyName" placeholder="{{'company.name' | translate}}" required />
+      <mat-error align=" right" *ngIf="hasError('companyName', 'required')">
+        {{'common.validation.required.message' | translate}}</mat-error>
+      <mat-error align=" right" *ngIf="companyForm.get('companyName').errors?.companyNameNotTaken">
+        {{'common.validation.taken.message' | translate}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <textarea  matInput formControlName="comments" placeholder="{{'common.comment' | translate}}"
+        cdkTextareaAutosize></textarea>
+    </mat-form-field>
+
+    <div *ngIf="data?.mode=='edit'">
+      <small>{{'rsm.attached' | translate}}</small>
+      <div *ngIf="rsmAttached">
+        <div class="d-flex flex-row">
+          <stgo-contact-display [selectedContact]="rsmAttached"></stgo-contact-display>
+        </div>
+      </div>
+    </div>
+
+    <ng-select [items]="sectors | async" [typeahead]="inputSector" bindLabel="name"
+      placeholder="{{'sector.title' | translate}}" [searchable]="true" [dropdownPosition]="'bottom'"  formControlName="sector"
+      (change)="onSectorSelected()" appendTo="body" [selectOnTab]="true">
+      <ng-template ng-label-tmp let-item="item">
+        <span *ngIf="item"> {{item?.name}}</span>
+      </ng-template>
+    </ng-select>
+
+    <ng-select [items]="zones" [typeahead]="inputZone" bindLabel="name" required
+      placeholder="{{'zone.title' | translate}} *" [searchable]="true" [dropdownPosition]="'bottom'" formControlName="zone"
+      (change)="onZoneSelected()" appendTo="body" [selectOnTab]="true">
+      <ng-template ng-label-tmp let-item="item">
+        <span *ngIf="item"> {{item?.name}}</span>
+      </ng-template>
+    </ng-select>
+    <small align="right" class="mat-error" *ngIf="hasError('zone', 'required')">
+      {{'common.validation.required.message' | translate}}</small>
+
+  </mat-dialog-content>
+
+  <div mat-dialog-actions align="center">
+    <button type="button" mat-raised-button (click)="onNoClick()">{{'common.close' | translate}}</button>
+    <button *ngIf="!isViewOnly  && (isAdmin || isRsm)" type="submit" mat-raised-button color="primary"
+      [disabled]="companyForm.pristine || companyForm.invalid || isLoading">{{'common.save' | translate}}</button>
+  </div>
+</form>

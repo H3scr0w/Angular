@@ -1,0 +1,11 @@
+export enum ReportFormat {
+  HTML_ZIPPED = 'HTML_ZIPPED',
+  HTML_BASE64 = 'HTML_BASE64',
+  PDF = 'PDF',
+  PDF_ENCRYPTED = 'PDF_ENCRYPTED',
+  POWERPOINT = 'POWERPOINT',
+  CSV = 'CSV',
+  CSV_V2 = 'CSV_V2',
+  XML = 'XML',
+  WORD = 'WORD'
+}

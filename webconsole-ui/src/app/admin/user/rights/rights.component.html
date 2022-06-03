@@ -1,0 +1,41 @@
+<div class="mat-elevation-z8 my-5 mx-5">
+    <div class="mx-2 d-block text-center">
+      <mat-form-field>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Filter"/>
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="addRight()"><i class="fas fa-plus p-1"></i>Add a role</button>
+    </div>
+    <table class="w-100" mat-table matSort [dataSource]="dataSource">
+      <ng-container matColumnDef="projectType">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Project Type</th>
+        <td mat-cell *matCellDef="let element" class="text-break">{{ element.projectType }}</td>
+      </ng-container>
+      <ng-container matColumnDef="projectCode">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Project Code</th>
+        <td mat-cell *matCellDef="let element" class="text-break">{{ element.projectCode }}</td>
+      </ng-container>
+      <ng-container matColumnDef="projectName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Project Name</th>
+        <td mat-cell *matCellDef="let element" class="text-break">{{ element.projectName }}</td>
+      </ng-container>
+      <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Role</th>
+        <td mat-cell *matCellDef="let element" class="text-break">{{ element.roleLabel }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let element">
+          <span (click)="delete(element)">
+            <i class="fas fa-trash p-1"></i>
+          </span>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" [length]="dataSource.data.length" showFirstLastButtons></mat-paginator>
+    <div *ngIf="isLoading" class="loading-shade">
+      <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+    </div>
+  </div>

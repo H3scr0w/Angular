@@ -1,0 +1,90 @@
+.step {
+	&-title {
+		.number {
+			color: $color-white;
+			@include gilroyBold(16px);
+			@include radius(50px);
+			letter-spacing: -0.28px;
+			line-height: 24px;
+			text-align: center;
+			position: absolute;
+			top: 50%;
+			transform: translate(0%, -50%);
+			left: -80px;
+			height: 50px;
+			width: 50px;
+			background-color: $color-lightGrey;
+			border-radius: 50px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+
+			@media(max-width: 425px) {
+				height: 32px;
+				width: 32px;
+				left: -42px;
+				z-index: 1000;
+			}
+		}
+		&.active {
+			.number {
+				background-color: $color-green;
+			}
+		}
+	}
+	&.complete {
+		.step-title {
+			.number {
+				background: url('/assets/images/ic_step_complete.svg');
+				background-size: 100%;
+				background-position: center center;
+				background-repeat: no-repeat;
+				font-size: 0;
+			}
+		}
+	}
+	.form-group {
+		&.active {
+			&::before {
+        opacity: 0.3;
+      }
+		}
+    &.complete {
+      &::before {
+        content: '';
+        height: 100%;
+        width: 4px;
+        background-color: $color-green;
+        position: absolute;
+        top: 0;
+        left: -58px;
+        opacity: 1;
+
+        @media(max-width: 425px) {
+          left: -28px;
+        }
+      }
+    }
+		&::before {
+			content: '';
+			height: 100%;
+			width: 4px;
+			background-color: $color-lightGrey;
+			position: absolute;
+			top: 0;
+			left: -58px;
+
+			@media(max-width: 425px) {
+				left: -28px;
+			}
+		}
+	}
+	&.no-progress-bar, &.step-out {
+		.form-group,
+		&.active {
+			&::before {
+				content: none;
+			}
+		}
+	}
+}

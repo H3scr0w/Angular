@@ -1,0 +1,97 @@
+<div class="mat-elevation-z8 my-4 mx-4 mw-mobile">
+  <div class="bg-header p-2 d-flex">
+    <span class="fa-stack fa-lg text-primary">
+      <i class="fas fa-circle fa-stack-1x fa-lg"></i>
+      <i class="fa fa-wrench fa-stack-1x fa-sm text-white"></i>
+    </span>
+    <h2 class="text-white font-weight-bold pt-1">{{'acnparameter.header' | translate}}</h2>
+  </div>
+  <div class="d-block p-2 text-right">
+    <button class="mr-1" mat-mini-fab color="primary" matTooltip="{{'common.advanceFilter' | translate}}"
+      (click)="toggleFilterPanel()" matBadge="{{filterCount}}" matBadgePosition="after" matBadgeColor="warn"
+      [matBadgeHidden]="filterCount===0"><i class="fas fa-filter"></i>
+    </button>
+    <button *ngIf="isAdmin || isOrderUser" mat-mini-fab color="primary"
+      matTooltip="{{'acnparameter.add.tooltip' | translate}}" (click)="addAcnParameter()">
+      <i class="fas fa-plus"></i>
+    </button>
+  </div>
+
+  <mat-expansion-panel [expanded]="panelFilterOpenState">
+    <form [formGroup]="acnParameterAdvanceFilterForm">
+      <div class="d-block p-2 bg-white">
+        <ng-select [items]="networks | async" [typeahead]="inputNetwork" bindLabel="code"
+          placeholder="{{'Network' | translate}}" [searchable]="true" [dropdownPosition]="'bottom'"
+          formControlName="network" appendTo="body" (change)="onNetworkSelected($any($event))">
+          <ng-template ng-label-tmp let-item="item">
+            <span *ngIf="item"> {{item?.code}}</span>
+          </ng-template>
+        </ng-select>
+
+        <ng-select [items]="acns" placeholder="{{'acnparameter.acn' | translate}}" [searchable]="true"
+          [dropdownPosition]="'bottom'" formControlName="acn" appendTo="body">
+          <ng-template ng-label-tmp let-item="item">
+            <span *ngIf="item"> {{item}}</span>
+          </ng-template>
+        </ng-select>
+
+        <ng-select [items]="reminders" bindLable="label" placeholder="{{'acnparameter.reminder' | translate}}"
+          [searchable]="false" [dropdownPosition]="'bottom'" formControlName="reminder" appendTo="body">
+          <ng-template ng-label-tmp let-item="item">
+            <span> {{item?.label}}</span>
+          </ng-template>
+        </ng-select>
+
+      </div>
+    </form>
+    <mat-action-row>
+      <button type="button" class="mr-1" mat-raised-button color="primary"
+        (click)="resetAdvanceFilter()">{{'common.reset' | translate}} </button>
+      &nbsp;
+      <button mat-raised-button color="primary" (click)="applyAdvanceFilter()">{{'common.apply' | translate}}</button>
+    </mat-action-row>
+
+  </mat-expansion-panel>
+
+  <div *ngIf="!panelFilterOpenState" class="d-block text-center bg-white">
+    <mat-form-field class="p-2">
+      <input matInput (keyup)="applyFilter($any($event).target.value)" placeholder="Filter" />
+    </mat-form-field>
+  </div>
+
+  <table class="w-100" mat-table matSort [dataSource]="acnParameters" matSortActive="acn" matSortDisableClear
+    matSortDirection="asc">
+    <ng-container matColumnDef="network">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="network">{{'Network' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element?.network?.code }}</td>
+    </ng-container>
+    <ng-container matColumnDef="acn">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="acn">{{'acnparameter.ACN' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element?.acn }}</td>
+    </ng-container>
+    <ng-container matColumnDef="reminder">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="reminder">{{'acnparameter.reminder' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">
+        <span *ngIf="element?.reminder === 0"> {{'acnparameter.reminderNo' | translate}} </span>
+        <span *ngIf="element?.reminder === 1"> {{'acnparameter.reminderMail' | translate}} </span>
+        <span *ngIf="element?.reminder === 2"> {{'acnparameter.reminderMailPopup' | translate}} </span>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>{{'common.actions' | translate}}</th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="isAdmin || isOrderUser" (click)="editAcnParameter(element)"
+          matTooltip="{{'acnparameter.edit.tooltip' | translate}}">
+          <i class="fas fa-edit p-1"></i>
+        </span>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="pageSize" [pageIndex]="pageIndex"
+    [length]="totalElements" showFirstLastButtons></mat-paginator>
+  <div *ngIf="isLoading" class="loading-shade">
+    <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+  </div>
+</div>

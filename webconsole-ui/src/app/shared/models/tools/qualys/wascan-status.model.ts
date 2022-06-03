@@ -1,0 +1,7 @@
+export enum WasScanStatus {
+  SUBMITTED = 'SUBMITTED',
+  RUNNING = 'RUNNING',
+  FINISHED = 'FINISHED',
+  ERROR = 'ERROR',
+  CANCELED = 'CANCELED'
+}

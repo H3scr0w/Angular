@@ -1,0 +1,25 @@
+<div class="w-100 h-100" [formGroup]="formGroup">
+  <h3 mat-dialog-title>Add Server</h3>
+  <div mat-dialog-content>
+    <div class="form-group">
+      <mat-form-field>
+        <input matInput placeholder="Servers*" formControlName="server" [matAutocomplete]="auto" name="docroot" />
+        <i matSuffix class="fas fa-search"></i>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="serverSelected = true" (opened)="serverSelected = false">
+          <mat-option *ngFor="let server of (servers$ | async)" [value]="server.hostname">
+            <span>{{ server.hostname }}</span>
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="float-right mt-3 p-1">
+    <button type="button" mat-raised-button color="primary" (click)="cancel()" class="mr-1">
+      Cancel
+    </button>
+    <button type="submit" mat-raised-button color="primary" (click)="confirm()" [disabled]="formGroup.pristine || formGroup.invalid || !serverSelected">
+      Save
+      <i *ngIf="saving" class="fas fa-circle-notch fa-spin"></i>
+    </button>
+  </div>
+</div>

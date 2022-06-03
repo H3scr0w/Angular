@@ -1,0 +1,27 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../out-tsc/app",
+    "types": [],
+    "baseUrl": "./",
+    "paths": {
+      "@core": ["src/app/core"],
+      "@shared": ["src/app/shared"],
+      "@env/*": ["src/environments/*"],
+      "lodash/*": [
+        "../../node_modules/@types/lodash-es/*"
+      ]
+    }
+  },
+  "files": [
+    "src/main.ts",
+    "src/polyfills.ts"
+  ],
+  "include": [
+    "src/**/*.d.ts"
+  ],
+  "exclude": [
+    "src/**/*.mock.ts",
+    "src/**/router-stubs.ts"
+  ]
+}

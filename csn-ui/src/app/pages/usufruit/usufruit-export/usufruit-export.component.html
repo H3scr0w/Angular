@@ -1,0 +1,157 @@
+<div *ngIf="calculModel && resultModel">
+    <ngx-header-print [headerTitle]="'usufruit.title'"></ngx-header-print>
+    <div class="row print-body">
+        <!-- CALCUL -->
+        <div class="col-6">
+            <form [formGroup]="usufruitFormGroup">
+                <div class="mb-4 step">
+                    <h2> {{ 'print.calcul.title' | translate }} </h2>
+                </div>
+
+                <ngx-stepper moduleName="usufruit">
+                    <ngx-step>
+                        <ngx-date-input labelId="date_contrat" label="{{ 'usufruit.step1.date' | translate}}"
+                            [inputCtrl]="dateContrat">
+                        </ngx-date-input>
+
+                        <ngx-app-number-input class="wrapper-data-input" labelId="valeur_bien"
+                            [numberType]="numberFieldTypes.EURO" label="{{ 'usufruit.step1.valeur-bien' | translate}}"
+                            [inputCtrl]="valeurBien">
+                        </ngx-app-number-input>
+
+                        <ngx-app-number-input class="wrapper-data-input" labelId="valeur_locative_mensuelle_brute"
+                            [numberType]="numberFieldTypes.EURO"
+                            label="{{ 'usufruit.step1.valeur-locative-brute' | translate}}"
+                            [inputCtrl]="valeurLocativeBrute">
+                        </ngx-app-number-input>
+
+                        <ngx-app-number-input class="wrapper-data-input" labelId="charges_usufructuaires_annuelles"
+                            [numberType]="numberFieldTypes.EURO" label="{{ 'usufruit.step1.charges-anu' | translate}}"
+                            [inputCtrl]="chargesAnu">
+                        </ngx-app-number-input>
+                    </ngx-step>
+
+                    <ngx-step>
+                        <ngx-radio-input class="w-100" [model]="radioInputsModelTypeDemembrement"
+                            [inputCtrl]="typeDemembrement" label="{{ 'usufruit.step2.type-demembrement' | translate}}">
+                        </ngx-radio-input>
+
+                        <ngx-app-duree-input *ngIf="typeDemembrement.value === typesDemembrement.TEMPORAIRE"
+                            class="form-group-input-dual" [label]="'usufruit.step2.duree-demembrement'"
+                            [inputCtrlMois]="moisDureeDemembrement" [inputCtrlAnnee]="anneeDureeDemembrement"
+                            [formNameAnnee]="'mois_duree_demembrement'" [formNameMois]="'annee_duree_demembrement'">
+                        </ngx-app-duree-input>
+                    </ngx-step>
+
+                    <ngx-step *ngIf="typeDemembrement.value === typesDemembrement.VIAGER">
+                        <ngx-persons [personFormArray]="usufruitiersFormArray" [formArrayName]="'persons'"
+                            [dataToRestore]="usufruitiersDataToRestore" [formGroup]="usufruitFormGroup"
+                            [hasFormGroupCssClass]="false" [label]="'usufruit.step3.usufruitier'"
+                            [toPrint]="true">
+                        </ngx-persons>
+                    </ngx-step>
+
+                    <ngx-step></ngx-step>
+                </ngx-stepper>
+            </form>
+        </div>
+        <!-- RESULT -->
+        <div class="col-6 print-restit">
+            <div class="result-content">
+                <div class="print-content-restit">
+                    <div class="content-restit-title mb-4">
+                        <h2>{{ 'usufruit.restitution.title' | translate }}</h2>
+                    </div>
+                    <div class="content-restit-data">
+
+                        <div class="restit-value-wrapper">
+                            <div class="restit-value">
+                                <div class="title">{{ 'usufruit.restitution.usufruit-economique' | translate }}</div>
+                                <div class="usu-eco">{{ resultModel?.usufruit_economique | euroNumber }} </div>
+                            </div>
+
+                            <div class="restit-value">
+                                <div class="title">{{ 'usufruit.restitution.usufruit-fiscal' | translate }}
+                                    <sup class="reference-number">(1)</sup>
+                                </div>
+                                <span class="val-nue-eco">{{ resultModel?.usufruit_fiscal | euroNumber }} </span>
+                            </div>
+
+                            <div class="restit-value">
+                                <div class="title" *ngIf="calculModel?.type_demembrement === typesDemembrement.VIAGER">
+                                    {{ (calculModel?.usufruitiers?.length === 1 ?
+                            'usufruit.restitution.esperance-vie' : 'usufruit.restitution.esperance-des-vies')| translate }}
+                                    <sup class="reference-number">(2)</sup>
+                                </div>
+
+                                <div class="title"
+                                    *ngIf="calculModel?.type_demembrement === typesDemembrement.TEMPORAIRE">
+                                    {{ 'usufruit.restitution.duree-demembrement'| translate }}
+                                </div>
+
+                                <span class="val-nue-eco">
+                                    {{ resultModel?.duree_demembrement | number :'1.2-2':'fr-fr' }}
+                                    {{ 'common.annees' | translate}}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="restit-pie-chart-wrapper">
+                            <canvas baseChart width="250" height="240" [data]="single" [labels]="labels"
+                                [chartType]="chartType" [colors]="colorScheme">
+                            </canvas>
+                        </div>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <div class="content-restit-data">
+                        <div class="restit-value-wrapper w-100">
+                            <div class="restit-value-small">
+                                {{ 'usufruit.restitution.nue-propriete-economique' | translate }}
+                                <span
+                                    class="val-nue-fisc">{{ resultModel?.nue_propriete_economique | euroNumber }}</span>
+                            </div>
+                            <div class="restit-value-small">
+                                {{ 'usufruit.restitution.nue-propriete-fiscale' | translate }}
+                                <sup class="reference-number">(1)</sup> :
+                                <span class="val-nue-fisc">{{ resultModel?.nue_propriete_fiscale | euroNumber }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-taux">
+                        <div class="taux">
+                            <div class="taux-left" *ngIf="this.getInfoBulle(infoBulleCodes.TAUX_RENDEMENT)">
+                                <div class="title">
+                                    {{ 'usufruit.restitution.taux' | translate }}
+                                    <sup
+                                        class="reference-number">({{ calculModel?.type_demembrement === typesDemembrement.VIAGER ? 3 : 2 }})</sup>
+                                </div>
+                                <div class="valeur" [innerHTML]="this.getInfoBulle(infoBulleCodes.TAUX_RENDEMENT)">
+                                </div>
+                            </div>
+                            <div class="taux-right">
+                                <div class="valeur-percent">
+                                    {{ resultModel?.taux_rendement_annuel | percent:'.2' }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ngx-calculated-with [donneesReferences]="resultModel?.donnees_references_utilisees">
+                    </ngx-calculated-with>
+
+                    <div *ngIf="cartouche?.value || texteLibre?.value" class="info-client">
+                        <div class="info-client-title">{{'print.restit.title' | translate}}</div>
+                        <ngx-textarea-print *ngIf="cartouche?.value" [content]="cartouche?.value"></ngx-textarea-print>
+                        <ngx-textarea-print *ngIf="texteLibre?.value"
+                            title="{{ 'common.texte-libre.label' | translate }}" [content]="texteLibre?.value">
+                        </ngx-textarea-print>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <ngx-footer-print></ngx-footer-print>
+</div>

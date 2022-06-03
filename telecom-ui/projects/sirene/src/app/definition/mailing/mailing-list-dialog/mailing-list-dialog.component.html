@@ -1,0 +1,29 @@
+<form [formGroup]="form" (ngSubmit)="submit(form)">
+  <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<h1 mat-dialog-title>{{'common.menu.mailingList' | translate}}</h1>
+  <mat-dialog-content>
+    <mat-form-field>
+    <mat-chip-list #chipList>
+      <mat-chip *ngFor="let email of emails" [selectable]="selectable"
+                [removable]="removable" (removed)="remove(email)">
+        {{email.email}}
+        <mat-icon fontSet="fa" fontIcon="fa-times" matChipRemove *ngIf="removable"></mat-icon>
+      </mat-chip>
+      <input placeholder="New Email..."
+             [matChipInputFor]="chipList"
+             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+             [matChipInputAddOnBlur]="addOnBlur"
+             (matChipInputTokenEnd)="add($event)"
+             formControlName="emails"
+             matInput />
+      <mat-error *ngIf="form.get('emails').invalid && (form.get('emails').dirty || form.get('emails').touched)">
+        {{'mailinglist.email.validation' | translate}}
+      </mat-error>
+    </mat-chip-list>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions class="d-block p-2 text-center">
+    <a mat-raised-button (click)="onNoClick()">{{'common.close' | translate}}</a>
+    <button mat-raised-button color="primary" class="mr-3" type="submit" [disabled]="form.pristine || form.invalid">{{'common.save' | translate}}</button>
+  </mat-dialog-actions>
+</form>

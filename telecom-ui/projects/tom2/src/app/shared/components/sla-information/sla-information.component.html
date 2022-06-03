@@ -1,0 +1,25 @@
+<div class="m-3">
+  <form [formGroup]="slaInfoForm">
+    <div class="m-3">
+      <mat-card>
+        <mat-form-field>
+          <input matInput type="text" formControlName="gtrCommitment" maxlength="11"
+            placeholder="{{'sla.info.grtCommitment' | translate}}" pattern="^[0-9]+(?:_{0,3}[0-9]+){0,2}$" />
+          <mat-error align=" right" *ngIf="hasError('gtrCommitment', 'pattern')">
+            {{ 'common.validation.pattern.message' | translate}}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput stgoNumberOnly scale="0" defaultValue="" formControlName="dispoCommitment"
+            placeholder="{{'sla.info.dispoCommitment' | translate}}" maxlength="11" />
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput stgoNumberOnly scale="0" defaultValue="" formControlName="ltcCommitment"
+            placeholder="{{'sla.info.ltcCommitment' | translate}}" maxlength="11" />
+        </mat-form-field>
+      </mat-card>
+    </div>
+  </form>
+</div>

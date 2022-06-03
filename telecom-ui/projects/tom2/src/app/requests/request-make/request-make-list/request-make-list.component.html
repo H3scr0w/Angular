@@ -1,0 +1,42 @@
+<div class="mat-elevation-z8 my-4 mx-4 mw-mobile">
+  <div class="bg-header p-2 d-flex">
+    <span class="fa-stack fa-lg text-primary">
+      <i class="fas fa-circle fa-stack-1x fa-lg"></i>
+      <i class="fa fa-shopping-basket fa-stack-1x fa-sm text-white"></i>
+    </span>
+    <h2 class="text-white font-weight-bold pt-1">{{'request.make.header' | translate}}</h2>
+  </div>
+
+  <mat-horizontal-stepper [linear]="true" #stepper>
+    <mat-step [stepControl]="requestTypeForm" [completed]="false">
+      <form [formGroup]="requestTypeForm">
+        <ng-template matStepLabel>{{'request.make.selectRequestType' |translate }}</ng-template>
+        <ng-select [items]="requestTypes" bindLabel="name" bindValue="id"
+          placeholder="{{'request.make.requestType' | translate}}*" [searchable]="false" [virtualScroll]="true"
+          formControlName="requestType" appendTo="body" [selectOnTab]="true" required (change)="getStep();">
+          <ng-template ng-label-tmp let-item="item">
+            <span *ngIf="item">{{item.name}}</span>
+          </ng-template>
+        </ng-select>
+        <div>
+          <button mat-raised-button color="primary"  matStepperNext >{{'common.next' |translate }}</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [completed]="false" *ngIf="!isTermination">
+      <ng-template matStepLabel>{{'request.make.selectTelecomService' |translate }}</ng-template>
+      <stgo-telecom-service-selector [requestType]="requestTypeForm?.get('requestType')?.value"  (selectedService)="onServiceSelected($event)">
+      </stgo-telecom-service-selector>
+      <div>
+        <button mat-raised-button class="mr-1" color="primary" matStepperPrevious>{{'common.back' |translate }}</button>
+      </div>
+    </mat-step>
+    <mat-step [completed]="false" *ngIf="isTermination">
+      <ng-template matStepLabel>{{'request.make.termination' |translate }}</ng-template>
+      <stgo-request-termination></stgo-request-termination>
+      <div class="pt-2">
+        <button mat-raised-button class="mr-1" color="primary" matStepperPrevious>{{'common.back' |translate }}</button>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+</div>

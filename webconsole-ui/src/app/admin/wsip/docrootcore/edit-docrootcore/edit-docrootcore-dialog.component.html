@@ -1,0 +1,38 @@
+<div class="w-100 h-100" [formGroup]="formGroup">
+  <h3 mat-dialog-title *ngIf="data.docrootcore">Edit DocrootCore</h3>
+  <h3 mat-dialog-title *ngIf="!data.docrootcore">Add DocrootCore</h3>
+  <div mat-dialog-content>
+    <span *ngIf="data.docrootcore">DocrootCore ID: {{ data.docrootcore.code }}</span>
+    <div class="form-group">
+      <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+        <input matInput placeholder="Code" name="code" formControlName="code" required [readonly]="!!data.docrootcore" />
+      </mat-form-field>
+
+      <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+        <input matInput placeholder="Name" name="name" formControlName="name" required />
+      </mat-form-field>
+
+      <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+        <input matInput placeholder="Code Repository Url" name="codeRepositoryUrl" formControlName="codeRepositoryUrl" required />
+      </mat-form-field>
+
+      <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+        <input matInput placeholder="Binary Repository Url" name="binaryRepositoryUrl" formControlName="binaryRepositoryUrl" required
+        />
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="float-right mt-3">
+    <button type="button" mat-raised-button color="primary" (click)="cancel()" class="mr-1">
+      Cancel
+    </button>
+    <button type="submit" mat-raised-button color="primary" (click)="confirm()" [disabled]="formGroup.pristine || formGroup.invalid">
+      <span *ngIf="data.docrootcore">Edit
+        <i *ngIf="saving" class="fas fa-circle-notch fa-spin"></i>
+      </span>
+      <span *ngIf="!data.docrootcore">Add
+        <i *ngIf="saving" class="fas fa-circle-notch fa-spin"></i>
+      </span>
+    </button>
+  </div>
+</div>

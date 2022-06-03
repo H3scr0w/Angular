@@ -1,0 +1,60 @@
+<ng-template #innerTemplate>
+  <div [formGroup]="formGroup">
+    <div [formArrayName]="formArrayName">
+      <ngx-info-bulle *ngIf="tooltipContent" [disabled]="!enabledStatus()"
+                      [html]="tooltipContent"></ngx-info-bulle>
+      <div *ngFor="let person of personFormArray.controls; let i = index"
+           [formGroupName]="i">
+        <div class="form-group form-group-person" [ngClass]="{'active': enabledStatus(), 'complete': isValid()}">
+          <div class="form-group-person-content">
+            <label>{{ label | translate }}{{i + 1}}</label>
+            <div class="person-wrapper">
+              <div class="person-gender">
+                <label>{{ 'persons.sexe' | translate }}</label>
+                <div class="btn-group" data-toggle="buttons">
+                  <label class="btn">
+                    <input type="radio" name="sexe" formControlName="sexe" class="input-hidden" [value]="sexe.HOMME">
+                    <div [className]="person.get('sexe').value === sexe.HOMME ? 'card2 active' : 'card2'">
+                      <img src="/assets/images/ic_answer_male_off.png" class="card-img-top img-off" alt="">
+                      <img src="/assets/images/ic_answer_male_on.png" class="card-img-top img-on" alt="">
+                      <span class="badge-checked-print edge"></span>
+                    </div>
+                  </label>
+                  <label class="btn">
+                    <input type="radio" name="sexe" formControlName="sexe" class="input-hidden" [value]="sexe.FEMME">
+                    <div [className]="person.get('sexe').value === sexe.FEMME ? 'card2 active' : 'card2'">
+                      <img src="/assets/images/ic_answer_female_off.png" class="card-img-top img-off" alt="">
+                      <img src="/assets/images/ic_answer_female_on.png" class="card-img-top img-on" alt="">
+                      <span class="badge-checked-print edge"></span>
+                    </div>
+                  </label>
+                </div>
+              </div>
+              <div class="person-date-container">
+                <label>{{'persons.date-naissance' | translate}}</label>
+                <input type="text" placeholder="JJ/MM/AAAA" mask="00/00/0000" [dropSpecialCharacters]="false"
+                       formControlName="date_naissance" class="form-control" autocomplete="off"/>
+                <ngx-form-error-display [controls]="person.get('date_naissance')"
+                                        [intlPath]="'date'"></ngx-form-error-display>
+              </div>
+            </div>
+          </div>
+
+          <div class="btn-add-remove" [ngClass]="{'intermediate': isIntermediate(i), 'last': isLast(i),
+          'max-reached': this.maxSizeReached()}">
+            <div *ngIf="i > 0" class="person-remove">
+              <button class="btn btn-default remove" type="button" [disabled]="!enabledStatus()"
+                      (click)="removePerson(i)">{{ btnRemoveText | translate}}
+              </button>
+            </div>
+            <div *ngIf="i === personFormArray.controls.length - 1 && !this.maxSizeReached()" class="person-add">
+              <button class="btn btn-default add" type="button" (click)="addPerson(null)" [disabled]="!enabledStatus()">
+                {{ btnAddText | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

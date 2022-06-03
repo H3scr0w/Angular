@@ -1,0 +1,213 @@
+.form-group {
+	&.form-group-input {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		flex-direction: column;
+		@media(max-width: 425px) {
+			label {
+				margin-bottom: 15px;
+			}
+		}
+	}
+	&.form-group-input-dual {
+		display: flex;
+		align-items: center;
+
+		.input-dual-wrapper div:first-child {
+			display: flex;
+		}
+
+		.input-dual-wrapper {
+      width: 45%;
+
+      &.w-70 {
+        width: 70%;
+        @media(max-width: 425px) {
+          width: 100%;
+        }
+      }
+
+      display: flex;
+			justify-content: space-between;
+			margin-left: 30px;
+			flex-direction: column;
+
+      &.full-width {
+        width: 100%;
+      }
+
+      @media(max-width: 425px) {
+        width: 100%;
+        margin-left: 0;
+      }
+
+			@media (max-width: 425px) {
+				.dureeDemembrement,
+				.dureeDemembrement2 {
+					padding: 17px 5px;
+				}
+			}
+
+			input {
+				width: 50%;
+				margin-left: 0;
+			}
+
+			input::placeholder {
+				color: $color-grey;
+			}
+
+			input:last-child {
+				width: 50%;
+				margin-left: 30px;
+			}
+
+			.error-alert {
+				@include gilroyReg(14px);
+				color: $color-red;
+				letter-spacing: -0.34px;
+				line-height: 20px;
+				margin-top: 5px;
+			}
+
+      .label-optional {
+        @include gilroyReg(14px);
+        margin-top: 7px;
+        text-align: right;
+        color: #829db4;
+      }
+    }
+  }
+  .wrapper-data-no-input {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding-bottom: 40px;
+
+    @media(max-width: 425px) {
+      flex-direction: column;
+      align-items: flex-start;
+      label {
+        width: inherit;
+      }
+    }
+    .auto-filled {
+      @include radius(8px);
+      @include gilroyReg(16px);
+      border: 1px solid $color-lightGrey;
+      background-color: $color-lightGrey;
+      color: $color-grey !important;
+      line-height: 19px;
+      text-align: right;
+      width: 100%;
+      padding: 17px 30px 17px 15px;
+      height: inherit;
+      letter-spacing: -0.28px;
+    }
+  }
+  .wrapper-data-input {
+		width: 100%;
+		display: flex;
+		align-items: center;
+    justify-content: space-between;
+
+		.tauxRevaloRachatRente,
+		.tauxRevaloRente,
+    .auto-filled {
+			@include radius(8px);
+			@include gilroyReg(16px);
+			border: 1px solid $color-lightGrey;
+			background-color: $color-lightGrey;
+			color: $color-grey !important;
+			line-height: 19px;
+			text-align: right;
+			width: 100%;
+			padding: 17px 30px 17px 15px;
+			height: inherit;
+			letter-spacing: -0.28px;
+		}
+    label {
+      width: 37%;
+    }
+
+    @media(max-width: 425px) {
+      flex-direction: column;
+      align-items: flex-start;
+      label {
+        width: inherit;
+        margin-bottom: 16px;
+      }
+    }
+	}
+	label {
+		@include gilroyBold(16px);
+		color: $color-blue;
+		line-height: 20px;
+		margin: 0;
+		width: 70%;
+    @media(max-width: 425px) {
+      width: 85%;
+    }
+	}
+	.wrapper-input {
+		width: 45%;
+		position: relative;
+
+		@media(max-width: 425px) {
+			margin-left: 0;
+			width: 100%;
+		}
+
+		.error-alert {
+			@include gilroyReg(14px);
+			color: $color-red;
+			letter-spacing: -0.34px;
+			line-height: 20px;
+		}
+
+    .label-optional {
+      @include gilroyReg(14px);
+      margin-top: 7px;
+      text-align: right;
+      color: #829db4;
+    }
+	}
+	input {
+		@include gilroyReg(16px);
+		@include radius(8px);
+		border: 1px solid $color-lightGrey;
+		background-color: $color-white;
+		color: $color-blue !important;
+		line-height: 19px;
+		text-align: right;
+		width: 100%;
+		padding: 17px 15px;
+		height: inherit;
+		letter-spacing: -0.28px;
+    outline: none;
+	}
+
+  .input-euro, .input-percent {
+    input {
+      padding: 17px 25px 17px 15px;
+    }
+  }
+
+	input:-webkit-autofill,
+	input:-webkit-autofill:hover,
+	input:-webkit-autofill:focus,
+	input:-webkit-autofill:active {
+		transition: background-color 5000s ease-in-out 0s;
+		-webkit-text-fill-color: $color-blue !important;
+	}
+
+	input:focus {
+    @include radius(8px);
+		@include boxShadowInput;
+	}
+
+	input.ng-invalid.ng-touched, input.invalid {
+		border: 1px solid $color-red;
+	}
+}

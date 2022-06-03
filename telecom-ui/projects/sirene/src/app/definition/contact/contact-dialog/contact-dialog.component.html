@@ -1,0 +1,83 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+  <h1 mat-dialog-title>{{'common.menu.contact' | translate}}</h1>
+  <mat-dialog-content>
+    <mat-form-field>
+      <input matInput placeholder="{{'contact.title' | translate}}" [matAutocomplete]="autotitle"
+        formControlName="title" />
+      <mat-autocomplete #autotitle="matAutocomplete">
+        <mat-option value="Mr">{{'common.mr' | translate}}</mat-option>
+        <mat-option value="Mrs">{{'common.mrs' | translate}}</mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput formControlName="name" placeholder="{{'contact.lastName' | translate}}" required />
+      <mat-error align="right" *ngIf="hasError('name', 'required')">{{'common.validation.required.message' | translate}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput formControlName="firstName" placeholder="{{'contact.firstName' | translate}}" required />
+      <mat-error align="right" *ngIf="hasError('firstName', 'required')">
+        {{'common.validation.required.message' | translate}}</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput formControlName="email" placeholder="{{'contact.email' | translate}}" required email />
+      <mat-error align="right" *ngIf="hasError('email', 'required')">
+        {{'common.validation.required.message' | translate}}</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput formControlName="login" class="text-capitalize" placeholder="{{'contact.login' | translate}}" />
+      <mat-error align="right" *ngIf="hasError('login', 'pattern')">{{'common.validation.pattern.message' | translate}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput formControlName="fixPhone" placeholder="{{'contact.fixPhone' | translate}}"
+        pattern="(^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)\/\t\s]*$)" />
+      <mat-hint class="w-100" *ngIf="hasError('fixPhone', 'pattern')">
+        <small align="right" class="mat-error">
+          {{'common.validation.pattern.message' | translate}}
+          ex: +33412345678
+        </small>
+      </mat-hint>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput formControlName="mobilePhone" placeholder="{{'contact.mobilePhone' | translate}}"
+        pattern="(^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)\/]*$)" />
+      <mat-hint class="w-100" *ngIf="hasError('mobilePhone', 'pattern')">
+        <small align="right" class="mat-error">
+          {{'common.validation.pattern.message' | translate}}
+          ex: +33612345678
+        </small>
+      </mat-hint>
+    </mat-form-field>
+
+    <ng-select *ngIf="data?.role !== 'rsm'" [items]="profiles" bindLabel="name" placeholder="{{'contact.profile' | translate}} *"
+      (change)="onProfileSelected($any($event))" formControlName="profile" appendTo="body" [dropdownPosition]="'bottom'">
+      <ng-template ng-label-tmp let-item="item">
+        <span *ngIf="item"> {{item?.name}}</span>
+      </ng-template>
+    </ng-select>
+    <small align="right" class="mat-error" *ngIf="hasError('profile', 'required')">
+      {{'common.validation.required.message' | translate}}
+    </small>
+
+    <mat-form-field *ngIf="data?.role === 'rsm'">
+      <input matInput formControlName="profileName" value="SGT RSM" readonly/>
+    </mat-form-field>
+
+    <ng-select *ngIf="this.data?.contact?.profile?.name?.toLocaleLowerCase() === rsmProfileLowerCase"
+               [items]="countries | async" bindLabel="name" [multiple]="true" [hideSelected]="true"
+               placeholder="{{'country.name' | translate}}" formControlName="countries" appendTo="body">
+      <ng-template ng-label-tmp let-item="item" let-clear="clear">
+        <span class="ng-value-icon" (click)="clear(item)" aria-hidden="true">×</span>
+        <span *ngIf="item">{{item?.id}}</span>
+      </ng-template>
+    </ng-select>
+  </mat-dialog-content>
+
+  <div mat-dialog-actions align="center">
+    <button type="button" mat-raised-button (click)="onCloseClick()">{{'common.close' | translate}}</button>
+    <button type="submit" mat-raised-button color="primary"
+      [disabled]="contactForm.invalid || contactForm.pristine || isLoading">{{'common.save' | translate}}</button>
+  </div>
+</form>

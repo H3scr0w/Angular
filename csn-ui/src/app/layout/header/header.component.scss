@@ -1,0 +1,280 @@
+@import '../../../styles/base';
+
+header {
+  border-bottom: 1px solid $color-lightGrey;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 11;
+  background: $color-white;
+}
+
+.header-wrapper {
+  padding: 17px;
+  background-color: $color-white;
+  height: 74px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@media (min-width: 992px) and (max-width: 1024px) and (orientation: landscape) {
+  .col-lg-3, .col-lg-5 {
+    flex: 34%;
+    max-width: 34%;
+  }
+}
+@media (width: 1366px) and (orientation: landscape) {
+  .col-lg-3 {
+    flex: 28%;
+    max-width: 28%;
+  }
+  .col-lg-5 {
+    flex: 38.5%;
+    max-width: 38.5%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  .col-md-4 {
+    flex: 0 0 31.333333%;
+    max-width: 31.333333%;
+  }
+}
+
+.header-content__right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  .header__user {
+    position: relative;
+
+    span {
+      display: flex;
+      align-items: center;
+
+      .header__user-picture {
+        margin-right: 15px;
+
+        img {
+          border-radius: 20px;
+        }
+      }
+
+      .header__user-name {
+        margin-right: 25px;
+
+        @media(max-width: 800px) {
+          display: none;
+        }
+
+        p {
+          margin: 0;
+        }
+
+        .firstname {
+          @include gilroyReg(14px);
+          color: $color-blue;
+          line-height: 20px;
+        }
+
+        .lastname {
+          @include gilroyBold(16px);
+          color: $color-blue;
+          line-height: 20px;
+          font-weight: bold;
+        }
+      }
+
+      .header__user-menu {
+        margin-right: 40px;
+        @media (max-width: 425px) {
+          margin-right: 24px;
+        }
+      }
+    }
+  }
+
+  .header__action {
+    display: flex;
+    border-left: 1px solid grey;
+
+    .header__action-btn {
+      margin-left: 40px;
+      position: relative;
+    }
+
+    @media(max-width: 800px) {
+      .header__action-btn--setting {
+        display: none;
+      }
+    }
+  }
+}
+
+.header-container {
+  padding: 20px 40px;
+}
+
+.logo {
+  max-width: 120px;
+  height: 20px;
+}
+
+.notaccess,
+.my-account {
+  @include boxShadowHeader;
+  border: 1px solid #d2d2d2;
+  border-radius: 12px;
+  background-color: $color-white;
+  display: block;
+  will-change: transform;
+  top: 65px;
+  left: 0;
+  width: 215px;
+}
+
+.header__user.active {
+  position: relative;
+}
+
+.header__user.inactive .my-account {
+  display: none;
+}
+
+.header__user.active .my-account {
+  @include boxShadowHeader;
+  @include radius(12px);
+  background-color: $color-white;
+  display: block;
+  top: 95px;
+  left: inherit;
+  right: 0;
+  width: 360px;
+  margin: 0;
+  max-width: inherit;
+
+  @media(max-width: 800px) {
+    max-width: 340px;
+  }
+
+  .popover-arrow.arrow {
+    width: 100%;
+    margin: 0;
+
+    &::before,
+    &::after {
+      left: 50%;
+      top: 5px;
+      transform: translate(-50%, -50%);
+      border-width: 0 18px 18px;
+    }
+  }
+
+  .popover-content {
+    padding: 0;
+    border-radius: 10px;
+
+    .popover-list {
+      padding: 10px 20px;
+      font-family: Gilroy-Bold, sans-serif;
+    }
+
+    .sign-out {
+      background-color: #c7c8c9;
+      color: $color-white;
+      font-weight: bold;
+      font-size: 14px;
+      line-height: 20px;
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+      cursor: pointer;
+    }
+
+    .sign-out > img {
+      float: right;
+    }
+
+    .my-account-btn {
+      background-color: $color-white;
+      color: #676767;
+      font-weight: bold;
+      font-size: 14px;
+      line-height: 20px;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    }
+  }
+}
+
+.header__action.active .notaccess {
+  display: block;
+}
+
+.header__action.inactive .notaccess {
+  display: none;
+}
+
+//hide arrow
+.popover-arrow.arrow {
+  display: none;
+}
+
+.notaccess {
+  top: 60px;
+  width: 215px;
+  right: -20px !important;
+  position: absolute;
+  left: inherit;
+}
+
+.notaccess .popover-arrow {
+  left: 150px;
+  top: calc((1rem + 1px) * -1);
+}
+
+.notaccess .popover-arrow::before,
+.notaccess .popover-arrow::after {
+  border-width: 0 1rem 1rem;
+  border-bottom-color: $color-white;
+}
+
+.notaccess > div.popover-content > a > span {
+  @include gilroyBold(14px);
+  color: #676767;
+  letter-spacing: -0.44px;
+  line-height: 20px;
+}
+
+.user img {
+  @include radius(50%);
+}
+
+.user p {
+  font-size: 14px;
+  letter-spacing: -0.07px;
+  line-height: 20px;
+  margin: 0;
+}
+
+.user a:hover {
+  text-decoration: none;
+}
+
+.user .col-md-7 {
+  padding-left: 0;
+}
+
+.user p.firstname {
+  color: $color-blue;
+  font-family: Gilroy-Regular, sans-serif;
+  text-transform: capitalize;
+  margin-bottom: 0.3rem;
+}
+
+.lastname {
+  color: $color-blue;
+  font-family: Gilroy-Bold, sans-serif;
+}

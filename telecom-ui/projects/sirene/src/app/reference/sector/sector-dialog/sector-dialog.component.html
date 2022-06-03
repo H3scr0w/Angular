@@ -1,0 +1,30 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<form [formGroup]="sectorForm" (ngSubmit)="onSubmit()">
+  <h1 mat-dialog-title>{{'sector.header' | translate}}</h1>
+  <mat-dialog-content>
+
+    <mat-form-field>
+      <input matInput formControlName="id" placeholder="{{'common.initials' | translate}}"
+        [readonly]="data?.mode=='edit'" (input)="onInitialsInput($any($event).target.value)" required maxlength="2" />
+      <mat-error align="right" *ngIf="hasError('id', 'required')">{{'common.validation.required.message' | translate}}
+      </mat-error>
+      <mat-error align=" right" *ngIf="sectorForm.get('id').errors?.sectorIdNotTaken">
+        {{'common.validation.taken.message' | translate}}</mat-error>
+      <mat-hint *ngIf="data?.mode=='add'">{{'common.initials.hint' | translate}}</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput formControlName="name" placeholder="{{'sector.name' | translate}}" required />
+      <mat-error align="right" *ngIf="hasError('name', 'required')">{{'common.validation.required.message' | translate}}
+      </mat-error>
+      <mat-error align=" right" *ngIf="sectorForm.get('name').errors?.sectorNameNotTaken">
+        {{'common.validation.taken.message' | translate}}</mat-error>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <div mat-dialog-actions align="center">
+    <button type="button" mat-raised-button (click)="onCloseClick()">{{'common.close' | translate}}</button>
+    <button type="submit" mat-raised-button color="primary"
+      [disabled]="sectorForm.invalid || isLoading">{{'common.save' | translate}}</button>
+  </div>
+</form>

@@ -1,0 +1,365 @@
+<div *ngIf="isLoading" class="loading-shade">
+  <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+</div>
+
+<div class="row min-width-mobile">
+
+  <div class="col-lg-4 mt-2">
+
+    <mat-card class="mat-elevation-z8">
+      <mat-card-header>
+        <mat-card-actions>
+          <button mat-button color="primary" (click)="deleteDomain()" [disabled]="!selectedDomain">Delete</button>
+          <button mat-button color="primary" (click)="transferDomain()" [disabled]="!selectedDomain
+          || (selectedDomain?.domainType?.toUpperCase() !== 'MAIN'
+          && selectedDomain?.domainType?.toUpperCase() !== 'CONTRIBUTION') ">Transfer</button>
+          <button mat-button color="primary" (click)="confirm()" [disabled]="formGroup.pristine || formGroup.invalid">Save</button>
+        </mat-card-actions>
+      </mat-card-header>
+
+      <mat-card-content>
+
+        <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="tree">
+          <!-- This is the tree node template for leaf nodes -->
+          <mat-tree-node *matTreeNodeDef="let node">
+            <li>
+              <div class="mat-tree-node ml-4">
+                <mat-checkbox (change)="selectDomain(node, domainCheckbox.checked)" color="primary" [checked]="node?.code === selectedDomain?.code"
+                  class="mr-2" #domainCheckbox>{{node.item}}</mat-checkbox>
+                {{node.name}}
+                <button matTreeNodeToggle mat-icon-button color="primary" *ngIf="node && node?.domainType?.toUpperCase() === 'MAIN'">
+                  <i *ngIf="treeControl.isExpanded(node)" class="fas fa-chevron-circle-down"></i>
+                  <i *ngIf="!treeControl.isExpanded(node)" class="fas fa-chevron-circle-right"></i>
+                </button>
+              </div>
+              <ul [class.tree-invisible]="!treeControl.isExpanded(node)">
+                <div class="mat-tree-node ml-4" *ngIf="node && node?.domainType?.toUpperCase() === 'MAIN'">
+                  <button mat-button (click)="addNewItem(node)" color="primary">New Redirection...</button>
+                </div>
+              </ul>
+            </li>
+          </mat-tree-node>
+
+          <!-- This is the tree node template for expandable nodes -->
+          <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
+            <li>
+              <div class="mat-tree-node ml-4">
+                <mat-checkbox (change)="selectDomain(node, domainCheckbox.checked)" color="primary" [checked]="node?.code === selectedDomain?.code"
+                  class="mr-2" #domainCheckbox>{{node.item}}</mat-checkbox>
+                {{node.name}}
+                <button matTreeNodeToggle mat-icon-button color="primary">
+                  <i *ngIf="treeControl.isExpanded(node)" class="fas fa-chevron-circle-down"></i>
+                  <i *ngIf="!treeControl.isExpanded(node)" class="fas fa-chevron-circle-right"></i>
+                </button>
+              </div>
+              <ul [class.tree-invisible]="!treeControl.isExpanded(node)">
+                <ng-container matTreeNodeOutlet></ng-container>
+                <div class="mat-tree-node ml-4" *ngIf="node && node?.domainType?.toUpperCase() === 'MAIN'">
+                  <button mat-button (click)="addNewItem(node)" color="primary">New Redirection...</button>
+                </div>
+              </ul>
+            </li>
+          </mat-nested-tree-node>
+        </mat-tree>
+
+        <div class="mat-tree-node ml-4">
+          <button mat-button (click)="newDomain()" color="primary">New Domain...</button>
+        </div>
+
+      </mat-card-content>
+
+    </mat-card>
+
+  </div>
+
+  <div class="col-lg-8 mt-2">
+    <form [formGroup]="formGroup">
+      <div class="row">
+        <mat-card class=" mat-elevation-z8 w-100 mx-3">
+          <mat-card-header class="border border-dark mx-2">
+            <mat-card-title>Domain</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="row mx-2">
+              <div class="col-4 border-bottom border-left border-right border-dark">
+                <div class="container">
+                  <div class="row mt-4">
+                    <div class="col"> Code
+                      <i matSuffix class="text-danger">*</i>
+                    </div>
+                  </div>
+                  <div class="row mt-4 pt-2">
+                    <div class="col"> Type
+                      <i matSuffix class="text-danger">*</i>
+                    </div>
+                  </div>
+                  <div class="row mt-4 pt-4">
+                    <div class="col"> Parent
+                      <i *ngIf="selectedParentDomain" matSuffix class="text-danger">*</i>
+                    </div>
+                  </div>
+                  <div class="row mt-4 pt-4">
+                    <div class="col"> Name
+                      <i matSuffix class="text-danger">*</i>
+                    </div>
+                  </div>
+                  <div class="row mt-4 pt-4">
+                    <div class="col"> Registar</div>
+                  </div>
+                  <div class="row mt-4 pt-2">
+                    <div class="col"> Https Enable</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-8 border-bottom border-right border-dark">
+                <div class="container">
+                  <div class="row">
+                    <div class="col">
+                      <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+                        <input matInput name="code" formControlName="code" required [readonly]="!!selectedDomain" />
+                        <mat-error *ngIf="formGroup.get('code')!.hasError('required')">Please fill a domain code</mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+                        <mat-select formControlName="type" required>
+                          <mat-option *ngFor="let type of types" [value]="type">
+                            {{ type | titlecase }}
+                          </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="formGroup.get('type')!.hasError('required')">Please select a domain type</mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+                        <input matInput name="parent" formControlName="parent" [required]="!!selectedParentDomain" [readonly]="true" />
+                        <mat-error *ngIf="formGroup.get('parent')!.hasError('required')">Please select a domain parent</mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+                        <input matInput name="name" formControlName="name" required />
+                        <mat-error *ngIf="formGroup.get('name')!.hasError('required')">Please fill a domain name</mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <mat-form-field>
+                        <input matInput name="registar" formControlName="registar" [matAutocomplete]="autoRegistar" [value]="selectedDomain?.registarCode"
+                        />
+                        <i matSuffix class="fas fa-search"></i>
+                        <mat-autocomplete #autoRegistar="matAutocomplete" (optionSelected)="selectRegistar(true, $event?.option?.value)" (opened)="selectRegistar(false)"
+                          [displayWith]="displayFn">
+                          <mat-option *ngFor="let registar of (registar$ | async)" [value]="registar">
+                            <span>{{ registar?.name }}</span>
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="row mt-4">
+                    <div class="col">
+                      <mat-checkbox class="col" color="primary" formControlName="httpsEnable">
+                      </mat-checkbox>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="row mt-2">
+        <mat-card class=" mat-elevation-z8 w-100 mx-3">
+          <mat-card-header class="border border-dark mx-2">
+            <mat-card-title>Domain Authentication</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="row mx-2">
+              <div class="col-4 border-bottom border-left border-right border-dark">
+                <div class="container">
+                  <div class="row">
+                    <div class="col"> Type </div>
+                  </div>
+                  <div class="row mt-4">
+                    <div class="col"> Login</div>
+                  </div>
+                  <div class="row mt-4 pt-4">
+                    <div class="col"> Pasword</div>
+                  </div>
+                  <div class="row mt-4 pt-4">
+                    <div class="col"> Realm</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-8 border-bottom border-right border-dark">
+                <div class="container">
+                  <div class="row">
+                    <div class="col">
+                      <mat-radio-group aria-label="Select an authentication type" formControlName="authType">
+                        <mat-radio-button class="mr-4" color="primary" [checked]="selectedDomain?.useDocrootEnvAuth" value="DocrootEnvAuth">DocrootEnvAuth</mat-radio-button>
+                        <mat-radio-button color="primary" [checked]="selectedDomain?.isBasicAuth" value="BasicAuth">Basic Auth</mat-radio-button>
+                      </mat-radio-group>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+                        <input matInput name="user" formControlName="user" />
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+                        <input matInput [type]="hidePassword ? 'password' : 'text'" name="password" formControlName="password" />
+                        <button mat-icon-button matSuffix color="primary" (click)="hidePassword = !hidePassword">
+                          <i *ngIf="hidePassword" class="fas fa-eye-slash"></i>
+                          <i *ngIf="!hidePassword" class="fas fa-eye"></i>
+                        </button>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+                        <input matInput name="realm" formControlName="realm" />
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="row mt-2">
+        <mat-card class=" mat-elevation-z8 w-100 mx-3">
+          <mat-card-header class="border border-dark mx-2">
+            <mat-card-title>Qualys Settings</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="row mx-2">
+              <div class="col-4 border-bottom border-left border-right border-dark">
+                <div class="container">
+                  <div class="row">
+                    <div class="col"> Qualys Enable </div>
+                  </div>
+                  <div class="row mt-4">
+                    <div class="col"> Qualys WebApp Id</div>
+                  </div>
+                  <div class="row mt-4 pt-4">
+                    <div class="col"> Qualys WebAuth Id</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-8 border-bottom border-right border-dark">
+                <div class="container">
+                  <div class="row">
+                    <div class="col">
+                      <mat-checkbox class="col" color="primary" formControlName="isQualysEnable">
+                      </mat-checkbox>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+                        <input matInput type="number" min="1" name="qualysWebAppId" formControlName="qualysWebAppId" />
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+                        <input matInput name="qualysWebAuthId" formControlName="qualysWebAuthId" />
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="row mt-2">
+        <mat-card class=" mat-elevation-z8 w-100 mx-3">
+          <mat-card-header class="border border-dark mx-2">
+            <mat-card-title>WAF Settings</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="row mx-2">
+              <div class="col-4 border-bottom border-left border-right border-dark">
+                <div class="container">
+                  <div class="row mt-4">
+                    <div class="col"> WAF Id</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-8 border-bottom border-right border-dark">
+                <div class="container">
+                  <div class="row">
+                    <div class="col">
+                      <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+                        <input matInput name="wafId" formControlName="wafId" />
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="row my-2">
+        <mat-card class=" mat-elevation-z8 w-100 mx-3">
+          <mat-card-header class="border border-dark mx-2">
+            <mat-card-title>Monitor Settings</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="row mx-2">
+              <div class="col-4 border-bottom border-left border-right border-dark">
+                <div class="container">
+                  <div class="row">
+                    <div class="col"> Enable</div>
+                  </div>
+                  <div class="row mt-4">
+                    <div class="col"> Keyword</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-8 border-bottom border-right border-dark">
+                <div class="container">
+                  <div class="row">
+                    <div class="col">
+                      <mat-checkbox class="col" color="primary" formControlName="isMonitorEnable">
+                      </mat-checkbox>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <mat-form-field flex class="md-icon-float md-block md-title mt-2">
+                        <input matInput name="monitorKeyword" formControlName="monitorKeyword" />
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </form>
+  </div>
+
+</div>

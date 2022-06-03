@@ -1,0 +1,143 @@
+<div class="mat-elevation-z8 my-4 mx-4 mw-mobile">
+  <div class="bg-header p-2 d-flex">
+    <span class="fa-stack fa-lg text-primary">
+      <i class="fas fa-circle fa-stack-1x fa-lg"></i>
+      <i class="fas fa-store-alt fa-stack-1x fa-sm text-white"></i>
+    </span>
+    <h2 class="text-white font-weight-bold pt-1">{{'home.tab.company.name' | translate}}</h2>
+  </div>
+  <div class="d-block p-2 text-right">
+    <button class="mr-1" mat-mini-fab color="primary" matTooltip="{{'common.advanceFilter' | translate}}"
+      (click)="toggleFilterPanel()" matBadge="{{filterCount}}" matBadgePosition="after" matBadgeColor="warn"
+      [matBadgeHidden]="filterCount===0"><i class="fas fa-filter"></i>
+    </button>
+
+    <button class="mr-1" mat-mini-fab color="primary" matTooltip="{{'export.excel' | translate}}"
+      (click)="exportExcel()"><i class="fas fa-file-excel"></i></button>
+
+    <button *ngIf="isAdmin" class="mr-1" mat-mini-fab color="primary" matTooltip="{{'company.add.tooltip' | translate}}"
+      (click)="addCompany()"><i class="fas fa-plus"></i></button>
+
+  </div>
+  <mat-expansion-panel [expanded]="panelFilterOpenState">
+    <form [formGroup]="companyAdvanceFilterForm" (ngSubmit)="applyAdvanceFilter()">
+      <div class="d-block p-2 bg-white" id="filter">
+
+        <mat-form-field>
+          <input matInput formControlName="sifCode" placeholder="{{'common.sifCode' | translate}}" />
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput formControlName="companyName" placeholder="{{'company.name' | translate}}" />
+        </mat-form-field>
+
+        <ng-select [items]="sectors | async" [typeahead]="inputSector" bindLabel="name"
+          placeholder="{{'sector.title' | translate}}" [searchable]="true" [dropdownPosition]="'bottom'"
+          [openOnEnter]="false" formControlName="sector" (change)="onSectorSelected($any($event))" appendTo="body"
+          [selectOnTab]="true">
+          <ng-template ng-label-tmp let-item="item">
+            <span *ngIf="item"> {{item?.name}}</span>
+          </ng-template>
+        </ng-select>
+
+        <ng-select [items]="zones" [typeahead]="inputZone" bindLabel="name" placeholder="{{'zone.title' | translate}}"
+          [searchable]="true" [dropdownPosition]="'bottom'" [openOnEnter]="false" formControlName="zone"
+          (change)="onZoneSelected($any($event))" appendTo="body" [selectOnTab]="true">
+          <ng-template ng-label-tmp let-item="item">
+            <span *ngIf="item"> {{item?.name}}</span>
+          </ng-template>
+        </ng-select>
+
+        <ng-select [items]="companiesAll" bindLabel="companyName" [typeahead]="inputCompany"
+          placeholder="{{'site.dialogbox.tab.description.company' | translate}}" [searchable]="true"
+          [dropdownPosition]="'bottom'" [openOnEnter]="false" formControlName="company"
+          (change)="onCompanySelected($any($event))" appendTo="body" [selectOnTab]="true">
+          <ng-template ng-label-tmp let-item="item">
+            <span *ngIf="item"> {{item?.companyName}}</span>
+          </ng-template>
+        </ng-select>
+
+        <mat-slide-toggle color="primary" formControlName="showArchived">
+          {{'common.includeArchived' | translate}}
+        </mat-slide-toggle>
+      </div>
+
+      <mat-action-row>
+        <button type="button" mat-raised-button color="primary"
+          (click)="resetAdvanceFilter()">{{'common.reset' | translate}} </button>
+        &nbsp;
+        <button type="submit" mat-raised-button color="primary">{{'common.search' | translate}}</button>
+      </mat-action-row>
+    </form>
+
+  </mat-expansion-panel>
+
+  <div *ngIf="!panelFilterOpenState" class="d-block text-center bg-white">
+    <mat-form-field class="p-2">
+      <input matInput (keyup)="applyFilter($any($event).target.value)" placeholder="{{'common.search' | translate}}" />
+      <i matPrefix class="fas fa-search mr-2"></i>
+    </mat-form-field>
+  </div>
+  <table class="w-100" mat-table matSort [dataSource]="companies" matSortActive="name" matSortDisableClear
+    matSortDirection="asc">
+    <ng-container matColumnDef="companyName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="name">{{'company.name' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.companyName }} <mat-chip
+          *ngIf="element.archiveDate" color="primary" selected>{{'common.archived' | translate}}</mat-chip>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="sifCode">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="sifCode">{{'common.sifCode' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.sifCode }}</td>
+    </ng-container>
+    <ng-container matColumnDef="usersCount">
+      <th mat-header-cell *matHeaderCellDef>{{'common.numberOfUsers' | translate}} </th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.usersCount }}</td>
+    </ng-container>
+    <ng-container matColumnDef="sitesCount">
+      <th mat-header-cell *matHeaderCellDef>{{'common.numberOfSites' | translate}} </th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.sitesCount }}</td>
+    </ng-container>
+    <ng-container matColumnDef="lastSiteDate">
+      <th mat-header-cell *matHeaderCellDef>{{'company.lastSiteDate' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.lastSiteDate }}</td>
+    </ng-container>
+    <ng-container matColumnDef="comments">
+      <th mat-header-cell *matHeaderCellDef>{{'common.comment' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.comments }}</td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>{{'common.actions' | translate}}</th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="!element.archiveDate" (click)="editCompany(element)"
+          [matTooltip]="isAdmin || isRsm ? ('common.edit' | translate) : ( 'common.view' | translate ) ">
+          <i *ngIf="isAdmin || isRsm" class="fas fa-edit p-1"></i>
+          <i *ngIf="!isAdmin && !isRsm" class="fas fa-search-plus p-1"></i>
+        </span>
+        <a *ngIf="(isAdmin || isRsm) && !element?.archiveDate" href="/definition/company/{{element?.sifCode}}"
+          target="_blank" rel="noopener noreferrer" matTooltip="{{'company.edit.newTab.tooltip' | translate}}">
+          <i class="fa fa-share p-1"></i>
+        </a>
+        <span *ngIf="isAdmin && element.sitesCount === 0 && !element.archiveDate" (click)="deleteCompany(element)"
+          matTooltip="{{'company.delete.tooltip' | translate}}">
+          <i class="fas fa-trash p-1"></i>
+        </span>
+        <span *ngIf="isAdmin && element.archiveDate" (click)="recoverCompany(element)"
+          matTooltip="{{'company.recover.tooltip' | translate}}">
+          <i class="fas fa-undo p-1"></i>
+        </span>
+        <span *ngIf="isAdmin && element.archiveDate" (click)="viewCompany(element)"
+          matTooltip="{{'company.view.tooltip' | translate}}">
+          <i class="fas fa-eye p-1"></i>
+        </span>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="pageSize" [pageIndex]="pageIndex"
+    [length]="totalElements" showFirstLastButtons></mat-paginator>
+  <div *ngIf="isLoading || isLoadingZone" class="loading-shade">
+    <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+  </div>
+</div>

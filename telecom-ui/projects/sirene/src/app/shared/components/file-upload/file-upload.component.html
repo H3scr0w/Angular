@@ -1,0 +1,25 @@
+    <table>
+      <tr>
+        <td>
+          <button type="button" class="mt-2 mb-2" mat-mini-fab color="primary" (click)="onClick()"
+            matTooltip="{{'common.browseFile' | translate}}">
+            <i class="fas fa-folder"></i>
+          </button>
+          <input #fileUpload type="file" class="input_fileupload--hidden"
+            (change)="onFileSelected($any($event)?.target?.files)" [accept]="accept" [multiple]="multiple"
+            [disabled]="disabled" />
+        </td>
+        <td>
+          <span *ngIf="files?.length===0">{{'common.selectFile' | translate}}</span>
+          <mat-list dense>
+            <mat-list-item *ngFor="let f of files">
+              <h3 mat-line>{{f.name}}</h3>
+              <button type="button" mat-icon-button color="primary" matTooltip="{{'common.removeFile' | translate}}"
+                (click)="removeFile(f)">
+                <i class="fas fa-trash"></i>
+              </button>
+            </mat-list-item>
+          </mat-list>
+        </td>
+      </tr>
+    </table>

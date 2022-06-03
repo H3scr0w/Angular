@@ -1,0 +1,90 @@
+<div class="mat-elevation-z8 my-4 mx-4 mw-mobile">
+  <div class="bg-header p-2 d-flex">
+    <span class="fa-stack fa-lg text-primary">
+      <i class="fas fa-circle fa-stack-1x fa-lg"></i>
+      <i class="fa fa-wrench fa-stack-1x fa-sm text-white"></i>
+    </span>
+    <h2 class="text-white font-weight-bold pt-1">{{'common.menu.settings.operator.mail.template' | translate}}</h2>
+  </div>
+  <form [formGroup]="operatorMailTemplateForm" (ngSubmit)="onSubmit()">
+    <div class="p-2 my-4 mx-4 mw-mobile">
+      <ng-select [items]="objetTypes" bindLabel="label" [ngModelOptions]="{standalone: true}" [clearable]="false"
+                 [(ngModel)]="selectedObjet" (change)="allowUpdate()"
+                 placeholder="{{'operator.mail.template.type' | translate}}" required>
+      </ng-select>
+      <button *ngIf="isAdmin || isOrderUser" class="float-right" [disabled]="disabledUpdate" type="submit"
+              mat-raised-button
+              color="primary">{{'operator.mail.template.update' | translate}}</button>
+      <span>Total Results : {{totalElements}}</span>
+    </div>
+
+    <table class="w-100 table-fixed" mat-table matSort [dataSource]="dataSource" matSortActive="network" (click)="changeStatus(true)"
+           matSortDisableClear
+           matSortDirection="asc">
+      <ng-container matColumnDef="network">
+        <th mat-header-cell *matHeaderCellDef
+            mat-sort-header="network">{{'operator.mail.template.network' | translate}}</th>
+        <td mat-cell *matCellDef="let element ;let i = index;" [formGroup]="element"
+            class="text-break">
+          <ng-select [items]="networksList | async" bindLabel="name" [typeahead]="inputNetworks"
+                     placeholder="{{'operator.mail.template.network.select' | translate}}" [searchable]="false"
+                     [virtualScroll]="true" [readonly]="true"
+                     formControlName="networks" appendTo="body" required (change)="checkNetwork(element,i)">
+            <ng-template ng-label-tmp let-item="item">
+              <span *ngIf="item"> {{item?.name}}</span>
+            </ng-template>
+          </ng-select>   
+          <mat-form-field *ngIf="element?.get('country')?.value">
+            <input matInput type="text" formControlName="country"/>
+          </mat-form-field>     
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="recipient">
+        <th mat-header-cell *matHeaderCellDef>{{'operator.mail.template.recipient' | translate}}</th>
+        <td mat-cell *matCellDef="let element" class="text-break" [formGroup]="element">
+          <mat-form-field>
+            <textarea matInput [matTextareaAutosize]="true" [matAutosizeMinRows]="1" [matAutosizeMaxRows]="5" type="text"
+                      (change)="enableUpdate(element)"
+                      formControlName="recipient"></textarea>
+
+          </mat-form-field>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="carbon copy">
+        <th mat-header-cell *matHeaderCellDef>{{'operator.mail.template.carbon.copy' | translate}}</th>
+        <td mat-cell *matCellDef="let element" class="text-break" [formGroup]="element">
+          <mat-form-field>
+            <textarea [matTextareaAutosize]="true" [matAutosizeMinRows]="1" [matAutosizeMaxRows]="5" matInput type="text"
+                      (change)="enableUpdate(element)"
+                      formControlName="carbonCopy"></textarea>
+          </mat-form-field>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="body">
+        <th mat-header-cell *matHeaderCellDef>{{'operator.mail.template.body' | translate}}</th>
+        <td mat-cell *matCellDef="let element" class="text-break" [formGroup]="element">
+          <mat-form-field>
+            <textarea matInput [matTextareaAutosize]="true" [matAutosizeMinRows]="1" [matAutosizeMaxRows]="5" type="text"
+                      (change)="enableUpdate(element)"
+                      formControlName="mailBody"></textarea>
+          </mat-form-field>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>{{'common.actions' | translate}}</th>
+        <td mat-cell *matCellDef="let element">
+        <span *ngIf="isAdmin || isOrderUser" (click)="editOperatorMailTemplate(element)"
+              matTooltip="{{'operator.mail.template.edit.tooltip' | translate}}">
+          <i class="fas fa-lg fa-eye p-1"></i>
+        </span>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="pageSize" [pageIndex]="pageIndex" [length]="totalElements" showFirstLastButtons></mat-paginator>
+    <div *ngIf="isLoading" class="loading-shade">
+      <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+    </div>
+  </form>
+</div>

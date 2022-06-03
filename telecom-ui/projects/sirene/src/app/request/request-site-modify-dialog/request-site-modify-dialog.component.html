@@ -1,0 +1,44 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<form [formGroup]="modifyRequestSiteForm" (ngSubmit)="onSubmit()">
+  <h1 mat-dialog-title>{{'siterequest.title' | translate}}</h1>
+  <mat-dialog-content>
+    <mat-form-field>
+      <input matInput formControlName="siteName" placeholder="{{'siterequest.name' | translate}}" [readonly]="true" />
+    </mat-form-field>
+
+    <mat-form-field *ngIf="!isValidate">
+      <input matInput formControlName="country" placeholder="{{'siterequest.country' | translate}}" [readonly]="true" />
+    </mat-form-field>
+
+    <mat-form-field *ngIf="!isValidate">
+      <input matInput formControlName="city" placeholder="{{'siterequest.city' | translate}}" [readonly]="true" />
+    </mat-form-field>
+
+    <mat-form-field *ngIf="!isValidate">
+      <input matInput formControlName="address" placeholder="{{'siterequest.address' | translate}}" [readonly]="true" />
+    </mat-form-field>
+
+    <mat-form-field *ngIf="!isValidate">
+      <input matInput formControlName="postCode" placeholder="{{'siterequest.postCode' | translate}}"
+        [readonly]="true" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <textarea matInput formControlName="comments" placeholder="{{'common.comment' | translate}}"
+                [readonly]="isValidate" cdkTextareaAutosize cdkAutosizeMinRows="5"></textarea>
+    </mat-form-field>
+
+  </mat-dialog-content>
+
+  <div mat-dialog-actions align="center">
+    <button type="button" mat-raised-button (click)="onNoClick()">{{'common.close' | translate}}</button>
+    <button *ngIf="isValidate && data.action === 'A' && !isViewOnly" type="button" mat-raised-button color="primary"
+      (click)="deleteSite()">{{'common.delete' | translate}}</button>
+    <button *ngIf="isValidate && data.action === 'M' && !isViewOnly" type="button" mat-raised-button color="primary"
+      (click)="getSite()">{{'siterequest.display' | translate}}</button>
+    <button *ngIf="!isValidate && !isViewOnly" type="submit" mat-raised-button color="primary"
+      [disabled]="!modifyRequestSiteForm.valid || isLoading">{{btnSaveText | translate}}</button>
+  </div>
+
+
+</form>

@@ -1,0 +1,37 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<form [formGroup]="countryForm" (ngSubmit)="onSubmit()">
+  <h1 mat-dialog-title>{{'common.menu.country' | translate}}</h1>
+  <mat-dialog-content>
+    <mat-form-field>
+      <input matInput formControlName="initials" placeholder="{{'country.initials' | translate}}" required
+        [readonly]="data?.mode=='edit'" (input)="onInitialsInput($any($event).target.value)" maxlength="2" />
+      <mat-error align=" right" *ngIf="hasError('initials', 'required')">
+        {{'common.validation.required.message' | translate}}</mat-error>
+      <mat-error align=" right" *ngIf="countryForm.get('initials').errors?.countryIdNotTaken">
+        {{'common.validation.taken.message' | translate}}</mat-error>
+      <mat-hint *ngIf="data?.mode=='add'">{{'common.initials.hint' | translate}}</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput formControlName="name" placeholder="{{'country.name' | translate}}" required />
+      <mat-error align=" right" *ngIf="hasError('name', 'required')">
+        {{'common.validation.required.message' | translate}}</mat-error>
+      <mat-error align=" right" *ngIf="countryForm.get('name').errors?.countryNameNotTaken">
+        {{'common.validation.taken.message' | translate}}</mat-error>
+    </mat-form-field>
+
+    <ng-select [items]="delegations | async" [typeahead]="inputDelegation" bindLabel="name" formControlName="delegation"
+      placeholder="{{'delegation.select.message' | translate}}" [dropdownPosition]="'bottom'" [searchable]="true"
+      appendTo="body">
+      <ng-template ng-label-tmp let-item="item">
+        <span *ngIf="item"> {{item?.name}}</span>
+      </ng-template>
+    </ng-select>
+  </mat-dialog-content>
+
+  <div mat-dialog-actions align="center">
+    <button type="button" mat-raised-button (click)="onNoClick()">{{'common.close' | translate}}</button>
+    <button type="submit" mat-raised-button color="primary"
+      [disabled]="!countryForm.valid || isLoading">{{'common.save' | translate}}</button>
+  </div>
+</form>

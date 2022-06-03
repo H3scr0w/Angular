@@ -1,0 +1,57 @@
+.warning {
+	@include radius(8px);
+	background-color: $color-lightGreen;
+	padding: 15px 30px 15px 60px;
+	position: relative;
+	margin-top: 30px;
+
+	@media(max-width: 425px) {
+		margin-top: 20px;
+	}
+
+	&::before {
+		bottom: 100%;
+		left: 10%;
+		border: solid transparent;
+		content: ' ';
+		height: 0;
+		width: 0;
+		position: absolute;
+		pointer-events: none;
+		border-color: rgba(222, 249, 244, 0);
+		border-bottom-color: $color-lightGreen;
+		border-width: 15px;
+		margin-left: -15px;
+	}
+
+	p {
+		@include gilroyReg(14px);
+		color: $color-blue;
+		letter-spacing: -0.34px;
+		line-height: 20px;
+		margin: 0;
+	}
+
+	.warning-icon {
+		position: absolute;
+		background-image: url('/assets/images/ic_warning.svg');
+		height: 24px;
+		width: 24px;
+		top: 0;
+		transform: translate(0, 50%);
+		left: 20px;
+	}
+}
+
+.warning.warning-left {
+	&::before {
+		left: 25%;
+	}
+}
+
+
+.warning.warning-right {
+	&::before {
+		left: 75%;
+	}
+}

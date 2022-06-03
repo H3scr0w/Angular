@@ -1,0 +1,36 @@
+.mat-black {
+  background-color: #222;
+  min-height: 4.7rem;
+  color: #fff;
+
+  .img-fluid {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .droplist-toggle {
+    cursor: pointer;
+  }
+
+  .ico-toolbox {
+    font-size: 2rem;
+  }
+
+  .sg-picture {
+    width: 55px;
+    height: 55px;
+    overflow: hidden;
+  }
+
+  .rounded-circle {
+    border-radius: 50%;
+  }
+
+  .border-right {
+    border-left-width: 2rem;
+  }
+
+  .width-60 {
+    width: 60px;
+  }
+}

@@ -1,0 +1,237 @@
+<div class="mat-elevation-z8 my-4 mx-4 mw-mobile">
+  <div class="bg-header p-2 d-flex">
+    <span class="fa-stack fa-lg text-primary">
+      <i class="fas fa-circle fa-stack-1x fa-lg"></i>
+      <i class="fas fa-map-marker-alt fa-stack-1x fa-sm text-white"></i>
+    </span>
+    <h2 class="text-white font-weight-bold pt-1">{{'common.sites' | translate}}</h2>
+  </div>
+  <div class="d-block p-2 text-right">
+    <button class="mr-1" mat-mini-fab color="primary" matTooltip="{{'common.advanceFilter' | translate}}"
+      (click)="toggleFilterPanel()" matBadge="{{filterCount}}" matBadgePosition="after" matBadgeColor="warn"
+      [matBadgeHidden]="filterCount===0">
+      <i class="fas fa-filter"></i>
+    </button>
+    <button class="mr-1" mat-mini-fab color="primary" matTooltip="{{'export.excel' | translate}}"
+      (click)="exportExcel()">
+      <i class="fas fa-file-excel"></i>
+    </button>
+    <button *ngIf="isAdmin" class="mr-1" mat-mini-fab color="primary" matTooltip="{{'site.add.tooltip' | translate}}"
+      (click)="addSite()">
+      <i class="fas fa-plus"></i>
+    </button>
+  </div>
+  <mat-expansion-panel [expanded]="panelFilterOpenState">
+    <form [formGroup]="siteAdvanceFilterForm" (ngSubmit)="applyAdvanceFilter()">
+      <div class="d-block p-2 bg-white">
+        <div class="row">
+          <div class="col-lg-2">
+            <mat-form-field>
+              <input matInput formControlName="siteCodeChar" placeholder="SGT Site Code from " [minLength]="2"
+                [maxLength]="2" #codeChar [value]="codeChar.value.toUpperCase()" />
+            </mat-form-field>
+          </div>
+          <div class="col-lg-1">
+            <mat-form-field>
+              <input matInput formControlName="siteCodeFrom" [minLength]="4" [maxLength]="4" stgoNumberOnly />
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-2">
+            <mat-form-field>
+              <input matInput formControlName="siteCodeChar" placeholder="to " [minLength]="2" [maxLength]="2" readonly
+                [value]="codeChar.value" />
+            </mat-form-field>
+          </div>
+          <div class="col-lg-1">
+            <mat-form-field>
+              <input matInput formControlName="siteCodeTo" [minLength]="4" [maxLength]="4" stgoNumberOnly />
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-3">
+            <mat-form-field>
+              <input matInput formControlName="usualName" placeholder="SGT Site Name " />
+              <button type="button" mat-button *ngIf="siteAdvanceFilterForm.get('usualName').value" matSuffix
+                mat-icon-button aria-label="Clear" (click)="siteAdvanceFilterForm.get('usualName').setValue('')">
+                <i class="fas fa-times"></i>
+              </button>
+            </mat-form-field>
+          </div>
+          <div class="col-lg-2">
+            <ng-select [items]="sifCodes | async" [typeahead]="inputSifCode" bindLabel="sifCode"
+              placeholder="{{'site.dialogbox.tab.description.sifCode' | translate}}" [searchable]="true"
+              [dropdownPosition]="'bottom'" [openOnEnter]="false" formControlName="sifCode"
+              (change)="onSifSelected($any($event))" appendTo="body" [selectOnTab]="true">
+              <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="item"> {{item?.sifCode}}</span>
+              </ng-template>
+            </ng-select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-3">
+            <ng-select [items]="sectors | async" [typeahead]="inputSector" bindLabel="name"
+              placeholder="{{'site.dialogbox.tab.description.sector' | translate}}" [searchable]="true"
+              [dropdownPosition]="'bottom'" [openOnEnter]="false" formControlName="sector"
+              (change)="onSectorSelected($any($event))" appendTo="body" [selectOnTab]="true">
+              <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="item"> {{item?.name}}</span>
+              </ng-template>
+            </ng-select>
+          </div>
+          <div class="col-lg-3">
+            <ng-select [items]="zones" [typeahead]="inputZone" bindLabel="name"
+              placeholder="{{'zone.title' | translate}}" [searchable]="true" [dropdownPosition]="'bottom'"
+              [openOnEnter]="false" formControlName="zone" (change)="onZoneSelected($any($event))" appendTo="body"
+              [selectOnTab]="true">
+              <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="item"> {{item?.name}}</span>
+              </ng-template>
+            </ng-select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-3">
+            <ng-select [items]="companies" bindLabel="companyName" [typeahead]="inputCompany"
+              placeholder="{{'site.dialogbox.tab.description.company' | translate}}" [searchable]="true"
+              [dropdownPosition]="'bottom'" [openOnEnter]="false" formControlName="company"
+              (change)="onCompanySelected($any($event))" appendTo="body" [selectOnTab]="true">
+              <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="item"> {{item?.companyName}}</span>
+              </ng-template>
+            </ng-select>
+          </div>
+          <div class="col-lg-3">
+            <ng-select [items]="rsms | async" [typeahead]="inputRsm" bindLabel="fullName"
+              placeholder="{{'site.dialogbox.tab.description.rsm' | translate}}" [searchable]="false"
+              [dropdownPosition]="'bottom'" [openOnEnter]="false" formControlName="rsm" appendTo="body"
+              [selectOnTab]="true">
+              <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="item">{{item.fullName}}</span>
+              </ng-template>
+            </ng-select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-3">
+            <ng-select [items]="countries | async" [typeahead]="inputCountry" bindLabel="name"
+              placeholder="{{'site.dialogbox.tab.description.country' | translate}}" [searchable]="true"
+              [dropdownPosition]="'bottom'" [openOnEnter]="false" formControlName="country"
+              (change)="onCountrySelected($any($event))" appendTo="body" [selectOnTab]="true">
+              <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="item"> {{item?.name}}</span>
+              </ng-template>
+            </ng-select>
+          </div>
+          <div class="col-lg-3">
+            <ng-select [items]="cities" [typeahead]="inputCity" bindLabel="name"
+              placeholder="{{'site.dialogbox.tab.description.city' | translate}}" [searchable]="true"
+              [dropdownPosition]="'bottom'" [openOnEnter]="false" formControlName="city"
+              (change)="onCitySelected($any($event))" appendTo="body" [selectOnTab]="true">
+              <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="item"> {{item?.name}}</span>
+              </ng-template>
+            </ng-select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-3">
+            <ng-select [items]="backbones" placeholder="{{'site.dialogbox.tab.description.backBoneSite' | translate}}"
+              bindLabel="name" bindValue="id" [searchable]="false" [dropdownPosition]="'bottom'" [openOnEnter]="false"
+              formControlName="backbone" appendTo="body" [selectOnTab]="true">
+              <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="item"> {{item?.name}}</span>
+              </ng-template>
+            </ng-select>
+          </div>
+          <div class="col-lg-3">
+            <mat-slide-toggle color="primary" formControlName="showArchived">
+              {{'common.includeArchived' | translate}}
+            </mat-slide-toggle>
+          </div>
+        </div>
+      </div>
+      <mat-action-row>
+        <button type="button" mat-raised-button color="primary"
+          (click)="resetAdvanceFilter()">{{'common.reset' | translate}}
+        </button>
+        &nbsp;
+        <button type="submit" mat-raised-button color="primary">{{'common.search' | translate}}</button>
+      </mat-action-row>
+    </form>
+
+  </mat-expansion-panel>
+  <div *ngIf=" !panelFilterOpenState" class="d-block text-center bg-white">
+    <mat-form-field class="p-2">
+      <input matInput (keyup)="applyFilter($any($event).target.value)" placeholder="{{'common.search' | translate}}" />
+      <i matPrefix class="fas fa-search mr-2"></i>
+    </mat-form-field>
+  </div>
+  <table class="w-100" mat-table matSort [dataSource]="sites" matSortActive="siteCode" matSortDisableClear
+    matSortDirection="asc">
+    <ng-container matColumnDef="usualName">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header="siteCode">{{'site.datatable.column.siteName' | translate}}
+      </th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.siteCode}} - {{ element.city.name}} -
+        {{ element.company?.companyName}} - {{element.usualName }}
+        <mat-chip *ngIf="element.archiveDate" color="primary" selected>{{'common.archived' | translate}}</mat-chip>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="address1">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header="address1">{{'site.datatable.column.address1' | translate}}
+      </th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.address1 }}</td>
+    </ng-container>
+    <ng-container matColumnDef="sector">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header="company.zone.sector.name">
+        {{'site.datatable.column.sector' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.company?.zone?.sector?.name }}</td>
+    </ng-container>
+    <ng-container matColumnDef="company">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header="company.name">
+        {{'site.datatable.column.company' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.company?.companyName }}</td>
+    </ng-container>
+    <ng-container matColumnDef="sifCode">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header="company.sifCode">
+        {{'site.datatable.column.sifCode' | translate}}</th>
+      <td mat-cell *matCellDef="let element" class="text-break">{{ element.company?.sifCode }}</td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <th *matHeaderCellDef mat-header-cell>{{'common.actions' | translate}}</th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="!element?.archiveDate" (click)="editSite(element?.siteCode)"
+          [matTooltip]="isAdmin || isRsm ? ('common.edit' | translate) : ( 'common.view' | translate ) ">
+          <i *ngIf="isAdmin || isRsm" class="fas fa-edit p-1"></i>
+          <i *ngIf="!isAdmin && !isRsm" class="fas fa-search-plus p-1"></i>
+        </span>
+        <a *ngIf="(isAdmin || isRsm) && !element?.archiveDate" href="/definition/site/{{element?.siteCode}}"
+          target="_blank" rel="noopener noreferrer" matTooltip="{{'site.edit.newTab.tooltip' | translate}}">
+          <i class="fa fa-share p-1"></i>
+        </a>
+        <span *ngIf="isAdmin && !element?.archiveDate && element?.withoutDevices" (click)="deleteSite(element)"
+          matTooltip="{{'site.delete.tooltip' | translate}}">
+          <i class="fas fa-trash p-1"></i>
+        </span>
+        <span *ngIf="isAdmin && element?.archiveDate" (click)="recoverSite(element)"
+          matTooltip="{{'site.recover.tooltip' | translate}}">
+          <i class="fas fa-undo p-1"></i>
+        </span>
+        <span *ngIf="isAdmin && element?.archiveDate" (click)="viewSite(element?.siteCode)"
+          matTooltip="{{'site.view.tooltip' | translate}}">
+          <i class="fas fa-eye p-1"></i>
+        </span>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns displayedColumns"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="pageSize" [pageIndex]="pageIndex"
+    [length]="totalElements" showFirstLastButtons></mat-paginator>
+  <div *ngIf="isLoading || isSitesLoading" class="loading-shade">
+    <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+  </div>
+</div>

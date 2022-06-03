@@ -1,0 +1,107 @@
+<mat-sidenav-container class="mat-sidenav-container-position position-absolute h-85 mt-4 min-width-mobile">
+  <mat-sidenav #snav [style.width.px]="220" [mode]="mediaMatch ? 'over' : 'side'" opened class="font-bold font-white mx-4 mt-3 pt-5">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title class="text-gray">Referential</mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="m-2" [ngClass]="{
+            'text-primary': sidenavElement === sidenavSelected
+          }" *ngFor="let sidenavElement of refSidenavMenu">
+          <a (click)="show(sidenavElement)"> {{ sidenavElement }} </a>
+          <br />
+        </div>
+      </mat-expansion-panel>
+      <mat-expansion-panel [expanded]="false">
+        <mat-expansion-panel-header>
+          <mat-panel-title class="text-gray">Hosting</mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="m-2" [ngClass]="{
+                      'text-primary': sidenavElement === sidenavSelected
+                    }" *ngFor="let sidenavElement of hostingSidenavMenu">
+          <a (click)="show(sidenavElement)"> {{ sidenavElement }} </a>
+          <br />
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </mat-sidenav>
+  <mat-sidenav-content class="px-5 pt-4">
+    <div (click)="snav.toggle()" class="sidebar-button">
+      <button mat-icon-button color="primary" class="text-danger">
+        <i *ngIf="!snav.opened" class="fas fa-angle-double-right fa-2x"></i>
+        <i *ngIf="snav.opened" class="fas fa-angle-double-left fa-2x"></i>
+      </button>
+    </div>    
+
+    <!-- Reference -->
+    <div class="p-1 ml-4">
+      <ng-template [ngIf]="sidenavSelected === 'CMS'">
+        <stgo-cms></stgo-cms>
+      </ng-template>
+
+      <ng-template [ngIf]="sidenavSelected === 'Certificate'">
+        <stgo-certificate></stgo-certificate>
+      </ng-template>
+
+      <ng-template [ngIf]="sidenavSelected === 'Docroot'">
+        <stgo-docroot></stgo-docroot>
+      </ng-template>
+
+      <ng-template [ngIf]="sidenavSelected === 'Docroot Core'">
+        <stgo-docrootcore></stgo-docrootcore>
+      </ng-template>
+
+      <ng-template [ngIf]="sidenavSelected === 'Docroot Environment'">
+        <stgo-docrootenv></stgo-docrootenv>
+      </ng-template>
+
+      <ng-template [ngIf]="sidenavSelected === 'Environment'">
+        <stgo-environment></stgo-environment>
+      </ng-template>
+
+      <ng-template [ngIf]="sidenavSelected === 'Hosting Provider'">
+        <stgo-hosting-provider></stgo-hosting-provider>
+      </ng-template>
+
+      <ng-template [ngIf]="sidenavSelected === 'LoadBalancer'">
+        <stgo-loadbalancer></stgo-loadbalancer>
+      </ng-template>
+
+      <ng-template [ngIf]="sidenavSelected === 'Registar'">
+        <stgo-registar></stgo-registar>
+      </ng-template>
+
+      <ng-template [ngIf]="sidenavSelected === 'Server'">
+        <stgo-server></stgo-server>
+      </ng-template>
+
+      <ng-template [ngIf]="sidenavSelected === 'Websites'">
+        <stgo-website></stgo-website>
+      </ng-template>
+
+      <!-- Hosting -->
+      <ng-template [ngIf]="hostingSidenavMenu.includes(sidenavSelected)">
+        <table class="w-100 mx-4">
+          <mat-form-field>
+            <input matInput placeholder="Search a website" [formControl]="inputWebsiteControl" [matAutocomplete]="auto" name="website"
+            />
+            <i matSuffix class="fas fa-search"></i>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="changeWebsite($event?.option?.value)" (closed)="closed()" (opened)="opened()" [displayWith]="displayFn">
+              <mat-option *ngFor="let website of (websites$ | async)" [value]="website">
+                <span>{{ website?.name }}</span>
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+          <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center mb-2">
+            <mat-progress-bar color="primary" mode="indeterminate"> </mat-progress-bar>
+          </div>
+        </table>
+      </ng-template>
+      <div *ngIf="websiteSelected && !isLoading">
+        <ng-template [ngIf]="sidenavSelected === 'Website Environments'">
+          <stgo-website-environment [website]="website" [isAdmin]="true"></stgo-website-environment>
+        </ng-template>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

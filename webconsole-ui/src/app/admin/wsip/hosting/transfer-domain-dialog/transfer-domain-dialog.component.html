@@ -1,0 +1,41 @@
+<form [formGroup]="formGroup">
+  <h3 mat-dialog-title>Transfer Domain: {{data?.domain?.name}}</h3>
+  <mat-dialog-content>
+    <mat-form-field>
+      <input matInput placeholder="Website*" formControlName="website" name="website" [readonly]="true" />
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="DocRoot*" formControlName="docroot" [matAutocomplete]="autoDocroot" name="docroot" />
+      <i matSuffix class="fas fa-search"></i>
+      <mat-autocomplete #autoDocroot="matAutocomplete" (optionSelected)="selectedObject(1, $event?.option?.value)" (opened)="openedDocroot()"
+        [displayWith]="displayFn">
+        <mat-option *ngFor="let docroot of (docroots$ | async)" [value]="docroot">
+          <span>{{ docroot?.name }}</span>
+        </mat-option>
+      </mat-autocomplete>
+      <mat-error *ngIf="formGroup.get('docroot')!.hasError('required')">Please select a docroot</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Environment*" formControlName="environment" [matAutocomplete]="autoEnvironment" name="environment"
+      />
+      <i matSuffix class="fas fa-search"></i>
+      <mat-autocomplete #autoEnvironment="matAutocomplete" (optionSelected)="selectedObject(2, $event?.option?.value)" (opened)="openedEnv()"
+        [displayWith]="displayFn">
+        <mat-option *ngFor="let environment of (environments$ | async)" [value]="environment">
+          <span>{{ environment?.name }}</span>
+        </mat-option>
+      </mat-autocomplete>
+      <mat-error *ngIf="formGroup.get('environment')!.hasError('required')">Please select an environment</mat-error>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button type="button" mat-raised-button color="primary" (click)="cancel()" class="mr-1">
+      Cancel
+    </button>
+    <button type="submit" mat-raised-button color="primary" (click)="confirm()" [disabled]="formGroup.pristine || formGroup.invalid || !canActivateButton()">
+      <span>Validate
+        <i *ngIf="saving" class="fas fa-circle-notch fa-spin"></i>
+      </span>
+    </button>
+  </mat-dialog-actions>
+</form>

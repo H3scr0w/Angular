@@ -1,0 +1,111 @@
+<div>
+  <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+  <form [formGroup]="telecomServiceDetailForm">
+    <div>
+      <div class="row m-3">
+        <div class="col s6">
+          <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <h4> {{'telecom.service.detail.carrierAndConract' | translate}}</h4>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <ng-select [items]="operators | async" [typeahead]="inputOperator" bindLabel="name"
+              placeholder="{{'Operator' | translate}}*" [searchable]="true" dropdownPosition="bottom"
+              [openOnEnter]="false" (change)="onOperatorSelected($any($event))" formControlName="operator"
+              appendTo="body" [selectOnTab]="true" [readonly]="isOperatorReadOnly">
+              <ng-template ng-label-tmp let-item="item" required>
+                <span *ngIf="item"> {{item?.name}}</span>
+              </ng-template>
+            </ng-select>
+            <small align="right" class="mat-error" *ngIf="hasError('operator', 'required')">
+              {{'common.validation.required.message' | translate}}
+            </small>
+
+            <ng-select [items]="contracts" bindLabel="code" placeholder="{{'catalog.contract' | translate}}*"
+              [searchable]="true" dropdownPosition="bottom" [openOnEnter]="false" formControlName="contract"
+              [dropdownPosition]="'bottom'" appendTo="body" [selectOnTab]="true"
+              (change)="onContractSelected($any($event))" [readonly]="isReadOnly">
+              <ng-template ng-label-tmp let-item="item" required>
+                <span *ngIf="item"> {{item?.code}}</span>
+              </ng-template>
+            </ng-select>
+            <small align="right" class="mat-error" *ngIf="hasError('contract', 'required')">
+              {{'common.validation.required.message' | translate}}
+            </small>
+
+            <ng-select [items]="catalogs" bindLabel="name" placeholder="{{'Catalog' | translate}}*" [searchable]="true"
+              dropdownPosition="bottom" [openOnEnter]="false" formControlName="catalog" appendTo="body"
+              [selectOnTab]="true" [readonly]="isReadOnly" [dropdownPosition]="'bottom'">
+              <ng-template ng-label-tmp let-item="item" required>
+                <span *ngIf="item"> {{item?.name}}</span>
+              </ng-template>
+            </ng-select>
+            <small align="right" class="mat-error" *ngIf="hasError('catalog', 'required')">
+              {{'common.validation.required.message' | translate}}
+            </small>
+
+          </mat-expansion-panel>
+        </div>
+        <div class="col s6">
+          <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <h4> {{'telecom.service.detail.serviceDesc' | translate}}</h4>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-form-field>
+              <textarea matInput formControlName="serviceTitle"
+                placeholder="{{'telecom.service.selector.serviceTitle' | translate}}" cdkTextareaAutosize
+                [readonly]="true" required></textarea>
+
+              <mat-error align=" right" *ngIf="hasError('serviceTitle', 'required')">
+                {{'common.validation.required.message' | translate}}</mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+              <input matInput formControlName="mainServiceCode"
+                placeholder="{{'telecom.service.selector.mainServiceCode' | translate}}" [readonly]="true" required />
+
+              <mat-error align=" right" *ngIf="hasError('mainServiceCode', 'required')">
+                {{'common.validation.required.message' | translate}}</mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+              <input matInput formControlName="backupServiceCode"
+                placeholder="{{'telecom.service.selector.backupServiceCode' | translate}}" [readonly]="true" />
+            </mat-form-field>
+
+            <ng-select [items]="catalogOptions" bindLabel="optionCode"
+              placeholder="{{'telecom.service.detail.optionList' | translate}}" [searchable]="catalogOptions?.length > 0 ? true: false"
+              dropdownPosition="bottom" [openOnEnter]="false" formControlName="options" [hideSelected]="true"
+              appendTo="body" [selectOnTab]="true" [multiple]="true">
+              <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                <span class="ng-value-icon" (click)="clear(item)" aria-hidden="true">×</span>
+                <span *ngIf="item"> {{item.optionCode}}</span>
+              </ng-template>
+            </ng-select>
+
+            <mat-form-field>
+              <input matInput formControlName="routerCode1"
+                placeholder="{{'telecom.service.detail.mainAccessRouter' | translate}}" [readonly]="isReadOnly" />
+            </mat-form-field>
+
+            <mat-form-field>
+              <input matInput formControlName="routerCode2"
+                placeholder="{{'telecom.service.detail.backupAccessRouter' | translate}}" [readonly]="isReadOnly" />
+            </mat-form-field>
+
+            <div mat-dialog-actions align="center" *ngIf="!isReadOnly">
+              <button mat-raised-button color="primary"
+                (click)="addOptions()">{{'catalog.option.add.title' | translate}}</button>
+            </div>
+
+          </mat-expansion-panel>
+        </div>
+      </div>
+
+    </div>
+  </form>
+</div>

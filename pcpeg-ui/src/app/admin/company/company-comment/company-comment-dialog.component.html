@@ -1,0 +1,14 @@
+<form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
+  <h1 mat-dialog-title>{{'company.comment.header' | translate}}</h1>
+  <mat-dialog-content>
+    <mat-form-field>
+      <textarea rows="5" matInput formControlName="comment" placeholder="{{'company.comments' | translate}}">
+      </textarea>
+    </mat-form-field>
+  </mat-dialog-content>
+  <div mat-dialog-actions align="center">
+    <button type="button" mat-raised-button (click)="onNoClick()">{{'company.close' | translate}}</button>
+    <button type="submit" mat-raised-button color="primary"
+      [disabled]="isLoading">{{'company.save' | translate}}</button>
+  </div>
+</form>
